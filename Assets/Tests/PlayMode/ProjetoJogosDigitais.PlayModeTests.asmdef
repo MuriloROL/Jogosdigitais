@@ -1,0 +1,10 @@
+{
+  "name": "ProjetoJogosDigitais.PlayModeTests",
+  "references": [
+    "ProjetoJogosDigitais.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

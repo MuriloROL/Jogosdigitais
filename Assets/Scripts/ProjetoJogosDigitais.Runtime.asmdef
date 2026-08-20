@@ -1,0 +1,9 @@
+{
+  "name": "ProjetoJogosDigitais.Runtime",
+  "rootNamespace": "ProjetoJogosDigitais",
+  "references": [
+    "Unity.InputSystem",
+    "UnityEngine.UI"
+  ],
+  "autoReferenced": true
+}
