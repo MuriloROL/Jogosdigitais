@@ -4,6 +4,7 @@ namespace ProjetoJogosDigitais.Gameplay
 {
     public static class CareerSceneFlow
     {
+        public const string MainMenuScene = "MainMenu";
         public const string InternScene = "OfficeInternMVP";
         public const string DeveloperScene = "OfficeDeveloperMVP";
         public const string LeadershipScene = "OfficeLeadershipMVP";

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace ProjetoJogosDigitais.Tests
 {
-    public sealed class PrototypeInteractionTests
+    public sealed class CareerFlowTests
     {
         [UnitySetUp]
         public IEnumerator RemovePersistentCareerBetweenTests()
@@ -99,7 +99,7 @@ namespace ProjetoJogosDigitais.Tests
             Vector3 start = player.transform.position;
 
             player.MoveTo(start + Vector3.right * 2f);
-            yield return new WaitForSeconds(0.2f);
+            yield return null;
             Assert.That(renderer.sprite.name, Does.Contain("walk-Right"));
 
             while (!player.IsIdle)
@@ -108,7 +108,7 @@ namespace ProjetoJogosDigitais.Tests
             }
 
             player.MoveTo(player.transform.position + Vector3.left * 2f);
-            yield return new WaitForSeconds(0.2f);
+            yield return null;
             Assert.That(renderer.sprite.name, Does.Contain("walk-Left"));
         }
 
@@ -141,6 +141,71 @@ namespace ProjetoJogosDigitais.Tests
 
             Assert.That(game.Rank, Is.EqualTo(CareerRank.JuniorDeveloper));
             Assert.That(Object.FindFirstObjectByType<OfficePlayerController>(), Is.Not.Null);
+        }
+
+        [UnityTest]
+        public IEnumerator MainMenuShowsCreditsAndStartsTheGame()
+        {
+            Time.timeScale = 1f;
+            yield return SceneManager.LoadSceneAsync(CareerSceneFlow.MainMenuScene, LoadSceneMode.Single);
+            yield return null;
+
+            MainMenuController menu = Object.FindFirstObjectByType<MainMenuController>();
+            BackgroundMusic music = Object.FindFirstObjectByType<BackgroundMusic>();
+            Assert.That(menu, Is.Not.Null);
+            Assert.That(music, Is.Not.Null);
+            Assert.That(music.ClipName, Is.EqualTo("levelmusicloop-tigrun"));
+            Assert.That(music.IsLooping, Is.True);
+            Assert.That(menu.CreditsVisible, Is.False);
+
+            Button credits = Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .First(button => button.name == "CRÉDITOS");
+            credits.onClick.Invoke();
+            yield return null;
+            Assert.That(menu.CreditsVisible, Is.True);
+
+            Button back = Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .First(button => button.name == "VOLTAR");
+            back.onClick.Invoke();
+            yield return null;
+            Assert.That(menu.CreditsVisible, Is.False);
+
+            Button play = Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .First(button => button.name == "JOGAR");
+            play.onClick.Invoke();
+
+            float timeout = 5f;
+            while (SceneManager.GetActiveScene().name != CareerSceneFlow.InternScene)
+            {
+                timeout -= Time.unscaledDeltaTime;
+                Assert.That(timeout, Is.GreaterThan(0f), "O botão Jogar não abriu o escritório inicial.");
+                yield return null;
+            }
+
+            Assert.That(Object.FindFirstObjectByType<OfficePlayerController>(), Is.Not.Null);
+        }
+
+        [UnityTest]
+        public IEnumerator TutorialExplainsTheFirstCareerDay()
+        {
+            PlayerPrefs.DeleteKey(CareerTutorialController.SeenPlayerPrefsKey);
+            Time.timeScale = 1f;
+            yield return SceneManager.LoadSceneAsync(CareerSceneFlow.InternScene, LoadSceneMode.Single);
+            yield return null;
+
+            CareerTutorialController tutorial = Object.FindFirstObjectByType<CareerTutorialController>();
+            Assert.That(tutorial, Is.Not.Null);
+            Assert.That(tutorial.IsVisible, Is.True);
+            Assert.That(tutorial.StepCount, Is.EqualTo(4));
+
+            for (int step = 0; step < tutorial.StepCount; step++)
+            {
+                tutorial.NextStep();
+            }
+
+            Assert.That(tutorial.IsVisible, Is.False);
+            Assert.That(PlayerPrefs.GetInt(CareerTutorialController.SeenPlayerPrefsKey), Is.EqualTo(1));
+            PlayerPrefs.DeleteKey(CareerTutorialController.SeenPlayerPrefsKey);
         }
 
         [UnityTest]

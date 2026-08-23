@@ -14,6 +14,7 @@ namespace ProjetoJogosDigitais.Editor
 {
     public static class OfficeMvpSceneBuilder
     {
+        private const string MainMenuScenePath = "Assets/Scenes/MainMenu.unity";
         private const string InternScenePath = "Assets/Scenes/OfficeInternMVP.unity";
         private const string DeveloperScenePath = "Assets/Scenes/OfficeDeveloperMVP.unity";
         private const string LeadershipScenePath = "Assets/Scenes/OfficeLeadershipMVP.unity";
@@ -53,10 +54,10 @@ namespace ProjetoJogosDigitais.Editor
                 return;
             }
 
-            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(InternScenePath) != null)
+            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(MainMenuScenePath) != null)
             {
-                EditorSceneManager.OpenScene(InternScenePath, OpenSceneMode.Single);
-                Debug.Log($"[DEV CAREER MVP] Cena principal aberta automaticamente: {InternScenePath}");
+                EditorSceneManager.OpenScene(MainMenuScenePath, OpenSceneMode.Single);
+                Debug.Log($"[DEV CAREER MVP] Cena principal aberta automaticamente: {MainMenuScenePath}");
             }
         }
 
@@ -68,24 +69,135 @@ namespace ProjetoJogosDigitais.Editor
                 EditorApplication.isPlaying = false;
             }
 
+            BuildMainMenuScene();
             BuildOfficeScene(CareerSceneFlow.InternScene, InternScenePath, OfficeTier.Intern);
             BuildOfficeScene(CareerSceneFlow.DeveloperScene, DeveloperScenePath, OfficeTier.Developer);
             BuildOfficeScene(CareerSceneFlow.LeadershipScene, LeadershipScenePath, OfficeTier.Leadership);
             BuildOfficeScene(CareerSceneFlow.ExecutiveScene, ExecutiveScenePath, OfficeTier.Executive);
             BuildFinaleScene();
 
+            ConfigureBuildScenes();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorSceneManager.OpenScene(MainMenuScenePath, OpenSceneMode.Single);
+            Debug.Log("[DEV CAREER MVP] Tela inicial, quatro escritórios e cena final foram criados.");
+        }
+
+        [MenuItem("Projeto/Construir tela inicial")]
+        public static void BuildMainMenu()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                EditorApplication.isPlaying = false;
+            }
+
+            BuildMainMenuScene();
+            ConfigureBuildScenes();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorSceneManager.OpenScene(MainMenuScenePath, OpenSceneMode.Single);
+            Debug.Log("[DEV CAREER MVP] Tela inicial criada e definida como primeira cena do build.");
+        }
+
+        private static void ConfigureBuildScenes()
+        {
             EditorBuildSettings.scenes = new[]
             {
+                new EditorBuildSettingsScene(MainMenuScenePath, true),
                 new EditorBuildSettingsScene(InternScenePath, true),
                 new EditorBuildSettingsScene(DeveloperScenePath, true),
                 new EditorBuildSettingsScene(LeadershipScenePath, true),
                 new EditorBuildSettingsScene(ExecutiveScenePath, true),
                 new EditorBuildSettingsScene(FinaleScenePath, true)
             };
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-            EditorSceneManager.OpenScene(InternScenePath, OpenSceneMode.Single);
-            Debug.Log("[DEV CAREER MVP] Quatro escritórios e a cena final foram criados.");
+        }
+
+        private static void BuildMainMenuScene()
+        {
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            scene.name = CareerSceneFlow.MainMenuScene;
+            CreateCamera(6.2f);
+
+            var canvasObject = new GameObject("Interface da tela inicial");
+            Canvas canvas = canvasObject.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.pixelPerfect = true;
+            canvasObject.AddComponent<GraphicRaycaster>();
+            CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1280f, 720f);
+            scaler.matchWidthOrHeight = 0.5f;
+
+            Image background = CreateImage(canvasObject.transform, "Fundo ByteForge", new Color(0.018f, 0.028f, 0.052f));
+            SetRect(background.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+
+            Image skyline = CreateImage(background.transform, "Horizonte da cidade", new Color(0.035f, 0.09f, 0.14f, 0.92f));
+            SetRect(skyline.rectTransform, Vector2.zero, new Vector2(1f, 0.34f), Vector2.zero, Vector2.zero);
+            for (int index = 0; index < 13; index++)
+            {
+                float width = 72f + index % 3 * 18f;
+                float height = 95f + index % 5 * 27f;
+                Image building = CreateImage(skyline.transform, $"Prédio {index + 1}", new Color(0.025f, 0.052f + index % 2 * 0.012f, 0.085f));
+                SetRect(building.rectTransform, Vector2.zero, Vector2.zero, new Vector2(index * 104f - 24f, 0f), new Vector2(width, height));
+                building.rectTransform.pivot = Vector2.zero;
+
+                Image window = CreateImage(building.transform, "Janela acesa", index % 3 == 0 ? Amber : Accent);
+                SetRect(window.rectTransform, new Vector2(0.5f, 0.65f), new Vector2(0.5f, 0.65f), Vector2.zero, new Vector2(10f, 10f));
+            }
+
+            for (int index = 0; index < 8; index++)
+            {
+                Image circuit = CreateImage(background.transform, $"Linha tecnológica {index + 1}", new Color(Accent.r, Accent.g, Accent.b, 0.055f));
+                SetRect(circuit.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0f, -70f - index * 76f), new Vector2(0f, 1f));
+            }
+
+            var mainView = new GameObject("Menu principal", typeof(RectTransform));
+            mainView.transform.SetParent(canvasObject.transform, false);
+            SetRect((RectTransform)mainView.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+
+            Image brand = CreatePanel(mainView.transform, "Marca ByteForge", new Vector2(0f, 54f), new Vector2(610f, 390f), new Vector2(0.5f, 0.5f), Accent);
+            Text eyebrow = CreateText(brand.transform, "// DEV CAREER SIMULATION", 14, TextAnchor.MiddleCenter, Accent, FontStyle.Bold);
+            SetRect(eyebrow.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -52f), new Vector2(-60f, 24f));
+            Text title = CreateText(brand.transform, "BYTEFORGE", 58, TextAnchor.MiddleCenter, Color.white, FontStyle.Bold);
+            SetRect(title.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -118f), new Vector2(-60f, 70f));
+            Text subtitle = CreateText(brand.transform, "DE ESTAGIÁRIO A DONO", 21, TextAnchor.MiddleCenter, Amber, FontStyle.Bold);
+            SetRect(subtitle.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -169f), new Vector2(-60f, 32f));
+            Text description = CreateText(brand.transform, "Construa sua carreira. Entregue valor.\nLidere a empresa que você ajudou a criar.", 16, TextAnchor.MiddleCenter, Muted);
+            description.lineSpacing = 1.2f;
+            SetRect(description.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(48f, -224f), new Vector2(-96f, 54f));
+
+            Button play = CreateButton(brand.transform, "JOGAR", new Vector2(0f, 82f), new Vector2(300f, 58f), new Vector2(0.5f, 0f), Accent);
+            play.GetComponentInChildren<Text>().fontSize = 18;
+            Button credits = CreateButton(brand.transform, "CRÉDITOS", new Vector2(0f, 18f), new Vector2(300f, 46f), new Vector2(0.5f, 0f), new Color(0.18f, 0.31f, 0.46f));
+            credits.GetComponentInChildren<Text>().fontSize = 14;
+
+            Text footer = CreateText(mainView.transform, "BYTEFORGE BUILD 1.0  •  UNITY", 11, TextAnchor.MiddleCenter, new Color(Muted.r, Muted.g, Muted.b, 0.72f));
+            SetRect(footer.rectTransform, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0f, 18f), new Vector2(0f, 24f));
+
+            var creditsRoot = new GameObject("Créditos", typeof(RectTransform));
+            creditsRoot.transform.SetParent(canvasObject.transform, false);
+            SetRect((RectTransform)creditsRoot.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            Image creditsView = CreatePanel(creditsRoot.transform, "Painel de créditos", Vector2.zero, new Vector2(620f, 500f), new Vector2(0.5f, 0.5f), Amber);
+            Text creditsTitle = CreateText(creditsView.transform, "CRÉDITOS", 36, TextAnchor.MiddleCenter, Amber, FontStyle.Bold);
+            SetRect(creditsTitle.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -70f), new Vector2(-60f, 52f));
+            Text creditsText = CreateText(
+                creditsView.transform,
+                "CONCEPÇÃO E DESENVOLVIMENTO\nMurilo Lima\n\nARTE PIXEL\nModern Interiors • LimeZu\nlimezu.itch.io\n\nMÚSICA\nLevel Music Loop - Tigrun • qubodup\nCC0 1.0 via OpenGameArt\n\nTECNOLOGIA\nDesenvolvido com Unity\n\nObrigado por jogar!",
+                15,
+                TextAnchor.UpperCenter,
+                Color.white);
+            creditsText.lineSpacing = 1.15f;
+            SetRect(creditsText.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(54f, -140f), new Vector2(-108f, 330f));
+            Button back = CreateButton(creditsView.transform, "VOLTAR", new Vector2(0f, 28f), new Vector2(220f, 48f), new Vector2(0.5f, 0f), Amber);
+            back.GetComponentInChildren<Text>().fontSize = 14;
+            creditsRoot.SetActive(false);
+
+            MainMenuController controller = canvasObject.AddComponent<MainMenuController>();
+            controller.Configure(mainView, creditsRoot, play, credits, back);
+            CreateEventSystem();
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene, MainMenuScenePath);
         }
 
         private static void BuildOfficeScene(string sceneName, string scenePath, OfficeTier tier)
@@ -311,7 +423,7 @@ namespace ProjetoJogosDigitais.Editor
             CreateSectionHeader(careerPanel.transform, "CARREIRA // BYTEFORGE", Accent);
             Text rank = CreateText(careerPanel.transform, "ESTAGIÁRIO", 23, TextAnchor.MiddleLeft, Accent, FontStyle.Bold);
             SetRect(rank.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -50f), new Vector2(-32f, 30f));
-            Text promotion = CreateText(careerPanel.transform, "0/2 DIAS PARA PROMOÇÃO", 12, TextAnchor.MiddleLeft, Muted);
+            Text promotion = CreateText(careerPanel.transform, "XP 0/250 PARA PROMOÇÃO", 12, TextAnchor.MiddleLeft, Muted);
             SetRect(promotion.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -77f), new Vector2(-32f, 20f));
             Image promotionFill = CreateBar(careerPanel.transform, new Vector2(16f, -98f), new Vector2(248f, 7f), Accent);
 

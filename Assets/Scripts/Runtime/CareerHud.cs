@@ -79,6 +79,10 @@ namespace ProjetoJogosDigitais.Presentation
             endDayButton?.onClick.AddListener(EndDay);
             saveButton?.onClick.AddListener(SaveGame);
             loadButton?.onClick.AddListener(LoadGame);
+            if (GetComponent<CareerTutorialController>() == null)
+            {
+                gameObject.AddComponent<CareerTutorialController>();
+            }
         }
 
         private void OnDestroy()
@@ -101,11 +105,9 @@ namespace ProjetoJogosDigitais.Presentation
 
             rankLabel.text = game.RankName.ToUpperInvariant();
             promotionLabel.text = game.IsLastRank
-                ? "VOCÊ CHEGOU AO TOPO"
-                : $"{game.SuccessfulDaysAtRank}/{game.GoodDaysRequired} DIAS PARA PROMOÇÃO";
-            promotionFill.fillAmount = game.IsLastRank
-                ? 1f
-                : Mathf.Clamp01(game.SuccessfulDaysAtRank / (float)game.GoodDaysRequired);
+                ? $"XP {game.CareerXp:N0} • CARREIRA CONCLUÍDA"
+                : $"XP {game.CareerXp:N0}/{game.XpRequiredForNextRank:N0} PARA PROMOÇÃO";
+            promotionFill.fillAmount = game.RankXpProgress;
             clockLabel.text = game.DisplayTime.ToUpperInvariant().Replace("  ", "  //  ");
             salaryLabel.text = $"SALÁRIO R$ {game.MonthlySalary:N0}   •   CAIXA R$ {game.Money:N0}";
             workdayFill.fillAmount = Mathf.Clamp01(game.MinutesUsed / (float)CareerGame.WorkdayMinutes);
@@ -124,9 +126,13 @@ namespace ProjetoJogosDigitais.Presentation
             knowledgeLabel.text = $"CONHECIMENTO\n{game.Knowledge}";
             reputationLabel.text = $"REPUTAÇÃO\n{game.Reputation}";
             statusLabel.text = player == null ? game.LastFeedback : player.Status;
-            objectiveLabel.text = game.GoalReached
-                ? "META CONCLUÍDA\nEncerre o dia quando quiser."
-                : $"{game.DailyGoal - game.Delivery} PONTOS RESTANTES\n{game.MinutesRemaining / 60}h{game.MinutesRemaining % 60:00} disponíveis";
+            string dailyGoal = game.GoalReached
+                ? "META CONCLUÍDA • encerre quando quiser"
+                : $"META: {game.DailyGoal - game.Delivery} PONTOS • {game.MinutesRemaining / 60}h{game.MinutesRemaining % 60:00}";
+            string dailyTask = game.DailyTaskCompleted
+                ? $"{game.DailyTaskTitle} • CONCLUÍDA"
+                : $"{game.DailyTaskTitle} {game.DailyTaskProgress}/{game.DailyTaskGoal} • +{game.DailyTaskRewardXp} XP";
+            objectiveLabel.text = $"{dailyGoal}\n{dailyTask}\n{game.DailyTaskDescription}";
             bool controlsAvailable = player == null || !player.IsInteracting;
             endDayButton.interactable = controlsAvailable;
             saveButton.interactable = controlsAvailable;

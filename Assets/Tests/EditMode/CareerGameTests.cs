@@ -31,8 +31,51 @@ namespace ProjetoJogosDigitais.Tests
             Assert.That(result.Succeeded, Is.True);
             Assert.That(result.DeliveryGained, Is.GreaterThan(0));
             Assert.That(game.Delivery, Is.EqualTo(result.DeliveryGained));
+            Assert.That(game.CareerXp, Is.EqualTo(result.DeliveryGained));
             Assert.That(game.Energy, Is.LessThan(100));
             Assert.That(game.MinutesUsed, Is.EqualTo(60));
+        }
+
+        [Test]
+        public void CareerXpPersistsWhenTheDayResets()
+        {
+            game.PerformAction(OfficeActionType.Code);
+            int earnedXp = game.CareerXp;
+
+            game.EndDay();
+
+            Assert.That(game.Delivery, Is.Zero);
+            Assert.That(game.CareerXp, Is.EqualTo(earnedXp));
+            Assert.That(game.LastFeedback, Does.Contain("XP conquistado foi mantido"));
+        }
+
+        [Test]
+        public void DailyTaskRewardsXpOnlyOnce()
+        {
+            OfficeActionResult first = game.PerformAction(OfficeActionType.Code);
+            Assert.That(game.DailyTaskProgress, Is.EqualTo(1));
+            Assert.That(game.DailyTaskCompleted, Is.False);
+
+            int xpBeforeCompletion = game.CareerXp;
+            OfficeActionResult second = game.PerformAction(OfficeActionType.Code);
+
+            Assert.That(game.DailyTaskCompleted, Is.True);
+            Assert.That(game.CareerXp - xpBeforeCompletion, Is.EqualTo(second.DeliveryGained + game.DailyTaskRewardXp));
+
+            int xpAfterCompletion = game.CareerXp;
+            OfficeActionResult third = game.PerformAction(OfficeActionType.Code);
+            Assert.That(game.CareerXp - xpAfterCompletion, Is.EqualTo(third.DeliveryGained));
+        }
+
+        [Test]
+        public void CareerEventsVaryTheStartOfSomeWorkdays()
+        {
+            game.EndDay();
+            game.EndDay();
+
+            Assert.That(game.Day, Is.EqualTo(3));
+            Assert.That(game.LastCareerEvent, Does.StartWith("EVENTO:"));
+            Assert.That(game.Stress, Is.GreaterThan(5));
         }
 
         [Test]
@@ -58,7 +101,7 @@ namespace ProjetoJogosDigitais.Tests
             }
 
             Assert.That(game.Rank, Is.EqualTo(CareerRank.Owner));
-            Assert.That(game.TotalSuccessfulDays, Is.EqualTo(25));
+            Assert.That(game.TotalSuccessfulDays, Is.EqualTo(24));
         }
 
         [Test]
@@ -92,6 +135,8 @@ namespace ProjetoJogosDigitais.Tests
             game.PerformAction(OfficeActionType.Study);
             int expectedDelivery = game.Delivery;
             int expectedKnowledge = game.Knowledge;
+            int expectedXp = game.CareerXp;
+            int expectedTaskProgress = game.DailyTaskProgress;
             game.SaveGame();
 
             game.PerformAction(OfficeActionType.Coffee);
@@ -101,6 +146,26 @@ namespace ProjetoJogosDigitais.Tests
             Assert.That(game.Day, Is.EqualTo(1));
             Assert.That(game.Delivery, Is.EqualTo(expectedDelivery));
             Assert.That(game.Knowledge, Is.EqualTo(expectedKnowledge));
+            Assert.That(game.CareerXp, Is.EqualTo(expectedXp));
+            Assert.That(game.DailyTaskProgress, Is.EqualTo(expectedTaskProgress));
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+
+        [Test]
+        public void LegacySaveConvertsProductiveDaysIntoPersistentXp()
+        {
+            string path = Path.Combine(Application.temporaryCachePath, "dev-career-legacy-test.json");
+            game.SetSavePathOverride(path);
+            File.WriteAllText(path, "{\"rank\":1,\"day\":3,\"delivery\":35,\"successfulDaysAtRank\":1}");
+
+            Assert.That(game.LoadGame(), Is.True);
+
+            Assert.That(game.Rank, Is.EqualTo(CareerRank.JuniorDeveloper));
+            Assert.That(game.CareerXp, Is.EqualTo(435));
 
             if (File.Exists(path))
             {

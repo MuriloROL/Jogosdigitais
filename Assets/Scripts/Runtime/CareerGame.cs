@@ -11,6 +11,7 @@ namespace ProjetoJogosDigitais.Gameplay
         [Serializable]
         private sealed class SaveData
         {
+            public int saveVersion;
             public CareerRank rank;
             public int day;
             public int minutesUsed;
@@ -20,9 +21,36 @@ namespace ProjetoJogosDigitais.Gameplay
             public int stress;
             public int knowledge;
             public int reputation;
+            public int careerXp;
+            public int dailyTaskProgress;
+            public bool dailyTaskCompleted;
+            public string lastCareerEvent;
             public int successfulDaysAtRank;
             public int totalSuccessfulDays;
             public string lastFeedback;
+        }
+
+        private readonly struct DailyTaskDefinition
+        {
+            public DailyTaskDefinition(
+                string title,
+                string description,
+                OfficeActionType requiredAction,
+                int requiredCount,
+                int rewardXp)
+            {
+                Title = title;
+                Description = description;
+                RequiredAction = requiredAction;
+                RequiredCount = requiredCount;
+                RewardXp = rewardXp;
+            }
+
+            public string Title { get; }
+            public string Description { get; }
+            public OfficeActionType RequiredAction { get; }
+            public int RequiredCount { get; }
+            public int RewardXp { get; }
         }
 
         private static readonly string[] RankNames =
@@ -38,7 +66,20 @@ namespace ProjetoJogosDigitais.Gameplay
 
         private static readonly int[] MonthlySalaries = { 1800, 3500, 6500, 10000, 14000, 22000, 50000 };
         private static readonly int[] GoodDaysForPromotion = { 2, 3, 4, 5, 5, 6, 0 };
+        private static readonly int[] TotalXpForNextRank = { 250, 700, 1350, 2250, 3250, 4550, 4550 };
+        private static readonly DailyTaskDefinition[] DailyTasks =
+        {
+            new("CAÇA AOS BUGS", "Programe duas vezes para eliminar erros críticos.", OfficeActionType.Code, 2, 35),
+            new("ALINHAMENTO DE SPRINT", "Participe de duas reuniões com a equipe.", OfficeActionType.Meeting, 2, 30),
+            new("UPSKILL", "Complete duas sessões de estudo.", OfficeActionType.Study, 2, 30),
+            new("FOCO PROFUNDO", "Conclua três sessões de programação.", OfficeActionType.Code, 3, 45),
+            new("RITMO SUSTENTÁVEL", "Faça uma pausa antes que o estresse domine.", OfficeActionType.Break, 1, 20),
+            new("CAFÉ COM O TIME", "Visite a cafeteira e recupere o ritmo.", OfficeActionType.Coffee, 1, 15),
+            new("PONTE COM O TIME", "Participe de uma reunião importante.", OfficeActionType.Meeting, 1, 20)
+        };
 
+        private const int CurrentSaveVersion = 3;
+        private const int ProductiveDayXpBonus = 25;
         public const int WorkdayMinutes = 8 * 60;
         public const int StartHour = 9;
 
@@ -51,6 +92,10 @@ namespace ProjetoJogosDigitais.Gameplay
         [SerializeField, Range(0, 100)] private int stress = 8;
         [SerializeField] private int knowledge;
         [SerializeField] private int reputation;
+        [SerializeField] private int careerXp;
+        [SerializeField] private int dailyTaskProgress;
+        [SerializeField] private bool dailyTaskCompleted;
+        [SerializeField] private string lastCareerEvent = "Nenhum evento de carreira hoje.";
         [SerializeField] private int successfulDaysAtRank;
         [SerializeField] private int totalSuccessfulDays;
         [SerializeField] private string lastFeedback = "Primeiro dia: entregue valor e construa sua carreira.";
@@ -71,8 +116,21 @@ namespace ProjetoJogosDigitais.Gameplay
         public int Stress => stress;
         public int Knowledge => knowledge;
         public int Reputation => reputation;
+        public int CareerXp => careerXp;
+        public int XpRequiredForNextRank => TotalXpForNextRank[(int)rank];
+        public int XpAtCurrentRankStart => rank == CareerRank.Intern ? 0 : TotalXpForNextRank[(int)rank - 1];
+        public float RankXpProgress => IsLastRank
+            ? 1f
+            : Mathf.InverseLerp(XpAtCurrentRankStart, XpRequiredForNextRank, careerXp);
         public int SuccessfulDaysAtRank => successfulDaysAtRank;
         public int TotalSuccessfulDays => totalSuccessfulDays;
+        public string DailyTaskTitle => CurrentDailyTask.Title;
+        public string DailyTaskDescription => CurrentDailyTask.Description;
+        public int DailyTaskProgress => dailyTaskProgress;
+        public int DailyTaskGoal => CurrentDailyTask.RequiredCount;
+        public int DailyTaskRewardXp => CurrentDailyTask.RewardXp;
+        public bool DailyTaskCompleted => dailyTaskCompleted;
+        public string LastCareerEvent => lastCareerEvent;
         public int GoodDaysRequired => GoodDaysForPromotion[(int)rank];
         public int MonthlySalary => MonthlySalaries[(int)rank];
         public int DailyPay => Mathf.RoundToInt(MonthlySalary / 22f);
@@ -93,6 +151,15 @@ namespace ProjetoJogosDigitais.Gameplay
 
         public event Action Changed;
         public event Action<CareerRank> Promoted;
+
+        private DailyTaskDefinition CurrentDailyTask
+        {
+            get
+            {
+                int index = (day - 1 + (int)rank * 3) % DailyTasks.Length;
+                return DailyTasks[index];
+            }
+        }
 
         private void Awake()
         {
@@ -200,8 +267,10 @@ namespace ProjetoJogosDigitais.Gameplay
             int gained = delivery - deliveryBefore;
             if (gained > 0)
             {
-                lastFeedback += $"  +{gained} de entrega.";
+                careerXp += gained;
+                lastFeedback += $"  +{gained} de entrega e +{gained} XP.";
             }
+            TrackDailyTask(type);
             if (GoalReached)
             {
                 lastFeedback += "  Meta do dia concluída!";
@@ -224,12 +293,13 @@ namespace ProjetoJogosDigitais.Gameplay
                 successfulDaysAtRank++;
                 totalSuccessfulDays++;
                 reputation += 3;
-                lastFeedback = $"Dia produtivo! Salário + bônus: R$ {payment + bonus}.";
+                careerXp += ProductiveDayXpBonus;
+                lastFeedback = $"Dia produtivo! R$ {payment + bonus} e +{ProductiveDayXpBonus} XP de bônus.";
             }
             else
             {
                 reputation = Mathf.Max(0, reputation - 2);
-                lastFeedback = $"Meta não atingida. Você recebeu R$ {payment}, mas o dia não contou para a promoção.";
+                lastFeedback = $"Meta não atingida. Você recebeu R$ {payment}; todo XP conquistado foi mantido.";
             }
 
             bool promoted = TryPromote();
@@ -238,6 +308,9 @@ namespace ProjetoJogosDigitais.Gameplay
             delivery = 0;
             energy = 100;
             stress = Mathf.Max(5, stress - 45);
+            dailyTaskProgress = 0;
+            dailyTaskCompleted = false;
+            ApplyCareerEvent();
             Changed?.Invoke();
             if (promoted)
             {
@@ -250,6 +323,7 @@ namespace ProjetoJogosDigitais.Gameplay
         {
             var data = new SaveData
             {
+                saveVersion = CurrentSaveVersion,
                 rank = rank,
                 day = day,
                 minutesUsed = minutesUsed,
@@ -259,6 +333,10 @@ namespace ProjetoJogosDigitais.Gameplay
                 stress = stress,
                 knowledge = knowledge,
                 reputation = reputation,
+                careerXp = careerXp,
+                dailyTaskProgress = dailyTaskProgress,
+                dailyTaskCompleted = dailyTaskCompleted,
+                lastCareerEvent = lastCareerEvent,
                 successfulDaysAtRank = successfulDaysAtRank,
                 totalSuccessfulDays = totalSuccessfulDays,
                 lastFeedback = lastFeedback
@@ -287,6 +365,16 @@ namespace ProjetoJogosDigitais.Gameplay
             stress = Mathf.Clamp(data.stress, 0, 100);
             knowledge = Mathf.Max(0, data.knowledge);
             reputation = Mathf.Max(0, data.reputation);
+            careerXp = data.saveVersion >= 2
+                ? Mathf.Max(0, data.careerXp)
+                : EstimateXpFromLegacySave(data.rank, data.successfulDaysAtRank, data.delivery);
+            dailyTaskProgress = data.saveVersion >= CurrentSaveVersion
+                ? Mathf.Clamp(data.dailyTaskProgress, 0, CurrentDailyTask.RequiredCount)
+                : 0;
+            dailyTaskCompleted = data.saveVersion >= CurrentSaveVersion && data.dailyTaskCompleted;
+            lastCareerEvent = string.IsNullOrEmpty(data.lastCareerEvent)
+                ? "Nenhum evento de carreira hoje."
+                : data.lastCareerEvent;
             successfulDaysAtRank = Mathf.Max(0, data.successfulDaysAtRank);
             totalSuccessfulDays = Mathf.Max(0, data.totalSuccessfulDays);
             lastFeedback = string.IsNullOrEmpty(data.lastFeedback) ? "Carreira carregada." : data.lastFeedback;
@@ -316,9 +404,63 @@ namespace ProjetoJogosDigitais.Gameplay
                 : "Código entregue com qualidade.";
         }
 
+        private void TrackDailyTask(OfficeActionType performedAction)
+        {
+            DailyTaskDefinition task = CurrentDailyTask;
+            if (dailyTaskCompleted || performedAction != task.RequiredAction)
+            {
+                return;
+            }
+
+            dailyTaskProgress = Mathf.Min(task.RequiredCount, dailyTaskProgress + 1);
+            if (dailyTaskProgress < task.RequiredCount)
+            {
+                lastFeedback += $"  Tarefa do dia: {dailyTaskProgress}/{task.RequiredCount}.";
+                return;
+            }
+
+            dailyTaskCompleted = true;
+            careerXp += task.RewardXp;
+            lastFeedback += $"  TAREFA CONCLUÍDA: {task.Title}! +{task.RewardXp} XP.";
+        }
+
+        private void ApplyCareerEvent()
+        {
+            lastCareerEvent = "Nenhum evento de carreira hoje.";
+            if ((day + (int)rank) % 3 != 0)
+            {
+                return;
+            }
+
+            int selector = (day * 7 + (int)rank * 3) % 4;
+            switch (selector)
+            {
+                case 0:
+                    knowledge += 6;
+                    lastCareerEvent = "EVENTO: workshop surpresa — +6 conhecimento.";
+                    break;
+                case 1:
+                    stress = Mathf.Clamp(stress + 14, 0, 100);
+                    reputation += 6;
+                    lastCareerEvent = "EVENTO: incidente em produção — +14 estresse, +6 reputação.";
+                    break;
+                case 2:
+                    reputation += 8;
+                    lastCareerEvent = "EVENTO: elogio de um cliente — +8 reputação.";
+                    break;
+                default:
+                    int projectBonus = Mathf.Max(1, Mathf.RoundToInt(DailyPay * 0.3f));
+                    money += projectBonus;
+                    lastCareerEvent = $"EVENTO: bônus de projeto — +R$ {projectBonus}.";
+                    break;
+            }
+
+            lastFeedback += $"  {lastCareerEvent}";
+        }
+
         private bool TryPromote()
         {
-            if (IsLastRank || successfulDaysAtRank < GoodDaysRequired)
+            if (IsLastRank || careerXp < XpRequiredForNextRank)
             {
                 return false;
             }
@@ -330,6 +472,27 @@ namespace ProjetoJogosDigitais.Gameplay
             lastFeedback += $"  PROMOÇÃO: agora você é {RankName}!";
             Promoted?.Invoke(rank);
             return true;
+        }
+
+        private static int EstimateXpFromLegacySave(
+            CareerRank savedRank,
+            int productiveDaysAtRank,
+            int currentDayDelivery)
+        {
+            if (savedRank == CareerRank.Owner)
+            {
+                return TotalXpForNextRank[(int)CareerRank.Cto];
+            }
+
+            int rankIndex = (int)savedRank;
+            int rankStart = rankIndex == 0 ? 0 : TotalXpForNextRank[rankIndex - 1];
+            int rankEnd = TotalXpForNextRank[rankIndex];
+            int daysRequired = GoodDaysForPromotion[rankIndex];
+            float progress = daysRequired <= 0
+                ? 0f
+                : Mathf.Clamp01(productiveDaysAtRank / (float)daysRequired);
+            int migratedXp = rankStart + Mathf.RoundToInt((rankEnd - rankStart) * progress);
+            return Mathf.Min(rankEnd, migratedXp + Mathf.Max(0, currentDayDelivery));
         }
 
         private void RequestSceneForCurrentRank()

@@ -735,6 +735,7 @@ MonoBehaviour:
   stress: 8
   knowledge: 0
   reputation: 0
+  careerXp: 0
   successfulDaysAtRank: 0
   totalSuccessfulDays: 0
   lastFeedback: 'Primeiro dia: entregue valor e construa sua carreira.'

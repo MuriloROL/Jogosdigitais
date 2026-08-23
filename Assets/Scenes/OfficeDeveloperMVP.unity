@@ -2255,7 +2255,7 @@ GameObject:
   - component: {fileID: 695565940}
   - component: {fileID: 695565938}
   m_Layer: 0
-  m_Name: "0/2 DIAS PARA PROMO\xC7\xC3O"
+  m_Name: "XP 0/250 PARA PROMO\xC7\xC3O"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2336,7 +2336,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "0/2 DIAS PARA PROMO\xC7\xC3O"
+  m_Text: "XP 0/250 PARA PROMO\xC7\xC3O"
 --- !u!1 &718608310
 GameObject:
   m_ObjectHideFlags: 0
@@ -3488,6 +3488,7 @@ MonoBehaviour:
   stress: 8
   knowledge: 0
   reputation: 0
+  careerXp: 0
   successfulDaysAtRank: 0
   totalSuccessfulDays: 0
   lastFeedback: 'Primeiro dia: entregue valor e construa sua carreira.'

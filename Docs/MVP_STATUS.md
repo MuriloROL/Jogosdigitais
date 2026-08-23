@@ -6,21 +6,33 @@ O jogador controla Alex, um desenvolvedor que começa como **Estagiário** na
 ByteForge. O objetivo é concluir dias produtivos e subir na carreira até se tornar
 o **Dono** da empresa.
 
-Este conceito substitui o antigo simulador de bairro. A carreira começa em
-`Assets/Scenes/OfficeInternMVP.unity` e troca automaticamente de ambiente nas
-promoções importantes.
+O jogo começa em `Assets/Scenes/MainMenu.unity`; o botão **Jogar** abre a carreira em
+`Assets/Scenes/OfficeInternMVP.unity`, que troca automaticamente de ambiente nas
+promoções importantes. A tela inicial também possui um painel de créditos.
 
 ## Ciclo jogável
 
 1. O expediente começa às 09:00 e possui oito horas disponíveis.
 2. O jogador clica em uma estação do escritório e Alex caminha até ela.
 3. Cada atividade consome tempo e altera entrega, energia, estresse,
-   conhecimento ou reputação.
+   conhecimento ou reputação. Toda entrega também concede a mesma quantidade de
+   XP permanente.
 4. Ao alcançar a meta de entrega, o dia é considerado produtivo.
 5. O botão **Encerrar dia** paga o salário, concede bônus por produtividade e
    avança o calendário.
-6. A quantidade necessária de dias produtivos promove o jogador ao próximo
-   cargo.
+6. O XP acumulado promove o jogador ao próximo cargo. A entrega diária volta a
+   zero, mas o XP nunca é perdido.
+
+## Tarefas e eventos
+
+Cada expediente apresenta uma tarefa extra que incentiva combinações diferentes
+de atividades. As tarefas incluem caça a bugs, alinhamento de sprint, estudo,
+foco profundo, pausa sustentável, café com o time e reunião com stakeholders.
+Concluir a tarefa concede entre 15 e 45 XP adicionais.
+
+Em dias periódicos ocorre um evento de carreira. Workshops, incidentes em
+produção, elogios de clientes e bônus de projeto alteram conhecimento, estresse,
+reputação ou dinheiro e ficam registrados no feedback do expediente.
 
 ## Evolução dos escritórios
 
@@ -46,22 +58,25 @@ e chega ao trono da ByteForge. Confetes e a mensagem final encerram o jogo.
 
 ## Progressão de carreira
 
-| Cargo | Dias produtivos para promoção | Salário mensal |
+| Cargo | XP total para promoção | Salário mensal |
 |---|---:|---:|
-| Estagiário | 2 | R$ 1.800 |
-| Dev Júnior | 3 | R$ 3.500 |
-| Dev Pleno | 4 | R$ 6.500 |
-| Dev Sênior | 5 | R$ 10.000 |
-| Tech Lead | 5 | R$ 14.000 |
-| CTO | 6 | R$ 22.000 |
+| Estagiário | 250 | R$ 1.800 |
+| Dev Júnior | 700 | R$ 3.500 |
+| Dev Pleno | 1.350 | R$ 6.500 |
+| Dev Sênior | 2.250 | R$ 10.000 |
+| Tech Lead | 3.250 | R$ 14.000 |
+| CTO | 4.550 | R$ 22.000 |
 | Dono | Cargo final | R$ 50.000 |
 
-A meta diária cresce a cada promoção. Um dia abaixo da meta avança o calendário
-e paga o valor diário, mas não conta para a promoção. Dias produtivos pagam um
-bônus de 20%.
+A meta diária cresce a cada promoção. Toda entrega concede a mesma quantidade de
+XP, inclusive quando a meta diária não é alcançada. Dias produtivos concedem 25
+XP adicionais e pagam um bônus salarial de 20%. Os limites da tabela são
+cumulativos, portanto o XP não zera nem mesmo depois de uma promoção.
 
 ## Sistemas implementados
 
+- Tela inicial ByteForge com botões para jogar e consultar os créditos.
+- Tutorial inicial em quatro passos, exibido uma única vez e com opção de pular.
 - Quatro escritórios top-down em pixel art detalhada, com identidade visual
   contínua e evolução clara de espaço, tecnologia e prestígio.
 - Cinco pontos interativos discretos e alinhados aos móveis de cada cenário.
@@ -70,7 +85,10 @@ bônus de 20%.
 - Personagem clicável com caminhada e animações direcionais.
 - Expediente de oito horas e ações com durações diferentes.
 - Entrega diária, energia, estresse, conhecimento e reputação.
-- Sete cargos, metas crescentes, salários e promoções por dias produtivos.
+- Sete cargos, metas crescentes, salários e promoções por XP persistente.
+- Sete tarefas diárias rotativas com objetivos e recompensas próprias.
+- Quatro eventos periódicos que alteram o estado da carreira.
+- Música ambiente CC0 em loop contínuo entre todas as cenas.
 - Colegas decorativos e identificação dinâmica do cargo sobre o personagem.
 - HUD compacto no estilo ByteForge, com cartões de carreira, expediente,
   desempenho e sprint; barras de promoção, horário, entrega, energia e estresse.
@@ -83,7 +101,8 @@ bônus de 20%.
 ## Testes automatizados
 
 - Progressão validada do Estagiário até Dono.
-- Dias improdutivos não contam para promoção.
+- A entrega diária é zerada ao encerrar o expediente, mas o XP é preservado.
+- Dias abaixo da meta mantêm todo o XP obtido nas tarefas.
 - Programação consome tempo e energia e produz entrega.
 - Save/load restaura o estado completo da carreira.
 - Em PlayMode, Alex caminha até a mesa e conclui uma tarefa.
@@ -91,14 +110,16 @@ bônus de 20%.
 - Mapeamento de todos os cargos para seus respectivos ambientes.
 - Promoção de Estagiário para Júnior carrega o escritório maior.
 - Cena final chega ao estado concluído e não contém controles de gameplay.
-- Suíte atual: 17 testes de Edit Mode e 6 testes de Play Mode aprovados.
+- Tela inicial alterna corretamente entre menu e créditos, e o botão Jogar abre
+  o escritório de Estagiário.
+- Tutorial inicial percorre quatro passos e registra sua conclusão.
+- Tarefas diárias concedem XP uma única vez e eventos alteram o novo expediente.
+- Suíte atual: 16 testes de Edit Mode e 8 testes de Play Mode.
 
 ## Próximas melhorias recomendadas
 
-1. Adicionar tarefas sorteadas (bugs, features e incidentes) com dificuldade e
-   prazo próprios.
-2. Criar diálogos e escolhas durante reuniões com colegas e gestores.
-3. Adicionar eventos de carreira: entrevista, feedback, crise em produção e
-   negociação salarial.
-4. Incluir sons de escritório, música e efeitos específicos de cada estação.
-5. Acrescentar uma tela de créditos após a conclusão da cena do Dono.
+1. Criar diálogos e escolhas durante reuniões com colegas e gestores.
+2. Expandir os eventos com decisões do jogador e consequências de longo prazo.
+3. Incluir sons de escritório, música e efeitos específicos de cada estação.
+4. Adicionar configurações de áudio, vídeo e acessibilidade.
+5. Gerar e validar builds distribuíveis para as plataformas-alvo.
