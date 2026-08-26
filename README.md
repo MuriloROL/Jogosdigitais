@@ -1,76 +1,83 @@
-# ByteForge — Dev Career
+# Dev Carrer Idle Game
 
-Jogo 2D desenvolvido em Unity no qual Alex começa como estagiário e evolui por
-sete cargos até se tornar dono da ByteForge.
+Jogo 2D idle híbrido desenvolvido em Unity pelo estúdio **Dev Murilo Lima**.
+Alex começa a manhã como estagiário da ByteForge e, ao longo de um expediente
+de aproximadamente sete a oito horas reais, evolui até se tornar Dono.
 
-## Progressão
+## Ciclo principal
 
 `Estagiário → Dev Júnior → Dev Pleno → Dev Sênior → Tech Lead → CTO → Dono`
 
-O jogador conclui tarefas durante o expediente, administra energia e estresse,
-desenvolve conhecimento e reputação e precisa atingir metas diárias para receber
-XP adicional. Todo ponto de entrega também gera XP permanente para receber
-promoções. Cada faixa de carreira possui um escritório próprio. Ao chegar ao
-cargo de Dono, o jogo encerra com uma sequência automática.
+- Alex e sua equipe geram entrega e XP automaticamente a cada 15 segundos.
+- A produção só avança enquanto o jogo está aberto; não há progresso offline.
+- O jogador acelera a carreira usando as estações, contratando colegas e
+  melhorando o pipeline de automação.
+- Cada cargo libera uma vaga adicional na equipe e apresenta uma decisão de
+  carreira com duas consequências diferentes.
+- Metas de sprint concedem dinheiro e XP, enquanto tarefas extras incentivam
+  combinações diferentes de atividades.
+- O save mantém tempo aberto, XP, equipe, automação, atributos, tarefas e
+  decisões pendentes sem acrescentar produção pelo tempo em que o jogo fechou.
+- Ao alcançar Dono, a jornada termina na sequência final da ByteForge.
 
 ## Requisitos
 
 - Unity `6000.3.22f1`.
 - Pacote de arte **Modern Interiors**, adquirido separadamente.
 
-O pacote Modern Interiors não está incluído neste repositório por ser conteúdo
-licenciado. Depois de obtê-lo, coloque os arquivos importados em:
+O Modern Interiors não está incluído no repositório por ser conteúdo
+licenciado. Depois de obtê-lo, importe-o em:
 
 ```text
 Assets/Art/ModernInteriors16/
 ```
 
-Os cenários originais dos escritórios, scripts, interface e configurações do
-projeto estão incluídos no repositório.
-
-## Música
-
-O jogo utiliza **Level Music Loop — Tigrun**, de qubodup, em loop contínuo e
-volume reduzido. A faixa foi publicada sob CC0 1.0 no OpenGameArt. Os links da
-fonte, licença e hash do arquivo estão em
-[`Assets/Resources/Audio/CREDITS.md`](Assets/Resources/Audio/CREDITS.md).
-
 ## Como executar
 
-1. Clone o repositório.
-2. Abra a pasta do projeto na versão indicada da Unity.
-3. Importe o Modern Interiors no caminho acima.
-4. Abra `Assets/Scenes/MainMenu.unity`.
-5. Pressione **Play**.
+1. Abra a pasta do projeto no Unity `6000.3.22f1`.
+2. Importe o Modern Interiors no caminho indicado, caso ainda não esteja local.
+3. Abra `Assets/Scenes/MainMenu.unity`.
+4. Pressione **Play**.
 
-Se for necessário reconstruir as cenas, use o menu:
+Use **Jogar** para iniciar uma carreira nova ou **Continuar** para carregar um
+save existente. Se for necessário reconstruir as cenas, use:
 
 ```text
 Projeto → Construir MVP carreira dev
 ```
 
-## Gameplay
+## Controles e gestão
 
-- Na tela inicial, selecione **Jogar** para iniciar ou **Créditos** para ver a
-  equipe e as atribuições de arte.
 - Clique no chão para movimentar Alex.
-- Clique nas estações para programar, participar de reuniões, estudar, tomar
-  café ou fazer uma pausa.
-- No primeiro expediente, siga o tutorial em quatro passos ou selecione
-  **Pular tutorial**.
-- Complete a tarefa extra exibida no cartão da sprint para receber XP bônus.
-- Eventos periódicos podem alterar conhecimento, reputação, estresse ou caixa.
-- Alcance a meta de entrega e encerre o dia para avançar na carreira.
-- A entrega diária zera no dia seguinte, mas o XP de carreira nunca é perdido.
-- Use os botões do HUD para salvar ou carregar o progresso.
+- Clique em uma estação para programar, reunir, estudar, tomar café ou pausar.
+- Use **Contratar** para aumentar a produção passiva.
+- Use **Automatizar** para melhorar a eficiência de toda a equipe.
+- Resgate a meta da sprint assim que ela for concluída.
+- Salve ou carregue a carreira pela barra inferior.
+- Áudio, efeitos, movimento reduzido e texto ampliado ficam no painel de
+  acessibilidade.
 
-## Cenas principais
+## Cenas
 
-- `MainMenu`: tela inicial e créditos.
+- `MainMenu`: novo jogo, continuar e créditos.
 - `OfficeInternMVP`: Estagiário.
 - `OfficeDeveloperMVP`: Dev Júnior e Dev Pleno.
 - `OfficeLeadershipMVP`: Dev Sênior e Tech Lead.
 - `OfficeCtoMVP`: CTO.
-- `OwnerFinale`: encerramento como Dono.
+- `OwnerFinale`: conclusão como Dono.
 
-Mais informações estão em [`Docs/MVP_STATUS.md`](Docs/MVP_STATUS.md).
+## Identidade
+
+- Produto: **Dev Carrer Idle Game**
+- Estúdio: **Dev Murilo Lima**
+- Versão: `0.2.0`
+- Identificador: `dev.murilolima.devcarrer`
+- Idioma inicial: português
+
+## Música e arte
+
+O jogo utiliza **Level Music Loop — Tigrun**, de qubodup, sob CC0 1.0. Fonte,
+licença e hash estão em `Assets/Resources/Audio/CREDITS.md`. Os personagens usam
+Modern Interiors, de LimeZu, conforme a licença do pacote adquirido.
+
+O status técnico e o balanceamento estão em `Docs/MVP_STATUS.md`.

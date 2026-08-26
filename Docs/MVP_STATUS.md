@@ -1,125 +1,99 @@
-# MVP — Dev Career: ByteForge
+# Dev Carrer Idle Game — status da versão 0.2.0
 
-## Conceito atual
+## Estado atual
 
-O jogador controla Alex, um desenvolvedor que começa como **Estagiário** na
-ByteForge. O objetivo é concluir dias produtivos e subir na carreira até se tornar
-o **Dono** da empresa.
+O projeto é um idle híbrido para PC, controlado com mouse. A carreira inteira
+acontece no Dia 1: Alex entra às 09:00 como Estagiário e deve chegar ao cargo de
+Dono perto das 17:00, após aproximadamente sete a oito horas com o jogo aberto.
 
-O jogo começa em `Assets/Scenes/MainMenu.unity`; o botão **Jogar** abre a carreira em
-`Assets/Scenes/OfficeInternMVP.unity`, que troca automaticamente de ambiente nas
-promoções importantes. A tela inicial também possui um painel de créditos.
+Não existe progresso offline. Fechar o jogo congela a produção e carregar um
+save restaura exatamente o tempo aberto registrado.
 
-## Ciclo jogável
+## Economia idle
 
-1. O expediente começa às 09:00 e possui oito horas disponíveis.
-2. O jogador clica em uma estação do escritório e Alex caminha até ela.
-3. Cada atividade consome tempo e altera entrega, energia, estresse,
-   conhecimento ou reputação. Toda entrega também concede a mesma quantidade de
-   XP permanente.
-4. Ao alcançar a meta de entrega, o dia é considerado produtivo.
-5. O botão **Encerrar dia** paga o salário, concede bônus por produtividade e
-   avança o calendário.
-6. O XP acumulado promove o jogador ao próximo cargo. A entrega diária volta a
-   zero, mas o XP nunca é perdido.
+A produção acontece em ciclos de 15 segundos. Alex produz um ponto por ciclo e
+cada colega aumenta a base da equipe. Upgrades de pipeline multiplicam a
+produção total em 25% por nível.
 
-## Tarefas e eventos
+| Recurso | Regra |
+|---|---|
+| Contratação | Custa `R$ 180 × número do próximo colega`. |
+| Capacidade | Começa em uma vaga e cresce em uma vaga por cargo, até seis. |
+| Automação | Custa `R$ 450 × próximo nível`, com cinco níveis. |
+| Dinheiro passivo | Cada ciclo paga pelo menos R$ 1, crescendo com a produção. |
+| Meta da sprint | Pode ser resgatada uma vez por cargo e paga dinheiro e 25 XP. |
+| Ações manuais | Aceleram entrega e atributos sem adiantar o relógio real. |
 
-Cada expediente apresenta uma tarefa extra que incentiva combinações diferentes
-de atividades. As tarefas incluem caça a bugs, alinhamento de sprint, estudo,
-foco profundo, pausa sustentável, café com o time e reunião com stakeholders.
-Concluir a tarefa concede entre 15 e 45 XP adicionais.
+Com contratações feitas quando ficam disponíveis, a simulação automatizada
+chega a Dono em cerca de 7h18. Ações manuais e automação permitem terminar um
+pouco antes, recompensando participação sem tornar cliques obrigatórios.
 
-Em dias periódicos ocorre um evento de carreira. Workshops, incidentes em
-produção, elogios de clientes e bônus de projeto alteram conhecimento, estresse,
-reputação ou dinheiro e ficam registrados no feedback do expediente.
+## Progressão
 
-## Evolução dos escritórios
-
-| Faixa de carreira | Cena | Ambiente |
-|---|---|---|
-| Estagiário | `OfficeInternMVP` | Sala compacta e acolhedora, com móveis usados, caixas, luz fluorescente e equipamentos compartilhados. |
-| Dev Júnior e Dev Pleno | `OfficeDeveloperMVP` | Escritório aberto claro, várias estações, sala de vidro, biblioteca, copa e lounge. |
-| Dev Sênior e Tech Lead | `OfficeLeadershipMVP` | Andar premium com war room, painéis de arquitetura, servidores, prêmios e iluminação tecnológica. |
-| CTO | `OfficeCtoMVP` | Sala executiva privativa com vista noturna, madeira nobre, estratégia, espresso e lounge próprio. |
-| Dono | `OwnerFinale` | Sequência final automática; não possui gameplay direto. |
-
-Ao chegar a Dono, Alex entra no salão da empresa, percorre os marcos da carreira
-e chega ao trono da ByteForge. Confetes e a mensagem final encerram o jogo.
-
-## Estações do escritório
-
-- **Programar:** principal fonte de pontos de entrega; consome energia e aumenta
-  o estresse. Conhecimento melhora a produtividade.
-- **Reunião:** gera entrega moderada e aumenta bastante a reputação.
-- **Estudar:** aumenta o conhecimento permanente e gera uma pequena entrega.
-- **Café:** recupera energia e reduz um pouco o estresse.
-- **Pausa:** principal forma de controlar o estresse.
-
-## Progressão de carreira
-
-| Cargo | XP total para promoção | Salário mensal |
+| Cargo | XP acumulado para promoção | Salário mensal |
 |---|---:|---:|
-| Estagiário | 250 | R$ 1.800 |
-| Dev Júnior | 700 | R$ 3.500 |
-| Dev Pleno | 1.350 | R$ 6.500 |
-| Dev Sênior | 2.250 | R$ 10.000 |
-| Tech Lead | 3.250 | R$ 14.000 |
-| CTO | 4.550 | R$ 22.000 |
-| Dono | Cargo final | R$ 50.000 |
+| Estagiário | 350 | R$ 1.800 |
+| Dev Júnior | 900 | R$ 3.500 |
+| Dev Pleno | 1.700 | R$ 6.500 |
+| Dev Sênior | 2.800 | R$ 10.000 |
+| Tech Lead | 4.200 | R$ 14.000 |
+| CTO | 7.500 | R$ 22.000 |
+| Dono | Final | R$ 50.000 |
 
-A meta diária cresce a cada promoção. Toda entrega concede a mesma quantidade de
-XP, inclusive quando a meta diária não é alcançada. Dias produtivos concedem 25
-XP adicionais e pagam um bônus salarial de 20%. Os limites da tabela são
-cumulativos, portanto o XP não zera nem mesmo depois de uma promoção.
+Cada promoção paga uma parcela do novo salário, abre capacidade de equipe,
+troca o ambiente quando necessário e apresenta uma conversa com escolha. A
+última promoção carrega diretamente a sequência final.
 
-## Sistemas implementados
+## Variedade ativa
 
-- Tela inicial ByteForge com botões para jogar e consultar os créditos.
-- Tutorial inicial em quatro passos, exibido uma única vez e com opção de pular.
-- Quatro escritórios top-down em pixel art detalhada, com identidade visual
-  contínua e evolução clara de espaço, tecnologia e prestígio.
-- Cinco pontos interativos discretos e alinhados aos móveis de cada cenário.
-- Troca automática de cena conforme a faixa de cargo.
-- Carreira persistente entre cenas e roteamento correto após carregar um save.
-- Personagem clicável com caminhada e animações direcionais.
-- Expediente de oito horas e ações com durações diferentes.
-- Entrega diária, energia, estresse, conhecimento e reputação.
-- Sete cargos, metas crescentes, salários e promoções por XP persistente.
-- Sete tarefas diárias rotativas com objetivos e recompensas próprias.
-- Quatro eventos periódicos que alteram o estado da carreira.
-- Música ambiente CC0 em loop contínuo entre todas as cenas.
-- Colegas decorativos e identificação dinâmica do cargo sobre o personagem.
-- HUD compacto no estilo ByteForge, com cartões de carreira, expediente,
-  desempenho e sprint; barras de promoção, horário, entrega, energia e estresse.
-- Barra inferior de status com ações de encerrar dia, salvar e carregar sem
-  esconder a área central do escritório.
-- Botões para encerrar o dia, salvar e carregar a carreira.
-- Save local em `dev-career-mvp.json`.
-- Cena final animada sem controlador jogável para o cargo de Dono.
+- Cinco estações: programação, reunião, estudo, café e pausa.
+- Sete tarefas rotativas com objetivos e recompensas próprias.
+- Cinco conversas de promoção com duas decisões cada.
+- Escolhas alteram caixa, XP, conhecimento, reputação e estresse.
+- Estações possuem feedback visual, som e recarga para impedir repetição rápida.
+- O painel idle mostra produção, próximo ciclo, equipe, pipeline e custos.
+- O ciclo de produção produz um pulso visual discreto que respeita movimento
+  reduzido.
+
+## Polimento e acessibilidade
+
+- Música ambiente persistente e efeitos procedurais para ações, botões,
+  compras, escolhas e promoções.
+- Configurações persistentes para música e efeitos.
+- Modo de movimento reduzido, incluindo conclusão abreviada da cena final.
+- Texto ampliado por ajuste da escala de referência da interface.
+- Tutorial em cinco passos atualizado para o modelo idle.
+- Menu com novo jogo, continuar e créditos.
+
+## Save e migração
+
+O formato atual é a versão 5. Ele registra progressão, tempo aberto, fração do
+ciclo automático, equipe, automação, meta, tarefa e decisão pendente. Saves das
+versões anteriores preservam cargo, XP e atributos; o calendário é migrado para
+o Dia 1 da nova jornada idle. Nenhuma data real é salva ou usada para conceder
+produção offline.
+
+## Cenas
+
+| Faixa | Cena |
+|---|---|
+| Menu | `MainMenu` |
+| Estagiário | `OfficeInternMVP` |
+| Júnior e Pleno | `OfficeDeveloperMVP` |
+| Sênior e Tech Lead | `OfficeLeadershipMVP` |
+| CTO | `OfficeCtoMVP` |
+| Dono | `OwnerFinale` |
 
 ## Testes automatizados
 
-- Progressão validada do Estagiário até Dono.
-- A entrega diária é zerada ao encerrar o expediente, mas o XP é preservado.
-- Dias abaixo da meta mantêm todo o XP obtido nas tarefas.
-- Programação consome tempo e energia e produz entrega.
-- Save/load restaura o estado completo da carreira.
-- Em PlayMode, Alex caminha até a mesa e conclui uma tarefa.
-- Café recupera energia e o botão de encerrar dia avança o calendário.
-- Mapeamento de todos os cargos para seus respectivos ambientes.
-- Promoção de Estagiário para Júnior carrega o escritório maior.
-- Cena final chega ao estado concluído e não contém controles de gameplay.
-- Tela inicial alterna corretamente entre menu e créditos, e o botão Jogar abre
-  o escritório de Estagiário.
-- Tutorial inicial percorre quatro passos e registra sua conclusão.
-- Tarefas diárias concedem XP uma única vez e eventos alteram o novo expediente.
-- Suíte atual: 16 testes de Edit Mode e 8 testes de Play Mode.
+- 18 testes de Edit Mode para economia, relógio, contratação, automação,
+  tarefas, meta, progressão completa, decisões, saves, migração e cenas.
+- 9 testes de Play Mode para movimentação, estações, HUD idle, menu, tutorial,
+  meta, promoção, conversa de carreira e sequência final.
 
-## Próximas melhorias recomendadas
+## Próximas fronteiras
 
-1. Criar diálogos e escolhas durante reuniões com colegas e gestores.
-2. Expandir os eventos com decisões do jogador e consequências de longo prazo.
-3. Incluir sons de escritório, música e efeitos específicos de cada estação.
-4. Adicionar configurações de áudio, vídeo e acessibilidade.
-5. Gerar e validar builds distribuíveis para as plataformas-alvo.
+1. Sessões reais de playtest para ajustar custos e frequência das intervenções.
+2. Mais tarefas, conversas e variações sonoras específicas por escritório.
+3. Arte própria para ícone e identidade visual externa do produto.
+4. Preparação do executável apenas na etapa final do projeto.
