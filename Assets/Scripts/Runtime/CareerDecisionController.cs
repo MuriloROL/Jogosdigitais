@@ -49,20 +49,20 @@ namespace ProjetoJogosDigitais.Presentation
         private static readonly Decision[] Decisions =
         {
             new("MARTA • SUPERVISORA", "SEU PRIMEIRO PROJETO REAL", "A API herdada está instável. Você prefere corrigir a base ou entregar rapidamente uma proteção temporária?",
-                new Choice("REFATORAR A BASE", "Marta aprovou a refatoração: +12 conhecimento, +20 XP.", 0, 12, 2, 6, 20),
-                new Choice("CRIAR PROTEÇÃO RÁPIDA", "O cliente recebeu a correção a tempo: +10 reputação, +R$ 60.", 60, 2, 10, 10, 5)),
+                new Choice("REFATORAR A BASE", "Marta aprovou a refatoração: +12 conhecimento, +20 XP e mais tranquilidade.", 0, 12, 2, -4, 20),
+                new Choice("CRIAR PROTEÇÃO RÁPIDA", "O cliente recebeu a correção a tempo: +10 reputação, +R$ 60 e pressão reduzida.", 60, 2, 10, -2, 5)),
             new("LIA • DEV PLENO", "A SPRINT ESTÁ APERTADA", "Uma funcionalidade importante ficou maior que o previsto. Como a equipe deve reagir?",
                 new Choice("REDUZIR O ESCOPO", "A entrega ficou sustentável: -12 estresse, +6 reputação.", 0, 3, 6, -12, 10),
-                new Choice("FAZER UM MUTIRÃO", "O mutirão antecipou a entrega: +35 XP, mas aumentou a pressão.", 0, 2, 4, 16, 35)),
+                new Choice("FAZER UM MUTIRÃO", "O mutirão voluntário antecipou a entrega e ganhou uma folga planejada: +35 XP.", 0, 2, 4, -4, 35)),
             new("MAYA • PRODUCT MANAGER", "FEEDBACK DO CLIENTE", "O cliente pediu uma mudança importante no fluxo. Você ouve mais usuários ou começa a implementar agora?",
-                new Choice("PESQUISAR COM USUÁRIOS", "A pesquisa revelou o problema certo: +12 reputação, +8 conhecimento.", 0, 8, 12, 2, 15),
-                new Choice("PROTOTIPAR AGORA", "O protótipo impressionou o cliente: +30 XP, +R$ 90.", 90, 3, 6, 9, 30)),
+                new Choice("PESQUISAR COM USUÁRIOS", "A pesquisa revelou o problema certo: +12 reputação, +8 conhecimento.", 0, 8, 12, -4, 15),
+                new Choice("PROTOTIPAR AGORA", "O protótipo impressionou o cliente: +30 XP, +R$ 90 e uma direção mais clara.", 90, 3, 6, -2, 30)),
             new("THEO • TECH LEAD", "O TIME PRECISA ESCALAR", "Há orçamento para fortalecer a equipe ou acelerar o pipeline. Qual investimento vem primeiro?",
-                new Choice("MENTORIA PARA O TIME", "A mentoria fortaleceu a cultura: +14 reputação, +10 conhecimento.", 0, 10, 14, -5, 10),
-                new Choice("FERRAMENTAS DE ENTREGA", "O pipeline ficou mais confiável: +40 XP, +6 conhecimento.", -80, 6, 4, 3, 40)),
+                new Choice("MENTORIA PARA O TIME", "A mentoria fortaleceu a cultura: +14 reputação, +10 conhecimento.", 0, 10, 14, -8, 10),
+                new Choice("FERRAMENTAS DE ENTREGA", "O orçamento aprovado tornou o pipeline mais confiável: +40 XP, +6 conhecimento.", 0, 6, 4, -3, 40)),
             new("CLARA • CHIEF OF STAFF", "UMA DECISÃO DE CTO", "Uma parceria acelera o crescimento, mas exige acesso a dados internos. Como você responde?",
-                new Choice("PROTEGER OS DADOS", "A ByteForge ganhou confiança: +18 reputação, +12 conhecimento.", 0, 12, 18, 4, 20),
-                new Choice("NEGOCIAR A PARCERIA", "A parceria financiou a reta final: +R$ 220, +45 XP.", 220, 3, 5, 14, 45))
+                new Choice("PROTEGER OS DADOS", "A ByteForge ganhou confiança: +18 reputação, +12 conhecimento.", 0, 12, 18, -6, 20),
+                new Choice("NEGOCIAR A PARCERIA", "A parceria segura financiou a reta final: +R$ 220, +45 XP.", 220, 3, 5, -4, 45))
         };
 
         private GameObject overlay;
@@ -130,22 +130,34 @@ namespace ProjetoJogosDigitais.Presentation
             overlay.GetComponent<Image>().raycastTarget = true;
 
             Image panel = CreateImage(overlay.transform, "Conversa com a equipe", new Color(0.04f, 0.065f, 0.105f, 0.995f));
-            SetRect(panel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(720f, 430f));
+            SetRect(panel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(760f, 450f));
+            panel.color = Color.white;
+            panel.gameObject.AddComponent<UiRoundedGraphic>().Configure(20);
+            panel.gameObject.AddComponent<UiVerticalGradient>().Configure(
+                new Color(0.10f, 0.13f, 0.19f, 0.995f),
+                new Color(0.035f, 0.055f, 0.095f, 0.995f));
             Outline outline = panel.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(0.96f, 0.63f, 0.20f, 0.9f);
+            outline.effectColor = new Color(0.96f, 0.63f, 0.20f, 0.50f);
             outline.effectDistance = new Vector2(2f, -2f);
 
-            speakerLabel = CreateText(panel.transform, "COLEGA", 12, TextAnchor.MiddleLeft, new Color(0.24f, 0.82f, 0.76f), FontStyle.Bold);
-            SetRect(speakerLabel.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(38f, -40f), new Vector2(-76f, 24f));
-            titleLabel = CreateText(panel.transform, "DECISÃO", 28, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
-            SetRect(titleLabel.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(38f, -88f), new Vector2(-76f, 46f));
-            bodyLabel = CreateText(panel.transform, "Escolha como responder.", 20, TextAnchor.UpperLeft, new Color(0.80f, 0.87f, 0.95f));
-            bodyLabel.lineSpacing = 1.2f;
-            SetRect(bodyLabel.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(38f, -150f), new Vector2(-76f, 118f));
+            Image accent = CreateImage(panel.transform, "Linha da decisão", new Color(0.96f, 0.63f, 0.20f));
+            SetRect(accent.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(16f, -2f), new Vector2(-32f, 4f), new Vector2(0.5f, 1f));
+            accent.gameObject.AddComponent<UiRoundedGraphic>().Configure(4);
 
-            firstButton = CreateButton(panel.transform, "OPÇÃO A", new Vector2(38f, 82f), new Vector2(306f, 66f), new Vector2(0f, 0f), new Color(0.19f, 0.48f, 0.47f));
+            speakerLabel = CreateText(panel.transform, "COLEGA", 12, TextAnchor.MiddleLeft, new Color(0.24f, 0.82f, 0.76f), FontStyle.Bold);
+            SetRect(speakerLabel.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -40f, new Vector2(-76f, 24f));
+            titleLabel = CreateText(panel.transform, "DECISÃO", 28, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
+            SetRect(titleLabel.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -84f, new Vector2(-76f, 46f));
+            bodyLabel = CreateText(panel.transform, "Escolha como responder.", 18, TextAnchor.UpperLeft, new Color(0.80f, 0.87f, 0.95f));
+            bodyLabel.lineSpacing = 1.28f;
+            SetRect(bodyLabel.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -190f, new Vector2(-76f, 130f));
+
+            Text hint = CreateText(panel.transform, "TODAS AS OPÇÕES SÃO POSITIVAS • ESCOLHA O BENEFÍCIO QUE PREFERE", 10, TextAnchor.MiddleCenter, new Color(0.62f, 0.70f, 0.82f), FontStyle.Bold);
+            SetRect(hint.rectTransform, new Vector2(0f, 0f), new Vector2(1f, 0f), Vector2.up * 161f, new Vector2(-76f, 20f));
+
+            firstButton = CreateButton(panel.transform, "OPÇÃO A", new Vector2(38f, 70f), new Vector2(326f, 72f), Vector2.zero, new Color(0.19f, 0.48f, 0.47f));
             firstButton.onClick.AddListener(ChooseFirst);
-            secondButton = CreateButton(panel.transform, "OPÇÃO B", new Vector2(-38f, 82f), new Vector2(306f, 66f), new Vector2(1f, 0f), new Color(0.48f, 0.31f, 0.16f));
+            secondButton = CreateButton(panel.transform, "OPÇÃO B", new Vector2(-38f, 70f), new Vector2(326f, 72f), new Vector2(1f, 0f), new Color(0.48f, 0.31f, 0.16f));
             secondButton.onClick.AddListener(ChooseSecond);
         }
 
@@ -181,13 +193,19 @@ namespace ProjetoJogosDigitais.Presentation
             Image image = CreateImage(parent, label, color);
             SetRect(image.rectTransform, anchor, anchor, position, size, anchor);
             image.raycastTarget = true;
+            image.color = Color.white;
+            image.gameObject.AddComponent<UiRoundedGraphic>().Configure(12);
+            image.gameObject.AddComponent<UiVerticalGradient>().Configure(
+                Color.Lerp(color, Color.white, 0.08f),
+                Color.Lerp(color, Color.black, 0.22f));
             Button button = image.gameObject.AddComponent<Button>();
             ColorBlock colors = button.colors;
             colors.highlightedColor = Color.Lerp(color, Color.white, 0.18f);
             colors.pressedColor = Color.Lerp(color, Color.black, 0.18f);
             button.colors = colors;
+            image.gameObject.AddComponent<UiButtonMotion>();
             Text text = CreateText(image.transform, label, 14, TextAnchor.MiddleCenter, Color.white, FontStyle.Bold);
-            SetRect(text.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            SetRect(text.rectTransform, Vector2.zero, Vector2.one, new Vector2(10f, 2f), new Vector2(-20f, -4f));
             return button;
         }
 

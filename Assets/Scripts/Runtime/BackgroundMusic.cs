@@ -68,7 +68,7 @@ namespace ProjetoJogosDigitais.Presentation
         {
             if (source != null)
             {
-                source.volume = GamePreferences.MusicEnabled ? DefaultVolume : 0f;
+                source.volume = DefaultVolume * GamePreferences.MusicVolume;
             }
         }
     }

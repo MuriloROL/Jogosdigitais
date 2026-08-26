@@ -12,11 +12,11 @@ de aproximadamente sete a oito horas reais, evolui até se tornar Dono.
 - A produção só avança enquanto o jogo está aberto; não há progresso offline.
 - O jogador acelera a carreira usando as estações, contratando colegas e
   melhorando o pipeline de automação.
-- Cada cargo libera uma vaga adicional na equipe e apresenta uma decisão de
-  carreira com duas consequências diferentes.
-- Metas de sprint concedem dinheiro e XP, enquanto tarefas extras incentivam
-  combinações diferentes de atividades.
-- O save mantém tempo aberto, XP, equipe, automação, atributos, tarefas e
+- São 18 missões principais em checklist, três por cargo antes de Dono, sem
+  prazo, falha ou opção errada.
+- Estagiário aprende as ações e compra o Codex; Júnior libera multiagentes;
+  contratação começa apenas em Dev Pleno.
+- O save mantém tempo aberto, missão, equipe, automação, atributos e
   decisões pendentes sem acrescentar produção pelo tempo em que o jogo fechou.
 - Ao alcançar Dono, a jornada termina na sequência final da ByteForge.
 
@@ -50,12 +50,13 @@ Projeto → Construir MVP carreira dev
 
 - Clique no chão para movimentar Alex.
 - Clique em uma estação para programar, reunir, estudar, tomar café ou pausar.
-- Use **Contratar** para aumentar a produção passiva.
-- Use **Automatizar** para melhorar a eficiência de toda a equipe.
-- Resgate a meta da sprint assim que ela for concluída.
+- Siga o losango dourado e o checklist; cada atividade usa uma única ação.
+- A produção dos agentes é bônus: nenhuma missão exige esperar um ciclo terminar.
+- Use **Contratar** a partir de Dev Pleno e melhore o Codex/pipeline conforme o cargo.
+- Conclua a missão quando todos os itens do checklist estiverem marcados.
 - Salve ou carregue a carreira pela barra inferior.
-- Áudio, efeitos, movimento reduzido e texto ampliado ficam no painel de
-  acessibilidade.
+- Pressione **Esc** para pausar; a produção idle continua durante a pausa.
+- Música, efeitos, ambiente, vídeo e acessibilidade ficam nas configurações.
 
 ## Cenas
 

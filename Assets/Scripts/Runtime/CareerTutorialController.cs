@@ -6,24 +6,24 @@ namespace ProjetoJogosDigitais.Presentation
 {
     public sealed class CareerTutorialController : MonoBehaviour
     {
-        public const string SeenPlayerPrefsKey = "devcarrer.tutorial.seen.v2";
+        public const string SeenPlayerPrefsKey = "devcarrer.tutorial.seen.v3";
 
         private static readonly string[] StepTitles =
         {
             "BEM-VINDO À BYTEFORGE",
-            "A EQUIPE NÃO PARA",
-            "JOGUE PARA ACELERAR",
+            "SIGA O CHECKLIST",
+            "CONSTRUA SUA STACK",
             "CUIDE DO SEU RITMO",
-            "CONSTRUA SUA CARREIRA"
+            "UMA CARREIRA EM CAPÍTULOS"
         };
 
         private static readonly string[] StepBodies =
         {
-            "Clique nos marcadores do escritório para Alex caminhar até uma estação e realizar uma atividade.",
-            "Enquanto o jogo estiver aberto, Alex e sua equipe entregam automaticamente a cada 15 segundos. Fechar o jogo pausa tudo.",
-            "Contrate colegas, automatize o pipeline e use as estações para acelerar a produção e tomar decisões.",
+            "O losango e o botão com o nome da atividade formam uma área clicável grande. Passe o mouse para destacar e clique para Alex caminhar até a estação.",
+            "Cada missão tem um checklist sem prazo e sem fracasso. O próximo móvel necessário recebe um losango dourado. Conclua os itens na ordem indicada.",
+            "Invista os R$ 120 iniciais no Codex. No Júnior, libere multiagentes; no Pleno, contrate seu primeiro colega. A produção automática dá bônus, mas nunca bloqueia uma missão.",
             "Programar consome energia e aumenta o estresse. Use café e pausas para manter a produtividade.",
-            "O expediente dura oito horas reais. Salve quando quiser e avance de Estagiário a Dono antes do fim do dia."
+            "São três missões por cargo e todas as escolhas têm resultados positivos. Nenhum checklist pede espera: você sempre resolve o próximo item com uma ação. O autosave protege toda a jornada."
         };
 
         private GameObject overlay;
@@ -108,24 +108,30 @@ namespace ProjetoJogosDigitais.Presentation
             overlay.transform.SetAsLastSibling();
 
             Image panel = CreateImage(overlay.transform, "Painel do tutorial", new Color(0.05f, 0.075f, 0.115f, 0.99f));
-            SetRect(panel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(640f, 390f));
+            SetRect(panel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(680f, 400f));
+            panel.color = Color.white;
+            panel.gameObject.AddComponent<UiRoundedGraphic>().Configure(20);
+            panel.gameObject.AddComponent<UiVerticalGradient>().Configure(
+                new Color(0.075f, 0.13f, 0.17f, 0.995f),
+                new Color(0.028f, 0.055f, 0.09f, 0.995f));
             Outline outline = panel.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(0.24f, 0.82f, 0.76f, 0.8f);
+            outline.effectColor = new Color(0.24f, 0.82f, 0.76f, 0.48f);
             outline.effectDistance = new Vector2(2f, -2f);
 
             Image accent = CreateImage(panel.transform, "Linha de destaque", new Color(0.24f, 0.82f, 0.76f));
-            SetRect(accent.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.zero, new Vector2(0f, 5f));
+            SetRect(accent.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(16f, -2f), new Vector2(-32f, 4f));
             accent.rectTransform.pivot = new Vector2(0.5f, 1f);
+            accent.gameObject.AddComponent<UiRoundedGraphic>().Configure(4);
 
-            progressLabel = CreateText(panel.transform, "PASSO 1/4", 12, TextAnchor.MiddleLeft, new Color(0.24f, 0.82f, 0.76f), FontStyle.Bold);
-            SetRect(progressLabel.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(34f, -38f), new Vector2(-68f, 24f));
+            progressLabel = CreateText(panel.transform, "PASSO 1/5", 12, TextAnchor.MiddleLeft, new Color(0.24f, 0.82f, 0.76f), FontStyle.Bold);
+            SetRect(progressLabel.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -38f, new Vector2(-68f, 24f));
 
-            titleLabel = CreateText(panel.transform, StepTitles[0], 30, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
-            SetRect(titleLabel.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(34f, -88f), new Vector2(-68f, 52f));
+            titleLabel = CreateText(panel.transform, StepTitles[0], 29, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
+            SetRect(titleLabel.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -83f, new Vector2(-68f, 46f));
 
-            bodyLabel = CreateText(panel.transform, StepBodies[0], 19, TextAnchor.UpperLeft, new Color(0.78f, 0.86f, 0.94f));
-            bodyLabel.lineSpacing = 1.25f;
-            SetRect(bodyLabel.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(34f, -150f), new Vector2(-68f, 125f));
+            bodyLabel = CreateText(panel.transform, StepBodies[0], 18, TextAnchor.UpperLeft, new Color(0.80f, 0.88f, 0.95f));
+            bodyLabel.lineSpacing = 1.3f;
+            SetRect(bodyLabel.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -191f, new Vector2(-68f, 130f));
 
             skipButton = CreateButton(panel.transform, "PULAR TUTORIAL", new Vector2(34f, 28f), new Vector2(190f, 48f), new Vector2(0f, 0f), new Color(0.20f, 0.28f, 0.40f));
             skipButton.onClick.AddListener(SkipTutorial);
@@ -178,13 +184,19 @@ namespace ProjetoJogosDigitais.Presentation
             image.raycastTarget = true;
             SetRect(image.rectTransform, anchor, anchor, position, size);
             image.rectTransform.pivot = anchor;
+            image.color = Color.white;
+            image.gameObject.AddComponent<UiRoundedGraphic>().Configure(12);
+            image.gameObject.AddComponent<UiVerticalGradient>().Configure(
+                Color.Lerp(color, Color.white, 0.08f),
+                Color.Lerp(color, Color.black, 0.22f));
             Button button = image.gameObject.AddComponent<Button>();
             ColorBlock colors = button.colors;
             colors.highlightedColor = Color.Lerp(color, Color.white, 0.18f);
             colors.pressedColor = Color.Lerp(color, Color.black, 0.18f);
             button.colors = colors;
+            image.gameObject.AddComponent<UiButtonMotion>();
             Text text = CreateText(image.transform, label, 14, TextAnchor.MiddleCenter, Color.white, FontStyle.Bold);
-            SetRect(text.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            SetRect(text.rectTransform, Vector2.zero, Vector2.one, new Vector2(8f, 1f), new Vector2(-16f, -2f));
             return button;
         }
 

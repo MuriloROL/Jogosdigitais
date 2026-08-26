@@ -27,6 +27,7 @@ namespace ProjetoJogosDigitais.Presentation
         [SerializeField] private Button endDayButton;
         [SerializeField] private Button saveButton;
         [SerializeField] private Button loadButton;
+        private OfficeStation[] stationMarkers;
 
         public void Configure(
             CareerGame career,
@@ -91,6 +92,22 @@ namespace ProjetoJogosDigitais.Presentation
             {
                 gameObject.AddComponent<CareerDecisionController>();
             }
+            if (GetComponent<MissionBriefingController>() == null)
+            {
+                gameObject.AddComponent<MissionBriefingController>();
+            }
+            if (GetComponent<OfficeAmbience>() == null)
+            {
+                gameObject.AddComponent<OfficeAmbience>();
+            }
+            if (GetComponent<PauseMenuController>() == null)
+            {
+                gameObject.AddComponent<PauseMenuController>();
+            }
+            if (GetComponent<AccessibilityVisualController>() == null)
+            {
+                gameObject.AddComponent<AccessibilityVisualController>();
+            }
         }
 
         private void OnDestroy()
@@ -119,9 +136,14 @@ namespace ProjetoJogosDigitais.Presentation
             clockLabel.text = game.DisplayTime.ToUpperInvariant().Replace("  ", "  //  ");
             salaryLabel.text = $"SALÁRIO R$ {game.MonthlySalary:N0}   •   CAIXA R$ {game.Money:N0}";
             workdayFill.fillAmount = Mathf.Clamp01(game.MinutesUsed / (float)CareerGame.WorkdayMinutes);
-            deliveryLabel.text = $"ENTREGA  {game.Delivery}/{game.DailyGoal}";
-            deliveryFill.fillAmount = Mathf.Clamp01(game.Delivery / (float)game.DailyGoal);
-            deliveryFill.color = game.GoalReached
+            int checklistGoal = Mathf.Max(1, game.MissionObjectiveGoal);
+            deliveryLabel.text = game.IsLastRank
+                ? $"ENTREGA TOTAL  {game.Delivery:N0}"
+                : $"CHECKLIST  {game.MissionObjectiveProgress}/{checklistGoal}  •  ENTREGA {game.Delivery:N0}";
+            deliveryFill.fillAmount = game.IsLastRank
+                ? 1f
+                : Mathf.Clamp01(game.MissionObjectiveProgress / (float)checklistGoal);
+            deliveryFill.color = game.MissionReadyToClaim
                 ? new Color(0.32f, 0.88f, 0.52f)
                 : new Color(0.26f, 0.72f, 0.92f);
 
@@ -134,29 +156,45 @@ namespace ProjetoJogosDigitais.Presentation
             knowledgeLabel.text = $"CONHECIMENTO\n{game.Knowledge}";
             reputationLabel.text = $"REPUTAÇÃO\n{game.Reputation}";
             statusLabel.text = player == null || player.IsIdle ? game.LastFeedback : player.Status;
-            string dailyGoal = game.GoalReached
-                ? game.SprintBonusClaimed ? "META RESGATADA • produção continua" : "META CONCLUÍDA • resgate o bônus"
-                : $"META: {game.DailyGoal - game.Delivery} PONTOS • {game.MinutesRemaining / 60}h{game.MinutesRemaining % 60:00}";
-            string dailyTask = game.DailyTaskCompleted
-                ? $"{game.DailyTaskTitle} • CONCLUÍDA"
-                : $"{game.DailyTaskTitle} {game.DailyTaskProgress}/{game.DailyTaskGoal} • +{game.DailyTaskRewardXp} XP";
-            objectiveLabel.text = $"{dailyGoal}\n{dailyTask}\n{game.DailyTaskDescription}";
+            objectiveLabel.text = game.IsLastRank
+                ? "JORNADA CONCLUÍDA\nA ByteForge agora faz parte do seu legado."
+                : $"MISSÃO {game.MissionNumber}/{game.MissionsPerRank}  •  {game.MissionTitle}\n" +
+                  $"{game.MissionChecklistText()}\n" +
+                  $"RECOMPENSA  R$ {game.MissionRewardMoney}  •  +{game.MissionRewardXp} XP";
             bool controlsAvailable = player == null || !player.IsInteracting;
-            endDayButton.interactable = controlsAvailable && game.GoalReached && !game.SprintBonusClaimed;
+            endDayButton.interactable = controlsAvailable && game.MissionReadyToClaim;
             Text endDayLabel = endDayButton.GetComponentInChildren<Text>();
             if (endDayLabel != null)
             {
-                endDayLabel.text = game.SprintBonusClaimed ? "META RESGATADA" : "RESGATAR META";
+                endDayLabel.text = game.IsLastRank ? "CARREIRA CONCLUÍDA" : "CONCLUIR MISSÃO";
             }
             saveButton.interactable = controlsAvailable;
             loadButton.interactable = controlsAvailable;
+            RefreshMissionHighlight();
         }
 
         private void EndDay()
         {
-            game?.ClaimSprintBonus();
-            GameAudioFeedback.Play(FeedbackSound.Button);
+            game?.ClaimMission();
+            GameAudioFeedback.Play(FeedbackSound.Mission);
             player?.ShowStatus(game.LastFeedback);
+        }
+
+        private void RefreshMissionHighlight()
+        {
+            if (stationMarkers == null || stationMarkers.Length == 0)
+            {
+                stationMarkers = FindObjectsByType<OfficeStation>(FindObjectsSortMode.None);
+            }
+
+            bool hasAction = game.TryGetNextMissionAction(out OfficeActionType nextAction);
+            foreach (OfficeStation station in stationMarkers)
+            {
+                if (station != null)
+                {
+                    station.SetMissionFocus(hasAction && station.ActionType == nextAction);
+                }
+            }
         }
 
         private void SaveGame()

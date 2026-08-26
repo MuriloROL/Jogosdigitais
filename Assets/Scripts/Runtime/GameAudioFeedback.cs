@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ProjetoJogosDigitais.Gameplay;
 using UnityEngine;
 
 namespace ProjetoJogosDigitais.Presentation
@@ -9,7 +10,13 @@ namespace ProjetoJogosDigitais.Presentation
         Work,
         Purchase,
         Promotion,
-        Decision
+        Decision,
+        Mission,
+        Code,
+        Meeting,
+        Study,
+        Coffee,
+        Break
     }
 
     [RequireComponent(typeof(AudioSource))]
@@ -43,17 +50,31 @@ namespace ProjetoJogosDigitais.Presentation
             source = GetComponent<AudioSource>();
             source.playOnAwake = false;
             source.spatialBlend = 0f;
-            source.volume = 0.34f;
+            RefreshVolume();
+            GamePreferences.Changed += RefreshVolume;
         }
 
         public static void Play(FeedbackSound sound)
         {
-            if (Current == null || !GamePreferences.EffectsEnabled)
+            if (Current == null || GamePreferences.EffectsVolume <= 0f)
             {
                 return;
             }
 
             Current.PlayInternal(sound);
+        }
+
+        public static void PlayForAction(OfficeActionType action)
+        {
+            Play(action switch
+            {
+                OfficeActionType.Code => FeedbackSound.Code,
+                OfficeActionType.Meeting => FeedbackSound.Meeting,
+                OfficeActionType.Study => FeedbackSound.Study,
+                OfficeActionType.Coffee => FeedbackSound.Coffee,
+                OfficeActionType.Break => FeedbackSound.Break,
+                _ => FeedbackSound.Work
+            });
         }
 
         private void PlayInternal(FeedbackSound sound)
@@ -76,6 +97,12 @@ namespace ProjetoJogosDigitais.Presentation
                 FeedbackSound.Purchase => (440f, 760f, 0.16f),
                 FeedbackSound.Promotion => (420f, 1040f, 0.32f),
                 FeedbackSound.Decision => (360f, 560f, 0.14f),
+                FeedbackSound.Mission => (330f, 820f, 0.24f),
+                FeedbackSound.Code => (220f, 510f, 0.13f),
+                FeedbackSound.Meeting => (380f, 470f, 0.15f),
+                FeedbackSound.Study => (520f, 710f, 0.16f),
+                FeedbackSound.Coffee => (610f, 360f, 0.18f),
+                FeedbackSound.Break => (440f, 280f, 0.22f),
                 _ => (440f, 520f, 0.1f)
             };
             int sampleCount = Mathf.CeilToInt(SampleRate * duration);
@@ -95,6 +122,7 @@ namespace ProjetoJogosDigitais.Presentation
 
         private void OnDestroy()
         {
+            GamePreferences.Changed -= RefreshVolume;
             foreach (AudioClip clip in clips.Values)
             {
                 if (clip != null)
@@ -107,6 +135,14 @@ namespace ProjetoJogosDigitais.Presentation
             if (Current == this)
             {
                 Current = null;
+            }
+        }
+
+        private void RefreshVolume()
+        {
+            if (source != null)
+            {
+                source.volume = 0.42f * GamePreferences.EffectsVolume;
             }
         }
     }

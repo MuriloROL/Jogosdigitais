@@ -1,0 +1,992 @@
+fileFormatVersion: 2
+guid: fa66f6313a1e44ef188d0e56d5d14e3b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2736209853771959962
+    second: tech-ornaments-sheet_0
+  - first:
+      213: 275602365086838747
+    second: tech-ornaments-sheet_1
+  - first:
+      213: -6035156008468021597
+    second: tech-ornaments-sheet_2
+  - first:
+      213: 3818888851575372667
+    second: tech-ornaments-sheet_3
+  - first:
+      213: 5698175073214206674
+    second: tech-ornaments-sheet_4
+  - first:
+      213: 4795958021107033897
+    second: tech-ornaments-sheet_5
+  - first:
+      213: 6642452757147626209
+    second: tech-ornaments-sheet_6
+  - first:
+      213: -5221333013913611059
+    second: tech-ornaments-sheet_7
+  - first:
+      213: 8935766328416473530
+    second: tech-ornaments-sheet_8
+  - first:
+      213: -6383556208813601893
+    second: tech-ornaments-sheet_9
+  - first:
+      213: -8327009237172401512
+    second: tech-ornaments-sheet_10
+  - first:
+      213: -8549866947615227512
+    second: tech-ornaments-sheet_11
+  - first:
+      213: -7228858189281168057
+    second: tech-ornaments-sheet_12
+  - first:
+      213: -61208785965706097
+    second: tech-ornaments-sheet_13
+  - first:
+      213: 1314797600695609195
+    second: tech-ornaments-sheet_14
+  - first:
+      213: 7036570907962278736
+    second: tech-ornaments-sheet_15
+  - first:
+      213: -1143439848253001380
+    second: tech-ornaments-sheet_16
+  - first:
+      213: -1239786624095095161
+    second: tech-ornaments-sheet_17
+  - first:
+      213: 6641738874946136704
+    second: tech-ornaments-sheet_18
+  - first:
+      213: -538415570894963719
+    second: tech-ornaments-sheet_19
+  - first:
+      213: 604914528442655867
+    second: tech-ornaments-sheet_20
+  - first:
+      213: -8480621739176208391
+    second: tech-ornaments-sheet_21
+  - first:
+      213: -7004514596423415778
+    second: tech-ornaments-sheet_22
+  - first:
+      213: -680714184880669429
+    second: tech-ornaments-sheet_23
+  - first:
+      213: -36031015813119841
+    second: tech-ornaments-sheet_24
+  - first:
+      213: 4900652469639297440
+    second: tech-ornaments-sheet_25
+  - first:
+      213: -5079849012702715877
+    second: tech-ornaments-sheet_26
+  - first:
+      213: 3787160419937447029
+    second: tech-ornaments-sheet_27
+  - first:
+      213: 5001980769269841739
+    second: tech-ornaments-sheet_28
+  - first:
+      213: -6663751127704280801
+    second: tech-ornaments-sheet_29
+  - first:
+      213: -3253475349169486809
+    second: tech-ornaments-sheet_30
+  - first:
+      213: 6746645257358547436
+    second: tech-ornaments-sheet_31
+  - first:
+      213: -8622085909289695906
+    second: tech-ornaments-sheet_32
+  - first:
+      213: -1633072196792511680
+    second: tech-ornaments-sheet_33
+  - first:
+      213: -6440610386876883570
+    second: tech-ornaments-sheet_34
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 638
+        width: 393
+        height: 383
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9e400d6d58f8f520800000000000000
+      internalID: 2736209853771959962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_1
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 631
+        width: 372
+        height: 375
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdf224e04e223d300800000000000000
+      internalID: 275602365086838747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 819
+        width: 697
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3aef23ff591de3ca0800000000000000
+      internalID: -6035156008468021597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_3
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 709
+        width: 709
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7b79da5d2b6ff430800000000000000
+      internalID: 3818888851575372667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_4
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 293
+        width: 391
+        height: 341
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d21be2f90cf31f40800000000000000
+      internalID: 5698175073214206674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 273
+        width: 367
+        height: 363
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92725cdf86aae8240800000000000000
+      internalID: 4795958021107033897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_6
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 411
+        width: 345
+        height: 281
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ea2913e69bbe2c50800000000000000
+      internalID: 6642452757147626209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_7
+      rect:
+        serializedVersion: 2
+        x: 1159
+        y: 525
+        width: 157
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc4d8a3a9491a87b0800000000000000
+      internalID: -5221333013913611059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_8
+      rect:
+        serializedVersion: 2
+        x: 1328
+        y: 525
+        width: 165
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab11929c128320c70800000000000000
+      internalID: 8935766328416473530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_9
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 409
+        width: 101
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9b0de9137d0967a0800000000000000
+      internalID: -6383556208813601893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_10
+      rect:
+        serializedVersion: 2
+        x: 1144
+        y: 173
+        width: 353
+        height: 341
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89a41f89735807c80800000000000000
+      internalID: -8327009237172401512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_11
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 410
+        width: 95
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8818a8e6f45c85980800000000000000
+      internalID: -8549866947615227512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_12
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 294
+        width: 89
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 745f838e6cfedab90800000000000000
+      internalID: -7228858189281168057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_13
+      rect:
+        serializedVersion: 2
+        x: 886
+        y: 285
+        width: 93
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f849167feea862ff0800000000000000
+      internalID: -61208785965706097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_14
+      rect:
+        serializedVersion: 2
+        x: 982
+        y: 349
+        width: 45
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b676ff4a3791f3210800000000000000
+      internalID: 1314797600695609195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_15
+      rect:
+        serializedVersion: 2
+        x: 988
+        y: 159
+        width: 183
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05380fd95fbe6a160800000000000000
+      internalID: 7036570907962278736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_16
+      rect:
+        serializedVersion: 2
+        x: 1032
+        y: 325
+        width: 76
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c517ad6248fa120f0800000000000000
+      internalID: -1143439848253001380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_17
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 114
+        width: 218
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 786f78152a46bcee0800000000000000
+      internalID: -1239786624095095161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_18
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 175
+        width: 265
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08a211c31523c2c50800000000000000
+      internalID: 6641738874946136704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_19
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 220
+        width: 137
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fb344314e92788f0800000000000000
+      internalID: -538415570894963719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_20
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 225
+        width: 76
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b742c430f86156800800000000000000
+      internalID: 604914528442655867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_21
+      rect:
+        serializedVersion: 2
+        x: 796
+        y: 246
+        width: 41
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f752f1e577ce4a80800000000000000
+      internalID: -8480621739176208391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_22
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 145
+        width: 78
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e18c4280617face90800000000000000
+      internalID: -7004514596423415778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_23
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 171
+        width: 125
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0d3e903e0e9d86f0800000000000000
+      internalID: -680714184880669429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_24
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 0
+        width: 248
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9000956bfdff7ff0800000000000000
+      internalID: -36031015813119841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_25
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 107
+        width: 221
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a9bd74d47d920440800000000000000
+      internalID: 4900652469639297440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_26
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 173
+        width: 41
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b106c35bc30c089b0800000000000000
+      internalID: -5079849012702715877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_27
+      rect:
+        serializedVersion: 2
+        x: 1304
+        y: 47
+        width: 92
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57c6ac13652be8430800000000000000
+      internalID: 3787160419937447029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_28
+      rect:
+        serializedVersion: 2
+        x: 1418
+        y: 46
+        width: 89
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4ff9ad020b9a6540800000000000000
+      internalID: 5001980769269841739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_29
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 143
+        width: 15
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f11e399c7a99583a0800000000000000
+      internalID: -6663751127704280801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_30
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 45
+        width: 217
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7244347586559d2d0800000000000000
+      internalID: -3253475349169486809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_31
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 45
+        width: 120
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce91e66cd16e0ad50800000000000000
+      internalID: 6746645257358547436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 29
+        width: 271
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5503e91c82385880800000000000000
+      internalID: -8622085909289695906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_33
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 39
+        width: 213
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0439d994d792659e0800000000000000
+      internalID: -1633072196792511680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tech-ornaments-sheet_34
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 53
+        width: 145
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8d13891afa5e96a0800000000000000
+      internalID: -6440610386876883570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

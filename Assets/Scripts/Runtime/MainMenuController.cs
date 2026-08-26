@@ -55,6 +55,7 @@ namespace ProjetoJogosDigitais.Presentation
 
         public void PlayGame()
         {
+            CareerGame.Current?.ReleaseSession();
             SceneManager.LoadScene(CareerSceneFlow.InternScene, LoadSceneMode.Single);
         }
 

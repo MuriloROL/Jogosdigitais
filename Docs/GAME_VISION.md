@@ -15,14 +15,15 @@ ao comando da ByteForge.
    mas ações e decisões do jogador aceleram e personalizam a jornada.
 3. **Repetição legível:** os mesmos sistemas ganham escala, eficiência, novos
    ambientes e contexto em vez de depender de cliques incessantes.
-4. **Um dia memorável:** a progressão completa dura aproximadamente sete a oito
-   horas e termina de forma definitiva ao alcançar Dono.
+4. **Uma carreira sem espera obrigatória:** automação produz bônus em segundo
+   plano, mas toda missão avança imediatamente pelas ações do jogador.
 
 ## Ritmo da sessão
 
 - Produção automática em ciclos de 15 segundos.
-- Primeira contratação durante a fase de Estagiário.
-- Aproximadamente uma promoção a cada 45–90 minutos, conforme participação.
+- Estagiário aprende as estações e compra o Codex; Júnior libera multiagentes.
+- A primeira contratação acontece em Dev Pleno.
+- Três missões principais por cargo, totalizando 18 antes de Dono.
 - Uma conversa com decisão em cada nova etapa da carreira.
 - Novos escritórios em marcos visuais importantes.
 - Cena final ao atingir 7.500 XP e conquistar o cargo de Dono.
@@ -36,8 +37,8 @@ O jogador distribui atenção entre quatro camadas:
 - melhorar o pipeline para multiplicar a equipe inteira;
 - responder a situações profissionais com consequências diferentes.
 
-Não há resposta universalmente correta. Uma escolha pode favorecer XP e
-velocidade, enquanto outra protege reputação, conhecimento ou bem-estar.
+Todas as escolhas são positivas. Elas mudam a ênfase entre XP, caixa,
+reputação, conhecimento e bem-estar sem criar uma resposta errada.
 
 ## Direção audiovisual
 

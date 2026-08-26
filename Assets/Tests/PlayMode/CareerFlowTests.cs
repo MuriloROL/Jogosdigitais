@@ -69,26 +69,51 @@ namespace ProjetoJogosDigitais.Tests
         }
 
         [UnityTest]
-        public IEnumerator SprintButtonClaimsTheCurrentMilestone()
+        public IEnumerator EveryStationHasALargeClickableActivityMarker()
+        {
+            Time.timeScale = 1f;
+            yield return SceneManager.LoadSceneAsync(CareerSceneFlow.InternScene, LoadSceneMode.Single);
+            yield return null;
+
+            OfficeStation[] stations = Object.FindObjectsByType<OfficeStation>(FindObjectsSortMode.None);
+            Assert.That(stations, Has.Length.EqualTo(5));
+            foreach (OfficeStation station in stations)
+            {
+                Collider2D target = station.InteractionCollider;
+                Assert.That(target, Is.Not.Null, $"{station.name} não criou o alvo clicável.");
+                Assert.That(target.isTrigger, Is.True);
+                Assert.That(target.OverlapPoint(station.InteractionPosition), Is.True,
+                    $"O losango de {station.name} precisa estar dentro da área clicável.");
+                Assert.That(target.bounds.size.x, Is.GreaterThan(2f));
+
+                station.SetPointerFocus(true);
+                Assert.That(station.IsPointerFocused, Is.True);
+                station.SetPointerFocus(false);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator ChecklistButtonClaimsTheCurrentMission()
         {
             Time.timeScale = 1f;
             yield return SceneManager.LoadSceneAsync(CareerSceneFlow.InternScene, LoadSceneMode.Single);
             yield return null;
 
             CareerGame game = Object.FindFirstObjectByType<CareerGame>();
-            while (!game.GoalReached)
-            {
-                game.PerformAction(OfficeActionType.Code);
-            }
+            game.PerformAction(OfficeActionType.Study);
+            game.PerformAction(OfficeActionType.Meeting);
+            game.PerformAction(OfficeActionType.Code);
+            game.PerformAction(OfficeActionType.Code);
+            Assert.That(game.MissionReadyToClaim, Is.True);
             Button endDay = Object.FindObjectsByType<Button>(FindObjectsSortMode.None)
-                .First(button => button.name == "RESGATAR META" || button.name == "ENCERRAR DIA");
+                .First(button => button.GetComponentInChildren<Text>(true)?.text == "CONCLUIR MISSÃO");
 
             endDay.onClick.Invoke();
             yield return null;
 
-            Assert.That(game.Day, Is.EqualTo(1));
-            Assert.That(game.SprintBonusClaimed, Is.True);
-            Assert.That(game.LastFeedback, Does.Contain("Meta resgatada"));
+            Assert.That(game.MissionIndexAtRank, Is.EqualTo(1));
+            Assert.That(game.TotalMissionsCompleted, Is.EqualTo(1));
+            Assert.That(game.LastFeedback, Does.Contain("MISSÃO CONCLUÍDA"));
         }
 
         [UnityTest]
@@ -124,7 +149,9 @@ namespace ProjetoJogosDigitais.Tests
             yield return null;
 
             CareerGame game = CareerGame.Current;
-            game.AdvanceOpenTime(350f * 15f);
+            CompleteCurrentMission(game);
+            CompleteCurrentMission(game);
+            CompleteCurrentMission(game);
             yield return null;
 
             float timeout = 5f;
@@ -169,7 +196,7 @@ namespace ProjetoJogosDigitais.Tests
             Assert.That(menu.CreditsVisible, Is.True);
 
             Button back = Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-                .First(button => button.name == "VOLTAR");
+                .First(button => button.name == "VOLTAR AO MENU");
             back.onClick.Invoke();
             yield return null;
             Assert.That(menu.CreditsVisible, Is.False);
@@ -213,7 +240,7 @@ namespace ProjetoJogosDigitais.Tests
         }
 
         [UnityTest]
-        public IEnumerator IdlePanelHiresATeammateAndShowsSettings()
+        public IEnumerator IdlePanelFollowsCodexAgentsAndTeamProgression()
         {
             Time.timeScale = 1f;
             yield return SceneManager.LoadSceneAsync(CareerSceneFlow.InternScene, LoadSceneMode.Single);
@@ -225,18 +252,47 @@ namespace ProjetoJogosDigitais.Tests
             Assert.That(panel, Is.Not.Null);
             RectTransform managementRect = GameObject.Find("Gestão idle").GetComponent<RectTransform>();
             Assert.That(managementRect.anchorMin, Is.EqualTo(new Vector2(1f, 0f)));
-            Assert.That(managementRect.anchoredPosition.y, Is.EqualTo(110f));
-            game.AdvanceOpenTime(15f * 60f);
+            Assert.That(managementRect.anchoredPosition.y, Is.EqualTo(110f).Within(3f));
+            Assert.That(panel.HireButton.interactable, Is.False);
             panel.HireButton.onClick.Invoke();
-            yield return null;
+            Assert.That(game.TeamMembers, Is.Zero);
 
-            Assert.That(game.TeamMembers, Is.EqualTo(1));
+            panel.AutomationButton.onClick.Invoke();
+            Assert.That(game.ToolingName, Is.EqualTo("Codex Assistente"));
             Assert.That(game.PassiveDeliveryPerTick, Is.EqualTo(2));
+
+            CompleteCurrentMission(game);
+            CompleteCurrentMission(game);
+            CompleteCurrentMission(game);
+            float sceneTimeout = 5f;
+            while (SceneManager.GetActiveScene().name != CareerSceneFlow.DeveloperScene)
+            {
+                sceneTimeout -= Time.unscaledDeltaTime;
+                Assert.That(sceneTimeout, Is.GreaterThan(0f));
+                yield return null;
+            }
+            yield return null;
+            panel = Object.FindFirstObjectByType<IdleManagementPanel>();
+            game.ResolveCareerDecision("Promoção positiva.", 0, 0, 0, 0, 0);
+            panel.AutomationButton.onClick.Invoke();
+            Assert.That(game.Rank, Is.EqualTo(CareerRank.JuniorDeveloper));
+            Assert.That(game.ToolingName, Is.EqualTo("Codex Multiagentes"));
+            Assert.That(game.HiringUnlocked, Is.False);
+
+            CompleteCurrentMission(game);
+            CompleteCurrentMission(game);
+            CompleteCurrentMission(game);
+            game.ResolveCareerDecision("Promoção positiva.", 0, 0, 0, 0, 0);
+            panel.HireButton.onClick.Invoke();
+            Assert.That(game.Rank, Is.EqualTo(CareerRank.MidLevelDeveloper));
+            Assert.That(game.TeamMembers, Is.EqualTo(1));
+            Assert.That(game.PassiveDeliveryPerTick, Is.EqualTo(4));
 
             Button settings = Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .First(button => button.name == "ÁUDIO & ACESSIBILIDADE");
             settings.onClick.Invoke();
             Assert.That(panel.SettingsVisible, Is.True);
+            yield return null;
         }
 
         [UnityTest]
@@ -256,6 +312,65 @@ namespace ProjetoJogosDigitais.Tests
                 Assert.That(timeout, Is.GreaterThan(0f), "A animação final não terminou.");
                 yield return null;
             }
+        }
+
+        [UnityTest]
+        public IEnumerator PauseKeepsIdleProductionRunning()
+        {
+            Time.timeScale = 1f;
+            yield return SceneManager.LoadSceneAsync(CareerSceneFlow.InternScene, LoadSceneMode.Single);
+            yield return null;
+
+            CareerGame game = CareerGame.Current;
+            PauseMenuController pause = Object.FindFirstObjectByType<PauseMenuController>();
+            int deliveryBefore = game.Delivery;
+            pause.TogglePause();
+            Assert.That(Time.timeScale, Is.Zero);
+
+            float timeout = 16f;
+            while (timeout > 0f)
+            {
+                timeout -= Time.unscaledDeltaTime;
+                yield return null;
+            }
+
+            Assert.That(game.Delivery, Is.GreaterThan(deliveryBefore));
+            pause.TogglePause();
+            Assert.That(Time.timeScale, Is.EqualTo(1f));
+        }
+
+        private static void CompleteCurrentMission(CareerGame game)
+        {
+            game.AcknowledgeMissionBriefing();
+            for (int index = 0; index < game.MissionObjectiveCount; index++)
+            {
+                MissionObjective objective = game.GetMissionObjective(index);
+                switch (objective.Kind)
+                {
+                    case MissionObjectiveKind.ToolLevel:
+                        while (game.AutomationLevel < objective.Required)
+                        {
+                            while (game.Money < game.NextAutomationCost) game.AdvanceOpenTime(15f);
+                            Assert.That(game.UpgradeAutomation(), Is.True);
+                        }
+                        break;
+                    case MissionObjectiveKind.TeamSize:
+                        while (game.TeamMembers < objective.Required)
+                        {
+                            while (game.Money < game.NextHireCost) game.AdvanceOpenTime(15f);
+                            Assert.That(game.HireTeammate(), Is.True);
+                        }
+                        break;
+                    default:
+                        Assert.That(CareerMissionCatalog.TryGetAction(objective.Kind, out OfficeActionType action),
+                            Is.True);
+                        while (!game.IsMissionObjectiveComplete(index)) game.PerformAction(action);
+                        break;
+                }
+            }
+
+            Assert.That(game.MissionReadyToClaim, Is.True, game.MissionChecklistText());
+            Assert.That(game.ClaimMission(), Is.True);
         }
 
         [UnityTearDown]

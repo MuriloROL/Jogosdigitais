@@ -22,10 +22,15 @@ namespace ProjetoJogosDigitais.Editor
         private const string FinaleScenePath = "Assets/Scenes/OwnerFinale.unity";
         private const string CharacterPath = "Assets/Art/ModernInteriors16/Characters/Premade/Premade_Character_01.png";
         private const string OfficeArtRoot = "Assets/Art/GeneratedOffices/";
-        private static readonly Color Panel = new(0.055f, 0.075f, 0.11f, 0.95f);
+        private const string CareerIconAtlasPath = "Assets/Art/UI/Pixel/career-icon-atlas.png";
+        private const string MenuIllustrationPath = "Assets/Art/UI/Pixel/menu-developer-workstation.png";
+        private static readonly Color Panel = new(0.045f, 0.067f, 0.105f, 0.98f);
+        private static readonly Color PanelTop = new(0.075f, 0.115f, 0.17f, 0.98f);
         private static readonly Color Accent = new(0.24f, 0.82f, 0.76f);
         private static readonly Color Muted = new(0.60f, 0.68f, 0.78f);
         private static readonly Color Amber = new(0.96f, 0.66f, 0.24f);
+        private static readonly Color Sky = new(0.28f, 0.70f, 0.96f);
+        private static readonly Color Violet = new(0.61f, 0.48f, 0.94f);
 
         [InitializeOnLoadMethod]
         private static void OpenMvpWhenEditorStartsBlank()
@@ -128,69 +133,90 @@ namespace ProjetoJogosDigitais.Editor
             scaler.referenceResolution = new Vector2(1280f, 720f);
             scaler.matchWidthOrHeight = 0.5f;
 
-            Image background = CreateImage(canvasObject.transform, "Fundo ByteForge", new Color(0.018f, 0.028f, 0.052f));
+            Image background = CreateImage(canvasObject.transform, "Fundo ByteForge", Color.white);
             SetRect(background.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            background.gameObject.AddComponent<UiVerticalGradient>().Configure(
+                new Color(0.035f, 0.075f, 0.12f),
+                new Color(0.008f, 0.016f, 0.034f));
 
-            Image skyline = CreateImage(background.transform, "Horizonte da cidade", new Color(0.035f, 0.09f, 0.14f, 0.92f));
-            SetRect(skyline.rectTransform, Vector2.zero, new Vector2(1f, 0.34f), Vector2.zero, Vector2.zero);
-            for (int index = 0; index < 13; index++)
+            Image ambientGlow = CreateImage(background.transform, "Luz ambiente", new Color(0.12f, 0.58f, 0.70f, 0.10f));
+            SetRect(ambientGlow.rectTransform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(-310f, 0f), new Vector2(660f, 660f));
+            ambientGlow.gameObject.AddComponent<UiRoundedGraphic>().Configure(28);
+
+            for (int index = 0; index < 10; index++)
             {
-                float width = 72f + index % 3 * 18f;
-                float height = 95f + index % 5 * 27f;
-                Image building = CreateImage(skyline.transform, $"Prédio {index + 1}", new Color(0.025f, 0.052f + index % 2 * 0.012f, 0.085f));
-                SetRect(building.rectTransform, Vector2.zero, Vector2.zero, new Vector2(index * 104f - 24f, 0f), new Vector2(width, height));
-                building.rectTransform.pivot = Vector2.zero;
-
-                Image window = CreateImage(building.transform, "Janela acesa", index % 3 == 0 ? Amber : Accent);
-                SetRect(window.rectTransform, new Vector2(0.5f, 0.65f), new Vector2(0.5f, 0.65f), Vector2.zero, new Vector2(10f, 10f));
-            }
-
-            for (int index = 0; index < 8; index++)
-            {
-                Image circuit = CreateImage(background.transform, $"Linha tecnológica {index + 1}", new Color(Accent.r, Accent.g, Accent.b, 0.055f));
-                SetRect(circuit.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0f, -70f - index * 76f), new Vector2(0f, 1f));
+                Image circuit = CreateImage(background.transform, $"Grade tecnológica {index + 1}", new Color(Accent.r, Accent.g, Accent.b, 0.045f));
+                SetRect(circuit.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0f, -34f - index * 72f), new Vector2(0f, 1f));
             }
 
             var mainView = new GameObject("Menu principal", typeof(RectTransform));
             mainView.transform.SetParent(canvasObject.transform, false);
             SetRect((RectTransform)mainView.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
 
-            Image brand = CreatePanel(mainView.transform, "Marca Dev Carrer", new Vector2(0f, 54f), new Vector2(610f, 390f), new Vector2(0.5f, 0.5f), Accent);
-            Text eyebrow = CreateText(brand.transform, "// BYTEFORGE IDLE SIMULATION", 14, TextAnchor.MiddleCenter, Accent, FontStyle.Bold);
-            SetRect(eyebrow.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -52f), new Vector2(-60f, 24f));
-            Text title = CreateText(brand.transform, "DEV CARRER", 54, TextAnchor.MiddleCenter, Color.white, FontStyle.Bold);
-            SetRect(title.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -118f), new Vector2(-60f, 70f));
-            Text subtitle = CreateText(brand.transform, "IDLE GAME • DE ESTAGIÁRIO A DONO", 20, TextAnchor.MiddleCenter, Amber, FontStyle.Bold);
-            SetRect(subtitle.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -169f), new Vector2(-60f, 32f));
-            Text description = CreateText(brand.transform, "Trabalhe, automatize e lidere.\nUma carreira completa em um único dia.", 16, TextAnchor.MiddleCenter, Muted);
-            description.lineSpacing = 1.2f;
-            SetRect(description.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(48f, -224f), new Vector2(-96f, 54f));
+            Image brand = CreatePanel(mainView.transform, "Marca Dev Carrer", new Vector2(54f, 0f), new Vector2(520f, 590f), new Vector2(0f, 0.5f), Accent);
+            Text eyebrow = CreateText(brand.transform, "// BYTEFORGE IDLE SIMULATION", 13, TextAnchor.MiddleLeft, Accent, FontStyle.Bold);
+            SetRect(eyebrow.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -48f, new Vector2(-64f, 24f));
+            Text title = CreateText(brand.transform, "DEV\nCARRER", 56, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
+            title.lineSpacing = 0.82f;
+            SetRect(title.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -124f, new Vector2(-64f, 116f));
+            Text subtitle = CreateText(brand.transform, "DE ESTAGIÁRIO A DONO", 19, TextAnchor.MiddleLeft, Amber, FontStyle.Bold);
+            SetRect(subtitle.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -202f, new Vector2(-64f, 30f));
+            Text description = CreateText(brand.transform, "Comece no código. Evolua sua stack.\nConstrua a equipe e assuma a ByteForge.", 16, TextAnchor.UpperLeft, Muted);
+            description.lineSpacing = 1.25f;
+            SetRect(description.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -256f, new Vector2(-64f, 62f));
 
-            Button play = CreateButton(brand.transform, "JOGAR", new Vector2(0f, 118f), new Vector2(300f, 52f), new Vector2(0.5f, 0f), Accent);
+            Image progression = CreateImage(brand.transform, "Progressão da carreira", new Color(0.08f, 0.17f, 0.23f, 0.96f));
+            SetRect(progression.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -319f, new Vector2(-64f, 46f));
+            progression.gameObject.AddComponent<UiRoundedGraphic>().Configure(10);
+            Text progressionText = CreateText(progression.transform, "R$ 120 → CODEX → MULTIAGENTES → EQUIPE", 11, TextAnchor.MiddleCenter, new Color(0.72f, 0.94f, 0.91f), FontStyle.Bold);
+            SetRect(progressionText.rectTransform, Vector2.zero, Vector2.one, new Vector2(8f, 1f), new Vector2(-16f, -2f));
+
+            Button play = CreateButton(brand.transform, "JOGAR", new Vector2(32f, 134f), new Vector2(456f, 56f), Vector2.zero, Accent);
             play.GetComponentInChildren<Text>().fontSize = 18;
-            Button continueCareer = CreateButton(brand.transform, "CONTINUAR", new Vector2(0f, 66f), new Vector2(300f, 44f), new Vector2(0.5f, 0f), new Color(0.19f, 0.48f, 0.47f));
+            Button continueCareer = CreateButton(brand.transform, "CONTINUAR", new Vector2(32f, 78f), new Vector2(456f, 46f), Vector2.zero, new Color(0.19f, 0.48f, 0.47f));
             continueCareer.GetComponentInChildren<Text>().fontSize = 14;
-            Button credits = CreateButton(brand.transform, "CRÉDITOS", new Vector2(0f, 18f), new Vector2(300f, 40f), new Vector2(0.5f, 0f), new Color(0.18f, 0.31f, 0.46f));
+            Button credits = CreateButton(brand.transform, "CRÉDITOS", new Vector2(32f, 28f), new Vector2(456f, 40f), Vector2.zero, new Color(0.18f, 0.31f, 0.46f));
             credits.GetComponentInChildren<Text>().fontSize = 14;
 
-            Text footer = CreateText(mainView.transform, "DEV CARRER IDLE GAME  •  VERSÃO 0.2.0", 11, TextAnchor.MiddleCenter, new Color(Muted.r, Muted.g, Muted.b, 0.72f));
-            SetRect(footer.rectTransform, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0f, 18f), new Vector2(0f, 24f));
+            RawImage workstation = CreateTextureArt(mainView.transform, "Estação de desenvolvimento", MenuIllustrationPath);
+            SetRect(workstation.rectTransform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(-38f, -4f), new Vector2(620f, 566f));
+            workstation.rectTransform.pivot = new Vector2(1f, 0.5f);
+            Text artCaption = CreateText(mainView.transform, "18 MISSÕES  •  7 CARGOS  •  1 EMPRESA", 12, TextAnchor.MiddleCenter, new Color(Muted.r, Muted.g, Muted.b, 0.82f), FontStyle.Bold);
+            SetRect(artCaption.rectTransform, new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-342f, 34f), new Vector2(560f, 26f));
+
+            Text footer = CreateText(mainView.transform, "DEV CARRER IDLE GAME  •  VERSÃO 0.4.0", 10, TextAnchor.MiddleLeft, new Color(Muted.r, Muted.g, Muted.b, 0.60f));
+            SetRect(footer.rectTransform, Vector2.zero, Vector2.zero, new Vector2(56f, 16f), new Vector2(500f, 22f));
+            footer.rectTransform.pivot = Vector2.zero;
 
             var creditsRoot = new GameObject("Créditos", typeof(RectTransform));
             creditsRoot.transform.SetParent(canvasObject.transform, false);
             SetRect((RectTransform)creditsRoot.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
-            Image creditsView = CreatePanel(creditsRoot.transform, "Painel de créditos", Vector2.zero, new Vector2(620f, 500f), new Vector2(0.5f, 0.5f), Amber);
-            Text creditsTitle = CreateText(creditsView.transform, "CRÉDITOS", 36, TextAnchor.MiddleCenter, Amber, FontStyle.Bold);
-            SetRect(creditsTitle.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -70f), new Vector2(-60f, 52f));
-            Text creditsText = CreateText(
+            Image creditsBackdrop = CreateImage(creditsRoot.transform, "Fundo dos créditos", new Color(0.005f, 0.012f, 0.026f, 0.94f));
+            SetRect(creditsBackdrop.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            Image creditsView = CreatePanel(creditsRoot.transform, "Painel de créditos", Vector2.zero, new Vector2(860f, 570f), new Vector2(0.5f, 0.5f), Amber);
+            Text creditsEyebrow = CreateText(creditsView.transform, "// QUEM CONSTRUIU A BYTEFORGE", 12, TextAnchor.MiddleCenter, Accent, FontStyle.Bold);
+            SetRect(creditsEyebrow.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -42f, new Vector2(-80f, 22f));
+            Text creditsTitle = CreateText(creditsView.transform, "CRÉDITOS", 38, TextAnchor.MiddleCenter, Amber, FontStyle.Bold);
+            SetRect(creditsTitle.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -84f, new Vector2(-80f, 48f));
+            Text creditsLeft = CreateText(
                 creditsView.transform,
-                "ESTÚDIO\nDev Murilo Lima\n\nCONCEPÇÃO E DESENVOLVIMENTO\nMurilo Lima\n\nARTE PIXEL\nModern Interiors • LimeZu\nlimezu.itch.io\n\nMÚSICA\nLevel Music Loop - Tigrun • qubodup\nCC0 1.0 via OpenGameArt\n\nTECNOLOGIA\nDesenvolvido com Unity\n\nObrigado por jogar!",
+                "ESTÚDIO\nDev Murilo Lima\n\nCONCEPÇÃO E DESENVOLVIMENTO\nMurilo Lima\n\nARTE PIXEL\nModern Interiors • LimeZu\nlimezu.itch.io",
                 15,
-                TextAnchor.UpperCenter,
+                TextAnchor.UpperLeft,
                 Color.white);
-            creditsText.lineSpacing = 1.15f;
-            SetRect(creditsText.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(54f, -140f), new Vector2(-108f, 330f));
-            Button back = CreateButton(creditsView.transform, "VOLTAR", new Vector2(0f, 28f), new Vector2(220f, 48f), new Vector2(0.5f, 0f), Amber);
+            creditsLeft.lineSpacing = 1.18f;
+            SetRect(creditsLeft.rectTransform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(48f, -132f), new Vector2(350f, 320f));
+            creditsLeft.rectTransform.pivot = new Vector2(0f, 1f);
+            Text creditsRight = CreateText(
+                creditsView.transform,
+                "MÚSICA\nLevel Music Loop • Tigrun / qubodup\nCC0 1.0 via OpenGameArt\n\nTECNOLOGIA\nDesenvolvido com Unity\n\nAGRADECIMENTO\nObrigado por jogar e construir essa carreira!",
+                15,
+                TextAnchor.UpperLeft,
+                Color.white);
+            creditsRight.lineSpacing = 1.18f;
+            SetRect(creditsRight.rectTransform, new Vector2(1f, 1f), Vector2.one, new Vector2(-48f, -132f), new Vector2(350f, 320f));
+            creditsRight.rectTransform.pivot = Vector2.one;
+            Button back = CreateButton(creditsView.transform, "VOLTAR AO MENU", new Vector2(0f, 30f), new Vector2(260f, 50f), new Vector2(0.5f, 0f), Amber);
             back.GetComponentInChildren<Text>().fontSize = 14;
             creditsRoot.SetActive(false);
 
@@ -327,13 +353,15 @@ namespace ProjetoJogosDigitais.Editor
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1280f, 720f);
             scaler.matchWidthOrHeight = 0.5f;
-            Image titlePanel = CreatePanel(canvasObject.transform, "Conclusão", new Vector2(0f, -28f), new Vector2(720f, 116f), new Vector2(0.5f, 1f), Amber);
-            Text title = CreateText(titlePanel.transform, "O ÚLTIMO DIA COMO FUNCIONÁRIO", 30, TextAnchor.MiddleCenter, new Color(0.98f, 0.76f, 0.28f));
-            SetRect(title.rectTransform, new Vector2(0f, 0.45f), Vector2.one, new Vector2(18f, -4f), new Vector2(-36f, -8f));
+            Image titlePanel = CreatePanel(canvasObject.transform, "Conclusão", new Vector2(0f, -24f), new Vector2(760f, 128f), new Vector2(0.5f, 1f), Amber);
+            CreatePixelAtlasIcon(titlePanel.transform, "Ícone do legado", 0, 1, new Vector2(18f, -15f), new Vector2(46f, 46f));
+            Text title = CreateText(titlePanel.transform, "O ÚLTIMO DIA COMO FUNCIONÁRIO", 29, TextAnchor.MiddleCenter, new Color(0.98f, 0.76f, 0.28f), FontStyle.Bold);
+            SetRect(title.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -48f, new Vector2(-100f, 42f));
             Text subtitle = CreateText(titlePanel.transform, "Uma jornada que começou com um estágio...", 18, TextAnchor.MiddleCenter, Color.white);
-            SetRect(subtitle.rectTransform, Vector2.zero, new Vector2(1f, 0.48f), new Vector2(18f, 2f), new Vector2(-36f, -4f));
-            Text legacy = CreateText(canvasObject.transform, "7 CARGOS  •  1 DIA DE CARREIRA  •  1 LEGADO", 17, TextAnchor.MiddleCenter, new Color(0.78f, 0.84f, 0.94f));
-            SetRect(legacy.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 28f), new Vector2(600f, 42f));
+            SetRect(subtitle.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -94f, new Vector2(-80f, 28f));
+            Image legacyPanel = CreatePanel(canvasObject.transform, "Legado da carreira", new Vector2(0f, 24f), new Vector2(680f, 72f), new Vector2(0.5f, 0f), Accent);
+            Text legacy = CreateText(legacyPanel.transform, "7 CARGOS  •  CODEX  •  EQUIPE  •  1 LEGADO", 16, TextAnchor.MiddleCenter, new Color(0.82f, 0.91f, 0.97f), FontStyle.Bold);
+            SetRect(legacy.rectTransform, Vector2.zero, Vector2.one, new Vector2(24f, 4f), new Vector2(-48f, -8f));
 
             OwnerFinaleController finale = new GameObject("Sequência final").AddComponent<OwnerFinaleController>();
             finale.Configure(hero.transform, animator, title, subtitle);
@@ -421,58 +449,62 @@ namespace ProjetoJogosDigitais.Editor
             scaler.referenceResolution = new Vector2(1280f, 720f);
             scaler.matchWidthOrHeight = 0.5f;
 
-            Image careerPanel = CreatePanel(canvasObject.transform, "Carreira", new Vector2(18f, -18f), new Vector2(280f, 108f), new Vector2(0f, 1f), Accent);
-            CreateSectionHeader(careerPanel.transform, "CARREIRA // DEV CARRER", Accent);
-            Text rank = CreateText(careerPanel.transform, "ESTAGIÁRIO", 23, TextAnchor.MiddleLeft, Accent, FontStyle.Bold);
-            SetRect(rank.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -50f), new Vector2(-32f, 30f));
-            Text promotion = CreateText(careerPanel.transform, "XP 0/250 PARA PROMOÇÃO", 12, TextAnchor.MiddleLeft, Muted);
-            SetRect(promotion.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -77f), new Vector2(-32f, 20f));
-            Image promotionFill = CreateBar(careerPanel.transform, new Vector2(16f, -98f), new Vector2(248f, 7f), Accent);
+            Image careerPanel = CreatePanel(canvasObject.transform, "Carreira", new Vector2(18f, -16f), new Vector2(286f, 116f), new Vector2(0f, 1f), Accent);
+            CreatePixelAtlasIcon(careerPanel.transform, "Ícone da carreira", 0, 1, new Vector2(14f, -12f), new Vector2(38f, 38f));
+            CreateSectionHeader(careerPanel.transform, "CARREIRA // DEV CARRER", Accent, false, 58f);
+            Text rank = CreateText(careerPanel.transform, "ESTAGIÁRIO", 22, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
+            SetRect(rank.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -57f), new Vector2(-32f, 28f));
+            Text promotion = CreateText(careerPanel.transform, "XP 0/250 PARA PROMOÇÃO", 11, TextAnchor.MiddleLeft, Muted);
+            SetRect(promotion.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -83f), new Vector2(-32f, 18f));
+            Image promotionFill = CreateBar(careerPanel.transform, new Vector2(16f, -104f), new Vector2(254f, 8f), Accent);
 
-            Image topPanel = CreatePanel(canvasObject.transform, "Expediente", new Vector2(0f, -18f), new Vector2(390f, 92f), new Vector2(0.5f, 1f), new Color(0.30f, 0.66f, 0.92f));
-            CreateSectionHeader(topPanel.transform, "EXPEDIENTE", new Color(0.30f, 0.66f, 0.92f), true);
+            Image topPanel = CreatePanel(canvasObject.transform, "Expediente", new Vector2(0f, -16f), new Vector2(410f, 100f), new Vector2(0.5f, 1f), Sky);
+            CreateSectionHeader(topPanel.transform, "EXPEDIENTE BYTEFORGE", Sky, true);
             Text clock = CreateText(topPanel.transform, "DIA 1  //  09:00", 22, TextAnchor.MiddleCenter, Color.white, FontStyle.Bold);
-            SetRect(clock.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -49f), new Vector2(-32f, 28f));
-            Text salary = CreateText(topPanel.transform, "SALÁRIO R$ 1.800   •   CAIXA R$ 120", 12, TextAnchor.MiddleCenter, new Color(0.56f, 0.90f, 0.62f));
-            SetRect(salary.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -71f), new Vector2(-32f, 18f));
-            Image workdayFill = CreateBar(topPanel.transform, new Vector2(20f, -84f), new Vector2(350f, 6f), new Color(0.30f, 0.66f, 0.92f));
+            SetRect(clock.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -50f), new Vector2(-32f, 28f));
+            Text salary = CreateText(topPanel.transform, "SALÁRIO R$ 1.800   •   CAIXA R$ 120", 12, TextAnchor.MiddleCenter, new Color(0.55f, 0.94f, 0.67f));
+            SetRect(salary.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -73f), new Vector2(-32f, 18f));
+            Image workdayFill = CreateBar(topPanel.transform, new Vector2(20f, -91f), new Vector2(370f, 7f), Sky);
 
-            Image statsPanel = CreatePanel(canvasObject.transform, "Desempenho", new Vector2(18f, -140f), new Vector2(280f, 250f), new Vector2(0f, 1f), new Color(0.35f, 0.72f, 0.95f));
-            CreateSectionHeader(statsPanel.transform, "DESEMPENHO DO DIA", new Color(0.35f, 0.72f, 0.95f));
+            Image statsPanel = CreatePanel(canvasObject.transform, "Desempenho", new Vector2(18f, -146f), new Vector2(286f, 244f), new Vector2(0f, 1f), Sky);
+            CreatePixelAtlasIcon(statsPanel.transform, "Ícone de energia", 1, 1, new Vector2(14f, -11f), new Vector2(38f, 38f));
+            CreateSectionHeader(statsPanel.transform, "DESEMPENHO DO DIA", Sky, false, 58f);
             Text delivery = CreateText(statsPanel.transform, "ENTREGA  0/100", 14, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
-            SetRect(delivery.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -48f), new Vector2(-32f, 22f));
-            Image deliveryFill = CreateBar(statsPanel.transform, new Vector2(16f, -70f), new Vector2(248f, 10f), new Color(0.26f, 0.72f, 0.92f));
+            SetRect(delivery.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -55f), new Vector2(-32f, 21f));
+            Image deliveryFill = CreateBar(statsPanel.transform, new Vector2(16f, -76f), new Vector2(254f, 10f), Sky);
             Text energy = CreateText(statsPanel.transform, "ENERGIA  100%", 13, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
-            SetRect(energy.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -98f), new Vector2(-32f, 20f));
-            Image energyFill = CreateBar(statsPanel.transform, new Vector2(16f, -117f), new Vector2(248f, 8f), new Color(0.35f, 0.86f, 0.48f));
+            SetRect(energy.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -103f), new Vector2(-32f, 20f));
+            Image energyFill = CreateBar(statsPanel.transform, new Vector2(16f, -122f), new Vector2(254f, 8f), new Color(0.35f, 0.86f, 0.48f));
             Text stress = CreateText(statsPanel.transform, "ESTRESSE  8%", 13, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
-            SetRect(stress.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -145f), new Vector2(-32f, 20f));
-            Image stressFill = CreateBar(statsPanel.transform, new Vector2(16f, -164f), new Vector2(248f, 8f), new Color(0.40f, 0.75f, 0.95f));
-            Text knowledge = CreateStatChip(statsPanel.transform, "CONHECIMENTO\n0", new Vector2(16f, 16f), new Color(0.68f, 0.58f, 0.96f));
-            Text reputation = CreateStatChip(statsPanel.transform, "REPUTAÇÃO\n0", new Vector2(144f, 16f), Amber);
+            SetRect(stress.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -149f), new Vector2(-32f, 20f));
+            Image stressFill = CreateBar(statsPanel.transform, new Vector2(16f, -168f), new Vector2(254f, 8f), Sky);
+            Text knowledge = CreateStatChip(statsPanel.transform, "CONHECIMENTO\n0", new Vector2(16f, 14f), new Vector2(123f, 50f), Violet);
+            Text reputation = CreateStatChip(statsPanel.transform, "REPUTAÇÃO\n0", new Vector2(147f, 14f), new Vector2(123f, 50f), Amber);
 
-            Image objectivePanel = CreatePanel(canvasObject.transform, "Sprint do dia", new Vector2(-18f, -18f), new Vector2(260f, 132f), Vector2.one, Amber);
-            CreateSectionHeader(objectivePanel.transform, "SPRINT DO DIA", Amber);
-            Text objective = CreateText(objectivePanel.transform, "100 PONTOS RESTANTES\n8h00 disponíveis", 15, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
-            objective.lineSpacing = 1.25f;
-            SetRect(objective.rectTransform, Vector2.zero, Vector2.one, new Vector2(16f, 12f), new Vector2(-32f, -48f));
+            Image helpPanel = CreatePanel(canvasObject.transform, "Guia das estações", new Vector2(18f, -404f), new Vector2(286f, 126f), new Vector2(0f, 1f), Violet);
+            CreateSectionHeader(helpPanel.transform, "CLIQUE NOS MARCADORES", Violet);
+            Text help = CreateText(helpPanel.transform, "PROGRAMAR  entrega     CAFÉ  energia\nREUNIÃO  reputação     PAUSA  alívio\nESTUDAR  conhecimento", 12, TextAnchor.UpperLeft, new Color(0.84f, 0.89f, 0.96f));
+            help.lineSpacing = 1.35f;
+            SetRect(help.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(0f, -79f), new Vector2(-32f, 66f));
 
-            Image helpPanel = CreatePanel(canvasObject.transform, "Atalhos", new Vector2(-18f, -164f), new Vector2(260f, 154f), Vector2.one, new Color(0.55f, 0.46f, 0.90f));
-            CreateSectionHeader(helpPanel.transform, "AÇÕES DO ESCRITÓRIO", new Color(0.55f, 0.46f, 0.90f));
-            Text help = CreateText(helpPanel.transform, "PROGRAMAR  entrega\nREUNIÃO  reputação\nESTUDAR  conhecimento\nCAFÉ  energia\nPAUSA  reduz estresse", 13, TextAnchor.UpperLeft, new Color(0.84f, 0.88f, 0.95f));
-            help.lineSpacing = 1.25f;
-            SetRect(help.rectTransform, Vector2.zero, Vector2.one, new Vector2(16f, 14f), new Vector2(-32f, -51f));
+            Image objectivePanel = CreatePanel(canvasObject.transform, "Missão atual", new Vector2(-18f, -16f), new Vector2(292f, 260f), Vector2.one, Amber);
+            CreatePixelAtlasIcon(objectivePanel.transform, "Ícone do sprint", 2, 0, new Vector2(-14f, -12f), new Vector2(40f, 40f), new Vector2(1f, 1f));
+            CreateSectionHeader(objectivePanel.transform, "MISSÃO ATUAL", Amber);
+            Text objective = CreateText(objectivePanel.transform, "MISSÃO 1/3\n□ Conhecer o escritório  0/1", 12, TextAnchor.UpperLeft, Color.white, FontStyle.Bold);
+            objective.lineSpacing = 1.28f;
+            SetRect(objective.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(0f, -151f), new Vector2(-32f, 200f));
 
-            Image bottomPanel = CreatePanel(canvasObject.transform, "Central de ações", new Vector2(0f, 18f), new Vector2(760f, 80f), new Vector2(0.5f, 0f), Accent);
+            Image bottomPanel = CreatePanel(canvasObject.transform, "Central de ações", new Vector2(0f, 16f), new Vector2(720f, 88f), new Vector2(0.5f, 0f), Accent);
+            CreatePixelAtlasIcon(bottomPanel.transform, "Ícone de status", 2, 0, new Vector2(14f, 13f), new Vector2(46f, 46f), Vector2.zero);
             Text statusTitle = CreateText(bottomPanel.transform, "STATUS ATUAL", 10, TextAnchor.MiddleLeft, Accent, FontStyle.Bold);
-            SetRect(statusTitle.rectTransform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(18f, -19f), new Vector2(390f, 16f));
+            SetRect(statusTitle.rectTransform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(68f, -23f), new Vector2(296f, 16f));
             statusTitle.rectTransform.pivot = new Vector2(0f, 0.5f);
-            Text status = CreateText(bottomPanel.transform, "Escolha onde começar o expediente.", 14, TextAnchor.MiddleLeft, new Color(0.82f, 0.92f, 0.96f), FontStyle.Bold);
-            SetRect(status.rectTransform, Vector2.zero, Vector2.zero, new Vector2(18f, 9f), new Vector2(410f, 40f));
+            Text status = CreateText(bottomPanel.transform, "Passe o mouse e clique em um botão de atividade.", 13, TextAnchor.MiddleLeft, new Color(0.84f, 0.94f, 0.98f), FontStyle.Bold);
+            SetRect(status.rectTransform, Vector2.zero, Vector2.zero, new Vector2(68f, 14f), new Vector2(288f, 40f));
             status.rectTransform.pivot = Vector2.zero;
-            Button endDay = CreateButton(bottomPanel.transform, "RESGATAR META", new Vector2(-174f, 16f), new Vector2(138f, 46f), new Vector2(1f, 0f), Accent);
-            Button save = CreateButton(bottomPanel.transform, "SALVAR", new Vector2(-100f, 16f), new Vector2(68f, 46f), new Vector2(1f, 0f), new Color(0.22f, 0.36f, 0.52f));
-            Button load = CreateButton(bottomPanel.transform, "CARREGAR", new Vector2(-16f, 16f), new Vector2(78f, 46f), new Vector2(1f, 0f), new Color(0.22f, 0.36f, 0.52f));
+            Button endDay = CreateButton(bottomPanel.transform, "RESGATAR META", new Vector2(-216f, 16f), new Vector2(154f, 52f), new Vector2(1f, 0f), Accent);
+            Button save = CreateButton(bottomPanel.transform, "SALVAR", new Vector2(-116f, 16f), new Vector2(92f, 52f), new Vector2(1f, 0f), new Color(0.20f, 0.35f, 0.52f));
+            Button load = CreateButton(bottomPanel.transform, "CARREGAR", new Vector2(-16f, 16f), new Vector2(92f, 52f), new Vector2(1f, 0f), new Color(0.20f, 0.35f, 0.52f));
 
             CareerHud hud = canvasObject.AddComponent<CareerHud>();
             hud.Configure(game, player, rank, promotion, promotionFill, clock, salary, workdayFill, delivery, deliveryFill, energy, energyFill, stress, stressFill, knowledge, reputation, status, objective, endDay, save, load);
@@ -480,9 +512,10 @@ namespace ProjetoJogosDigitais.Editor
 
         private static Image CreateBar(Transform parent, Vector2 position, Vector2 size, Color fillColor)
         {
-            Image background = CreateImage(parent, "Trilho", new Color(0.015f, 0.025f, 0.045f, 0.95f));
+            Image background = CreateImage(parent, "Trilho", new Color(0.008f, 0.016f, 0.032f, 0.94f));
             SetRect(background.rectTransform, new Vector2(0f, 1f), new Vector2(0f, 1f), position, size);
             background.rectTransform.pivot = new Vector2(0f, 0.5f);
+            background.gameObject.AddComponent<UiRoundedGraphic>().Configure(Mathf.Max(4, Mathf.RoundToInt(size.y * 0.5f)));
             Image fill = CreateImage(background.transform, "Preenchimento", fillColor);
             SetRect(fill.rectTransform, Vector2.zero, Vector2.one, new Vector2(2f, 2f), new Vector2(-4f, -4f));
             fill.type = Image.Type.Filled;
@@ -493,13 +526,14 @@ namespace ProjetoJogosDigitais.Editor
 
         private static Image CreatePanel(Transform parent, string name, Vector2 position, Vector2 size, Vector2 anchor, Color accent)
         {
-            Image shadow = CreateImage(parent, $"Sombra • {name}", new Color(0f, 0f, 0f, 0.46f));
+            Image shadow = CreateImage(parent, $"Sombra • {name}", new Color(0f, 0f, 0f, 0.42f));
             RectTransform shadowRect = shadow.rectTransform;
             shadowRect.anchorMin = anchor;
             shadowRect.anchorMax = anchor;
             shadowRect.pivot = anchor;
             shadowRect.anchoredPosition = position + new Vector2(4f, -5f);
             shadowRect.sizeDelta = size;
+            shadow.gameObject.AddComponent<UiRoundedGraphic>().Configure(18);
 
             Image panel = CreateImage(parent, name, Panel);
             RectTransform rect = panel.rectTransform;
@@ -508,29 +542,45 @@ namespace ProjetoJogosDigitais.Editor
             rect.pivot = anchor;
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
+            panel.color = Color.white;
+            panel.gameObject.AddComponent<UiRoundedGraphic>().Configure(16);
+            panel.gameObject.AddComponent<UiVerticalGradient>().Configure(PanelTop, Panel);
 
             Outline outline = panel.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(accent.r, accent.g, accent.b, 0.46f);
+            outline.effectColor = new Color(accent.r, accent.g, accent.b, 0.30f);
             outline.effectDistance = new Vector2(1f, -1f);
             outline.useGraphicAlpha = false;
 
-            Image topLine = CreateImage(panel.transform, "Linha de destaque", accent);
-            SetRect(topLine.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.zero, new Vector2(0f, 3f));
+            Image topLine = CreateImage(panel.transform, "Linha de destaque", new Color(accent.r, accent.g, accent.b, 0.92f));
+            SetRect(topLine.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(14f, -2f), new Vector2(-28f, 3f));
             topLine.rectTransform.pivot = new Vector2(0.5f, 1f);
+            topLine.gameObject.AddComponent<UiRoundedGraphic>().Configure(4);
             return panel;
         }
 
-        private static void CreateSectionHeader(Transform parent, string value, Color color, bool centered = false)
+        private static void CreateSectionHeader(Transform parent, string value, Color color, bool centered = false, float leftInset = 14f)
         {
             Text header = CreateText(parent, value, 10, centered ? TextAnchor.MiddleCenter : TextAnchor.MiddleLeft, color, FontStyle.Bold);
-            SetRect(header.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(14f, -20f), new Vector2(-28f, 18f));
+            const float rightInset = 14f;
+            float horizontalOffset = (leftInset - rightInset) * 0.5f;
+            SetRect(
+                header.rectTransform,
+                new Vector2(0f, 1f),
+                new Vector2(1f, 1f),
+                new Vector2(horizontalOffset, -22f),
+                new Vector2(-leftInset - rightInset, 18f));
         }
 
-        private static Text CreateStatChip(Transform parent, string value, Vector2 position, Color color)
+        private static Text CreateStatChip(Transform parent, string value, Vector2 position, Vector2 size, Color color)
         {
             Image chip = CreateImage(parent, value.Split('\n')[0], new Color(color.r * 0.16f, color.g * 0.16f, color.b * 0.16f, 0.94f));
-            SetRect(chip.rectTransform, Vector2.zero, Vector2.zero, position, new Vector2(120f, 54f));
+            SetRect(chip.rectTransform, Vector2.zero, Vector2.zero, position, size);
             chip.rectTransform.pivot = Vector2.zero;
+            chip.color = Color.white;
+            chip.gameObject.AddComponent<UiRoundedGraphic>().Configure(11);
+            chip.gameObject.AddComponent<UiVerticalGradient>().Configure(
+                new Color(color.r * 0.25f, color.g * 0.25f, color.b * 0.25f, 0.96f),
+                new Color(color.r * 0.10f, color.g * 0.10f, color.b * 0.10f, 0.96f));
             Outline outline = chip.gameObject.AddComponent<Outline>();
             outline.effectColor = new Color(color.r, color.g, color.b, 0.35f);
             outline.effectDistance = Vector2.one;
@@ -538,6 +588,57 @@ namespace ProjetoJogosDigitais.Editor
             text.lineSpacing = 1.1f;
             SetRect(text.rectTransform, Vector2.zero, Vector2.one, new Vector2(4f, 3f), new Vector2(-8f, -6f));
             return text;
+        }
+
+        private static RawImage CreatePixelAtlasIcon(
+            Transform parent,
+            string name,
+            int column,
+            int row,
+            Vector2 position,
+            Vector2 size,
+            Vector2? anchor = null)
+        {
+            Texture2D atlas = AssetDatabase.LoadAssetAtPath<Texture2D>(CareerIconAtlasPath);
+            if (atlas == null)
+            {
+                return null;
+            }
+
+            var iconObject = new GameObject(name, typeof(RectTransform));
+            iconObject.transform.SetParent(parent, false);
+            RawImage icon = iconObject.AddComponent<RawImage>();
+            icon.texture = atlas;
+            icon.color = Color.white;
+            icon.raycastTarget = false;
+            const float insetX = 0.025f;
+            const float insetY = 0.035f;
+            icon.uvRect = new Rect(
+                column / 3f + insetX,
+                row / 2f + insetY,
+                1f / 3f - insetX * 2f,
+                1f / 2f - insetY * 2f);
+            Vector2 resolvedAnchor = anchor ?? new Vector2(0f, 1f);
+            SetRect(icon.rectTransform, resolvedAnchor, resolvedAnchor, position, size);
+            icon.rectTransform.pivot = resolvedAnchor;
+            return icon;
+        }
+
+        private static RawImage CreateTextureArt(Transform parent, string name, string assetPath)
+        {
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+            if (texture == null)
+            {
+                throw new InvalidOperationException($"Arte de interface não encontrada: {assetPath}");
+            }
+
+            var artObject = new GameObject(name, typeof(RectTransform));
+            artObject.transform.SetParent(parent, false);
+            RawImage art = artObject.AddComponent<RawImage>();
+            art.texture = texture;
+            art.color = Color.white;
+            art.raycastTarget = false;
+            return art;
         }
 
         private static Image CreateImage(Transform parent, string name, Color color)
@@ -572,7 +673,8 @@ namespace ProjetoJogosDigitais.Editor
 
         private static Button CreateButton(Transform parent, string label, Vector2 position, Vector2 size, Vector2 anchor, Color color)
         {
-            Image image = CreateImage(parent, label, color);
+            Color baseColor = Color.Lerp(color, new Color(0.03f, 0.055f, 0.09f), 0.24f);
+            Image image = CreateImage(parent, label, baseColor);
             RectTransform rect = image.rectTransform;
             rect.anchorMin = anchor;
             rect.anchorMax = anchor;
@@ -580,8 +682,13 @@ namespace ProjetoJogosDigitais.Editor
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
             image.raycastTarget = true;
+            image.color = Color.white;
+            image.gameObject.AddComponent<UiRoundedGraphic>().Configure(12);
+            image.gameObject.AddComponent<UiVerticalGradient>().Configure(
+                Color.Lerp(color, Color.white, 0.08f),
+                Color.Lerp(color, Color.black, 0.22f));
             Outline outline = image.gameObject.AddComponent<Outline>();
-            outline.effectColor = new Color(color.r, color.g, color.b, 0.72f);
+            outline.effectColor = new Color(color.r, color.g, color.b, 0.38f);
             outline.effectDistance = new Vector2(1f, -1f);
             Button button = image.gameObject.AddComponent<Button>();
             ColorBlock colors = button.colors;
@@ -590,8 +697,9 @@ namespace ProjetoJogosDigitais.Editor
             button.colors = colors;
             colors.disabledColor = new Color(0.16f, 0.19f, 0.24f, 0.72f);
             button.colors = colors;
+            image.gameObject.AddComponent<UiButtonMotion>();
             Text text = CreateText(image.transform, label, 12, TextAnchor.MiddleCenter, Color.white, FontStyle.Bold);
-            SetRect(text.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            SetRect(text.rectTransform, Vector2.zero, Vector2.one, new Vector2(8f, 2f), new Vector2(-16f, -4f));
             return button;
         }
 
