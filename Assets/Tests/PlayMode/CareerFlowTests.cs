@@ -45,7 +45,7 @@ namespace ProjetoJogosDigitais.Tests
             }
 
             Assert.That(game.Delivery, Is.GreaterThan(deliveryBefore));
-            Assert.That(game.MinutesUsed, Is.EqualTo(60));
+            Assert.That(game.MinutesUsed, Is.Zero, "Ações manuais não devem acelerar o relógio real do idle.");
             Assert.That(player.Status, Does.Contain("entreg"));
         }
 
@@ -69,22 +69,26 @@ namespace ProjetoJogosDigitais.Tests
         }
 
         [UnityTest]
-        public IEnumerator EndDayButtonAdvancesCareerCalendar()
+        public IEnumerator SprintButtonClaimsTheCurrentMilestone()
         {
             Time.timeScale = 1f;
             yield return SceneManager.LoadSceneAsync(CareerSceneFlow.InternScene, LoadSceneMode.Single);
             yield return null;
 
             CareerGame game = Object.FindFirstObjectByType<CareerGame>();
+            while (!game.GoalReached)
+            {
+                game.PerformAction(OfficeActionType.Code);
+            }
             Button endDay = Object.FindObjectsByType<Button>(FindObjectsSortMode.None)
-                .First(button => button.name == "ENCERRAR DIA");
+                .First(button => button.name == "RESGATAR META" || button.name == "ENCERRAR DIA");
 
             endDay.onClick.Invoke();
             yield return null;
 
-            Assert.That(game.Day, Is.EqualTo(2));
-            Assert.That(game.Delivery, Is.Zero);
-            Assert.That(game.LastFeedback, Does.Contain("Meta não atingida"));
+            Assert.That(game.Day, Is.EqualTo(1));
+            Assert.That(game.SprintBonusClaimed, Is.True);
+            Assert.That(game.LastFeedback, Does.Contain("Meta resgatada"));
         }
 
         [UnityTest]
@@ -120,16 +124,8 @@ namespace ProjetoJogosDigitais.Tests
             yield return null;
 
             CareerGame game = CareerGame.Current;
-            for (int day = 0; day < 2; day++)
-            {
-                int guard = 0;
-                while (!game.GoalReached && guard++ < 8)
-                {
-                    game.PerformAction(OfficeActionType.Code);
-                }
-                game.EndDay();
-                yield return null;
-            }
+            game.AdvanceOpenTime(350f * 15f);
+            yield return null;
 
             float timeout = 5f;
             while (SceneManager.GetActiveScene().name != CareerSceneFlow.DeveloperScene)
@@ -141,6 +137,10 @@ namespace ProjetoJogosDigitais.Tests
 
             Assert.That(game.Rank, Is.EqualTo(CareerRank.JuniorDeveloper));
             Assert.That(Object.FindFirstObjectByType<OfficePlayerController>(), Is.Not.Null);
+            CareerDecisionController decision = Object.FindFirstObjectByType<CareerDecisionController>();
+            yield return null;
+            Assert.That(decision, Is.Not.Null);
+            Assert.That(decision.IsVisible, Is.True);
         }
 
         [UnityTest]
@@ -152,11 +152,15 @@ namespace ProjetoJogosDigitais.Tests
 
             MainMenuController menu = Object.FindFirstObjectByType<MainMenuController>();
             BackgroundMusic music = Object.FindFirstObjectByType<BackgroundMusic>();
+            GameAudioFeedback effects = Object.FindFirstObjectByType<GameAudioFeedback>();
             Assert.That(menu, Is.Not.Null);
             Assert.That(music, Is.Not.Null);
+            Assert.That(effects, Is.Not.Null);
             Assert.That(music.ClipName, Is.EqualTo("levelmusicloop-tigrun"));
             Assert.That(music.IsLooping, Is.True);
             Assert.That(menu.CreditsVisible, Is.False);
+            Assert.That(Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Any(button => button.name == "CONTINUAR"), Is.True);
 
             Button credits = Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .First(button => button.name == "CRÉDITOS");
@@ -196,7 +200,7 @@ namespace ProjetoJogosDigitais.Tests
             CareerTutorialController tutorial = Object.FindFirstObjectByType<CareerTutorialController>();
             Assert.That(tutorial, Is.Not.Null);
             Assert.That(tutorial.IsVisible, Is.True);
-            Assert.That(tutorial.StepCount, Is.EqualTo(4));
+            Assert.That(tutorial.StepCount, Is.EqualTo(5));
 
             for (int step = 0; step < tutorial.StepCount; step++)
             {
@@ -206,6 +210,33 @@ namespace ProjetoJogosDigitais.Tests
             Assert.That(tutorial.IsVisible, Is.False);
             Assert.That(PlayerPrefs.GetInt(CareerTutorialController.SeenPlayerPrefsKey), Is.EqualTo(1));
             PlayerPrefs.DeleteKey(CareerTutorialController.SeenPlayerPrefsKey);
+        }
+
+        [UnityTest]
+        public IEnumerator IdlePanelHiresATeammateAndShowsSettings()
+        {
+            Time.timeScale = 1f;
+            yield return SceneManager.LoadSceneAsync(CareerSceneFlow.InternScene, LoadSceneMode.Single);
+            yield return null;
+            yield return null;
+
+            CareerGame game = CareerGame.Current;
+            IdleManagementPanel panel = Object.FindFirstObjectByType<IdleManagementPanel>();
+            Assert.That(panel, Is.Not.Null);
+            RectTransform managementRect = GameObject.Find("Gestão idle").GetComponent<RectTransform>();
+            Assert.That(managementRect.anchorMin, Is.EqualTo(new Vector2(1f, 0f)));
+            Assert.That(managementRect.anchoredPosition.y, Is.EqualTo(110f));
+            game.AdvanceOpenTime(15f * 60f);
+            panel.HireButton.onClick.Invoke();
+            yield return null;
+
+            Assert.That(game.TeamMembers, Is.EqualTo(1));
+            Assert.That(game.PassiveDeliveryPerTick, Is.EqualTo(2));
+
+            Button settings = Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .First(button => button.name == "ÁUDIO & ACESSIBILIDADE");
+            settings.onClick.Invoke();
+            Assert.That(panel.SettingsVisible, Is.True);
         }
 
         [UnityTest]

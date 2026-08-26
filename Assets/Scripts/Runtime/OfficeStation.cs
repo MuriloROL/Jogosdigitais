@@ -7,16 +7,19 @@ namespace ProjetoJogosDigitais.Gameplay
     [RequireComponent(typeof(BoxCollider2D))]
     public sealed class OfficeStation : MonoBehaviour
     {
+        private const float CooldownSeconds = 30f;
         [SerializeField] private OfficeActionType actionType;
         [SerializeField] private Vector2 interactionOffset = new(0f, -1.2f);
         [SerializeField] private float feedbackDuration = 0.65f;
 
         private bool inUse;
+        private float nextAvailableAt;
 
         public OfficeActionType ActionType => actionType;
         public string ActionLabel => CareerGame.ActionName(actionType);
         public Vector3 InteractionPosition => transform.position + (Vector3)interactionOffset;
-        public bool IsAvailable => !inUse;
+        public bool IsAvailable => !inUse && Time.unscaledTime >= nextAvailableAt;
+        public float CooldownRemaining => Mathf.Max(0f, nextAvailableAt - Time.unscaledTime);
 
         public void Configure(OfficeActionType type, Vector2 offset)
         {
@@ -36,6 +39,13 @@ namespace ProjetoJogosDigitais.Gameplay
                 return;
             }
 
+            if (!IsAvailable)
+            {
+                player.ShowStatus($"{ActionLabel} estará disponível em {Mathf.CeilToInt(CooldownRemaining)}s.");
+                GameAudioFeedback.Play(FeedbackSound.Button);
+                return;
+            }
+
             StartCoroutine(PerformRoutine(player));
         }
 
@@ -45,7 +55,8 @@ namespace ProjetoJogosDigitais.Gameplay
             player.BeginInteraction(this);
             Vector3 originalScale = transform.localScale;
             float startedAt = Time.realtimeSinceStartup;
-            while (Time.realtimeSinceStartup - startedAt < feedbackDuration)
+            float duration = GamePreferences.ReduceMotion ? 0.08f : feedbackDuration;
+            while (Time.realtimeSinceStartup - startedAt < duration)
             {
                 float pulse = 1f + Mathf.Sin((Time.realtimeSinceStartup - startedAt) * 16f) * 0.025f;
                 transform.localScale = originalScale * pulse;
@@ -56,6 +67,11 @@ namespace ProjetoJogosDigitais.Gameplay
             OfficeActionResult result = CareerGame.Current == null
                 ? new OfficeActionResult(false, "Sistema de carreira indisponível.", 0)
                 : CareerGame.Current.PerformAction(actionType);
+            if (result.Succeeded)
+            {
+                nextAvailableAt = Time.unscaledTime + CooldownSeconds;
+                GameAudioFeedback.Play(FeedbackSound.Work);
+            }
             inUse = false;
             player.CompleteInteraction(result.Message);
         }

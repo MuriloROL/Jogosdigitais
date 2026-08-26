@@ -6,12 +6,13 @@ namespace ProjetoJogosDigitais.Presentation
 {
     public sealed class CareerTutorialController : MonoBehaviour
     {
-        public const string SeenPlayerPrefsKey = "byteforge.tutorial.seen.v1";
+        public const string SeenPlayerPrefsKey = "devcarrer.tutorial.seen.v2";
 
         private static readonly string[] StepTitles =
         {
             "BEM-VINDO À BYTEFORGE",
-            "ENTREGA E XP",
+            "A EQUIPE NÃO PARA",
+            "JOGUE PARA ACELERAR",
             "CUIDE DO SEU RITMO",
             "CONSTRUA SUA CARREIRA"
         };
@@ -19,9 +20,10 @@ namespace ProjetoJogosDigitais.Presentation
         private static readonly string[] StepBodies =
         {
             "Clique nos marcadores do escritório para Alex caminhar até uma estação e realizar uma atividade.",
-            "Entrega mede a meta do dia e volta a zero no próximo expediente. XP é permanente e libera promoções.",
+            "Enquanto o jogo estiver aberto, Alex e sua equipe entregam automaticamente a cada 15 segundos. Fechar o jogo pausa tudo.",
+            "Contrate colegas, automatize o pipeline e use as estações para acelerar a produção e tomar decisões.",
             "Programar consome energia e aumenta o estresse. Use café e pausas para manter a produtividade.",
-            "Complete a tarefa extra do dia, reaja aos eventos da carreira e use Salvar. Quando terminar, encerre o dia."
+            "O expediente dura oito horas reais. Salve quando quiser e avance de Estagiário a Dono antes do fim do dia."
         };
 
         private GameObject overlay;

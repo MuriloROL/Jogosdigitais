@@ -155,23 +155,25 @@ namespace ProjetoJogosDigitais.Editor
             mainView.transform.SetParent(canvasObject.transform, false);
             SetRect((RectTransform)mainView.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
 
-            Image brand = CreatePanel(mainView.transform, "Marca ByteForge", new Vector2(0f, 54f), new Vector2(610f, 390f), new Vector2(0.5f, 0.5f), Accent);
-            Text eyebrow = CreateText(brand.transform, "// DEV CAREER SIMULATION", 14, TextAnchor.MiddleCenter, Accent, FontStyle.Bold);
+            Image brand = CreatePanel(mainView.transform, "Marca Dev Carrer", new Vector2(0f, 54f), new Vector2(610f, 390f), new Vector2(0.5f, 0.5f), Accent);
+            Text eyebrow = CreateText(brand.transform, "// BYTEFORGE IDLE SIMULATION", 14, TextAnchor.MiddleCenter, Accent, FontStyle.Bold);
             SetRect(eyebrow.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -52f), new Vector2(-60f, 24f));
-            Text title = CreateText(brand.transform, "BYTEFORGE", 58, TextAnchor.MiddleCenter, Color.white, FontStyle.Bold);
+            Text title = CreateText(brand.transform, "DEV CARRER", 54, TextAnchor.MiddleCenter, Color.white, FontStyle.Bold);
             SetRect(title.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -118f), new Vector2(-60f, 70f));
-            Text subtitle = CreateText(brand.transform, "DE ESTAGIÁRIO A DONO", 21, TextAnchor.MiddleCenter, Amber, FontStyle.Bold);
+            Text subtitle = CreateText(brand.transform, "IDLE GAME • DE ESTAGIÁRIO A DONO", 20, TextAnchor.MiddleCenter, Amber, FontStyle.Bold);
             SetRect(subtitle.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -169f), new Vector2(-60f, 32f));
-            Text description = CreateText(brand.transform, "Construa sua carreira. Entregue valor.\nLidere a empresa que você ajudou a criar.", 16, TextAnchor.MiddleCenter, Muted);
+            Text description = CreateText(brand.transform, "Trabalhe, automatize e lidere.\nUma carreira completa em um único dia.", 16, TextAnchor.MiddleCenter, Muted);
             description.lineSpacing = 1.2f;
             SetRect(description.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(48f, -224f), new Vector2(-96f, 54f));
 
-            Button play = CreateButton(brand.transform, "JOGAR", new Vector2(0f, 82f), new Vector2(300f, 58f), new Vector2(0.5f, 0f), Accent);
+            Button play = CreateButton(brand.transform, "JOGAR", new Vector2(0f, 118f), new Vector2(300f, 52f), new Vector2(0.5f, 0f), Accent);
             play.GetComponentInChildren<Text>().fontSize = 18;
-            Button credits = CreateButton(brand.transform, "CRÉDITOS", new Vector2(0f, 18f), new Vector2(300f, 46f), new Vector2(0.5f, 0f), new Color(0.18f, 0.31f, 0.46f));
+            Button continueCareer = CreateButton(brand.transform, "CONTINUAR", new Vector2(0f, 66f), new Vector2(300f, 44f), new Vector2(0.5f, 0f), new Color(0.19f, 0.48f, 0.47f));
+            continueCareer.GetComponentInChildren<Text>().fontSize = 14;
+            Button credits = CreateButton(brand.transform, "CRÉDITOS", new Vector2(0f, 18f), new Vector2(300f, 40f), new Vector2(0.5f, 0f), new Color(0.18f, 0.31f, 0.46f));
             credits.GetComponentInChildren<Text>().fontSize = 14;
 
-            Text footer = CreateText(mainView.transform, "BYTEFORGE BUILD 1.0  •  UNITY", 11, TextAnchor.MiddleCenter, new Color(Muted.r, Muted.g, Muted.b, 0.72f));
+            Text footer = CreateText(mainView.transform, "DEV CARRER IDLE GAME  •  VERSÃO 0.2.0", 11, TextAnchor.MiddleCenter, new Color(Muted.r, Muted.g, Muted.b, 0.72f));
             SetRect(footer.rectTransform, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0f, 18f), new Vector2(0f, 24f));
 
             var creditsRoot = new GameObject("Créditos", typeof(RectTransform));
@@ -182,7 +184,7 @@ namespace ProjetoJogosDigitais.Editor
             SetRect(creditsTitle.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(30f, -70f), new Vector2(-60f, 52f));
             Text creditsText = CreateText(
                 creditsView.transform,
-                "CONCEPÇÃO E DESENVOLVIMENTO\nMurilo Lima\n\nARTE PIXEL\nModern Interiors • LimeZu\nlimezu.itch.io\n\nMÚSICA\nLevel Music Loop - Tigrun • qubodup\nCC0 1.0 via OpenGameArt\n\nTECNOLOGIA\nDesenvolvido com Unity\n\nObrigado por jogar!",
+                "ESTÚDIO\nDev Murilo Lima\n\nCONCEPÇÃO E DESENVOLVIMENTO\nMurilo Lima\n\nARTE PIXEL\nModern Interiors • LimeZu\nlimezu.itch.io\n\nMÚSICA\nLevel Music Loop - Tigrun • qubodup\nCC0 1.0 via OpenGameArt\n\nTECNOLOGIA\nDesenvolvido com Unity\n\nObrigado por jogar!",
                 15,
                 TextAnchor.UpperCenter,
                 Color.white);
@@ -193,7 +195,7 @@ namespace ProjetoJogosDigitais.Editor
             creditsRoot.SetActive(false);
 
             MainMenuController controller = canvasObject.AddComponent<MainMenuController>();
-            controller.Configure(mainView, creditsRoot, play, credits, back);
+            controller.Configure(mainView, creditsRoot, play, continueCareer, credits, back);
             CreateEventSystem();
 
             EditorSceneManager.MarkSceneDirty(scene);
@@ -330,7 +332,7 @@ namespace ProjetoJogosDigitais.Editor
             SetRect(title.rectTransform, new Vector2(0f, 0.45f), Vector2.one, new Vector2(18f, -4f), new Vector2(-36f, -8f));
             Text subtitle = CreateText(titlePanel.transform, "Uma jornada que começou com um estágio...", 18, TextAnchor.MiddleCenter, Color.white);
             SetRect(subtitle.rectTransform, Vector2.zero, new Vector2(1f, 0.48f), new Vector2(18f, 2f), new Vector2(-36f, -4f));
-            Text legacy = CreateText(canvasObject.transform, "7 CARGOS  •  25 DIAS PRODUTIVOS  •  1 LEGADO", 17, TextAnchor.MiddleCenter, new Color(0.78f, 0.84f, 0.94f));
+            Text legacy = CreateText(canvasObject.transform, "7 CARGOS  •  1 DIA DE CARREIRA  •  1 LEGADO", 17, TextAnchor.MiddleCenter, new Color(0.78f, 0.84f, 0.94f));
             SetRect(legacy.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 28f), new Vector2(600f, 42f));
 
             OwnerFinaleController finale = new GameObject("Sequência final").AddComponent<OwnerFinaleController>();
@@ -420,7 +422,7 @@ namespace ProjetoJogosDigitais.Editor
             scaler.matchWidthOrHeight = 0.5f;
 
             Image careerPanel = CreatePanel(canvasObject.transform, "Carreira", new Vector2(18f, -18f), new Vector2(280f, 108f), new Vector2(0f, 1f), Accent);
-            CreateSectionHeader(careerPanel.transform, "CARREIRA // BYTEFORGE", Accent);
+            CreateSectionHeader(careerPanel.transform, "CARREIRA // DEV CARRER", Accent);
             Text rank = CreateText(careerPanel.transform, "ESTAGIÁRIO", 23, TextAnchor.MiddleLeft, Accent, FontStyle.Bold);
             SetRect(rank.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -50f), new Vector2(-32f, 30f));
             Text promotion = CreateText(careerPanel.transform, "XP 0/250 PARA PROMOÇÃO", 12, TextAnchor.MiddleLeft, Muted);
@@ -468,7 +470,7 @@ namespace ProjetoJogosDigitais.Editor
             Text status = CreateText(bottomPanel.transform, "Escolha onde começar o expediente.", 14, TextAnchor.MiddleLeft, new Color(0.82f, 0.92f, 0.96f), FontStyle.Bold);
             SetRect(status.rectTransform, Vector2.zero, Vector2.zero, new Vector2(18f, 9f), new Vector2(410f, 40f));
             status.rectTransform.pivot = Vector2.zero;
-            Button endDay = CreateButton(bottomPanel.transform, "ENCERRAR DIA", new Vector2(-174f, 16f), new Vector2(138f, 46f), new Vector2(1f, 0f), Accent);
+            Button endDay = CreateButton(bottomPanel.transform, "RESGATAR META", new Vector2(-174f, 16f), new Vector2(138f, 46f), new Vector2(1f, 0f), Accent);
             Button save = CreateButton(bottomPanel.transform, "SALVAR", new Vector2(-100f, 16f), new Vector2(68f, 46f), new Vector2(1f, 0f), new Color(0.22f, 0.36f, 0.52f));
             Button load = CreateButton(bottomPanel.transform, "CARREGAR", new Vector2(-16f, 16f), new Vector2(78f, 46f), new Vector2(1f, 0f), new Color(0.22f, 0.36f, 0.52f));
 

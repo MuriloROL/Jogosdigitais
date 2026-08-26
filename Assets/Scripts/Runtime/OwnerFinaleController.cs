@@ -50,6 +50,12 @@ namespace ProjetoJogosDigitais.Presentation
 
         private void Update()
         {
+            if (GamePreferences.ReduceMotion && phase != FinalePhase.Finished && Time.unscaledTime - finaleStartedAt >= 0.5f)
+            {
+                FinishFinale();
+                return;
+            }
+
             // The finale must always conclude even if the editor or a slow device
             // drops frames while loading the scene.
             if (phase != FinalePhase.Finished && Time.unscaledTime - finaleStartedAt >= 8f)

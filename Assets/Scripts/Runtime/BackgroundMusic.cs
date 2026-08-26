@@ -42,8 +42,9 @@ namespace ProjetoJogosDigitais.Presentation
             source.loop = true;
             source.playOnAwake = false;
             source.spatialBlend = 0f;
-            source.volume = DefaultVolume;
+            RefreshVolume();
             source.ignoreListenerPause = true;
+            GamePreferences.Changed += RefreshVolume;
 
             if (source.clip == null)
             {
@@ -56,9 +57,18 @@ namespace ProjetoJogosDigitais.Presentation
 
         private void OnDestroy()
         {
+            GamePreferences.Changed -= RefreshVolume;
             if (Current == this)
             {
                 Current = null;
+            }
+        }
+
+        private void RefreshVolume()
+        {
+            if (source != null)
+            {
+                source.volume = GamePreferences.MusicEnabled ? DefaultVolume : 0f;
             }
         }
     }

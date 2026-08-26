@@ -10,6 +10,7 @@ namespace ProjetoJogosDigitais.Presentation
         [SerializeField] private GameObject mainView;
         [SerializeField] private GameObject creditsView;
         [SerializeField] private Button playButton;
+        [SerializeField] private Button continueButton;
         [SerializeField] private Button creditsButton;
         [SerializeField] private Button backButton;
 
@@ -19,12 +20,14 @@ namespace ProjetoJogosDigitais.Presentation
             GameObject menu,
             GameObject credits,
             Button play,
+            Button continueCareer,
             Button showCredits,
             Button back)
         {
             mainView = menu;
             creditsView = credits;
             playButton = play;
+            continueButton = continueCareer;
             creditsButton = showCredits;
             backButton = back;
         }
@@ -32,14 +35,20 @@ namespace ProjetoJogosDigitais.Presentation
         private void Awake()
         {
             playButton.onClick.AddListener(PlayGame);
+            continueButton?.onClick.AddListener(ContinueGame);
             creditsButton.onClick.AddListener(ShowCredits);
             backButton.onClick.AddListener(ShowMainMenu);
             ShowMainMenu();
+            if (continueButton != null)
+            {
+                continueButton.interactable = CareerGame.DefaultSaveExists;
+            }
         }
 
         private void OnDestroy()
         {
             playButton?.onClick.RemoveListener(PlayGame);
+            continueButton?.onClick.RemoveListener(ContinueGame);
             creditsButton?.onClick.RemoveListener(ShowCredits);
             backButton?.onClick.RemoveListener(ShowMainMenu);
         }
@@ -47,6 +56,20 @@ namespace ProjetoJogosDigitais.Presentation
         public void PlayGame()
         {
             SceneManager.LoadScene(CareerSceneFlow.InternScene, LoadSceneMode.Single);
+        }
+
+        public void ContinueGame()
+        {
+            CareerGame career = CareerGame.Current;
+            if (career == null)
+            {
+                career = new GameObject("Carreira carregada do menu").AddComponent<CareerGame>();
+            }
+
+            if (!career.LoadGame())
+            {
+                Destroy(career.gameObject);
+            }
         }
 
         public void ShowCredits()

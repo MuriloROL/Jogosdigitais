@@ -83,6 +83,14 @@ namespace ProjetoJogosDigitais.Presentation
             {
                 gameObject.AddComponent<CareerTutorialController>();
             }
+            if (GetComponent<IdleManagementPanel>() == null)
+            {
+                gameObject.AddComponent<IdleManagementPanel>();
+            }
+            if (GetComponent<CareerDecisionController>() == null)
+            {
+                gameObject.AddComponent<CareerDecisionController>();
+            }
         }
 
         private void OnDestroy()
@@ -125,35 +133,43 @@ namespace ProjetoJogosDigitais.Presentation
             stressFill.color = Color.Lerp(new Color(0.40f, 0.75f, 0.95f), new Color(0.95f, 0.30f, 0.25f), game.Stress / 100f);
             knowledgeLabel.text = $"CONHECIMENTO\n{game.Knowledge}";
             reputationLabel.text = $"REPUTAÇÃO\n{game.Reputation}";
-            statusLabel.text = player == null ? game.LastFeedback : player.Status;
+            statusLabel.text = player == null || player.IsIdle ? game.LastFeedback : player.Status;
             string dailyGoal = game.GoalReached
-                ? "META CONCLUÍDA • encerre quando quiser"
+                ? game.SprintBonusClaimed ? "META RESGATADA • produção continua" : "META CONCLUÍDA • resgate o bônus"
                 : $"META: {game.DailyGoal - game.Delivery} PONTOS • {game.MinutesRemaining / 60}h{game.MinutesRemaining % 60:00}";
             string dailyTask = game.DailyTaskCompleted
                 ? $"{game.DailyTaskTitle} • CONCLUÍDA"
                 : $"{game.DailyTaskTitle} {game.DailyTaskProgress}/{game.DailyTaskGoal} • +{game.DailyTaskRewardXp} XP";
             objectiveLabel.text = $"{dailyGoal}\n{dailyTask}\n{game.DailyTaskDescription}";
             bool controlsAvailable = player == null || !player.IsInteracting;
-            endDayButton.interactable = controlsAvailable;
+            endDayButton.interactable = controlsAvailable && game.GoalReached && !game.SprintBonusClaimed;
+            Text endDayLabel = endDayButton.GetComponentInChildren<Text>();
+            if (endDayLabel != null)
+            {
+                endDayLabel.text = game.SprintBonusClaimed ? "META RESGATADA" : "RESGATAR META";
+            }
             saveButton.interactable = controlsAvailable;
             loadButton.interactable = controlsAvailable;
         }
 
         private void EndDay()
         {
-            game?.EndDay();
+            game?.ClaimSprintBonus();
+            GameAudioFeedback.Play(FeedbackSound.Button);
             player?.ShowStatus(game.LastFeedback);
         }
 
         private void SaveGame()
         {
             game?.SaveGame();
+            GameAudioFeedback.Play(FeedbackSound.Button);
             player?.ShowStatus(game.LastFeedback);
         }
 
         private void LoadGame()
         {
             game?.LoadGame();
+            GameAudioFeedback.Play(FeedbackSound.Button);
             player?.ShowStatus(game.LastFeedback);
         }
     }

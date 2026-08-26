@@ -28,6 +28,12 @@ namespace ProjetoJogosDigitais.Gameplay
             public int successfulDaysAtRank;
             public int totalSuccessfulDays;
             public string lastFeedback;
+            public float elapsedWorkSeconds;
+            public float idleTickAccumulator;
+            public int teamMembers;
+            public int automationLevel;
+            public bool sprintBonusClaimed;
+            public int pendingDecisionRank;
         }
 
         private readonly struct DailyTaskDefinition
@@ -65,8 +71,8 @@ namespace ProjetoJogosDigitais.Gameplay
         };
 
         private static readonly int[] MonthlySalaries = { 1800, 3500, 6500, 10000, 14000, 22000, 50000 };
-        private static readonly int[] GoodDaysForPromotion = { 2, 3, 4, 5, 5, 6, 0 };
-        private static readonly int[] TotalXpForNextRank = { 250, 700, 1350, 2250, 3250, 4550, 4550 };
+        private static readonly int[] GoodDaysForPromotion = { 1, 1, 1, 1, 1, 1, 0 };
+        private static readonly int[] TotalXpForNextRank = { 350, 900, 1700, 2800, 4200, 7500, 7500 };
         private static readonly DailyTaskDefinition[] DailyTasks =
         {
             new("CAÇA AOS BUGS", "Programe duas vezes para eliminar erros críticos.", OfficeActionType.Code, 2, 35),
@@ -78,10 +84,13 @@ namespace ProjetoJogosDigitais.Gameplay
             new("PONTE COM O TIME", "Participe de uma reunião importante.", OfficeActionType.Meeting, 1, 20)
         };
 
-        private const int CurrentSaveVersion = 3;
+        private const int CurrentSaveVersion = 5;
         private const int ProductiveDayXpBonus = 25;
+        private const float IdleTickSeconds = 15f;
+        private const int MaxAutomationLevel = 5;
         public const int WorkdayMinutes = 8 * 60;
         public const int StartHour = 9;
+        public const float WorkdayRealSeconds = 8f * 60f * 60f;
 
         [SerializeField] private CareerRank rank = CareerRank.Intern;
         [SerializeField, Min(1)] private int day = 1;
@@ -99,6 +108,12 @@ namespace ProjetoJogosDigitais.Gameplay
         [SerializeField] private int successfulDaysAtRank;
         [SerializeField] private int totalSuccessfulDays;
         [SerializeField] private string lastFeedback = "Primeiro dia: entregue valor e construa sua carreira.";
+        [SerializeField] private float elapsedWorkSeconds;
+        [SerializeField] private float idleTickAccumulator;
+        [SerializeField] private int teamMembers;
+        [SerializeField] private int automationLevel;
+        [SerializeField] private bool sprintBonusClaimed;
+        [SerializeField] private int pendingDecisionRank = -1;
 
         private string savePathOverride;
         private Coroutine pendingSceneChange;
@@ -124,6 +139,20 @@ namespace ProjetoJogosDigitais.Gameplay
             : Mathf.InverseLerp(XpAtCurrentRankStart, XpRequiredForNextRank, careerXp);
         public int SuccessfulDaysAtRank => successfulDaysAtRank;
         public int TotalSuccessfulDays => totalSuccessfulDays;
+        public float ElapsedWorkSeconds => elapsedWorkSeconds;
+        public int TeamMembers => teamMembers;
+        public int AutomationLevel => automationLevel;
+        public int TeamCapacity => IsLastRank ? 6 : Mathf.Min(6, (int)rank + 1);
+        public int PassiveDeliveryPerTick => Mathf.Max(1, Mathf.RoundToInt((1 + teamMembers) * (1f + automationLevel * 0.25f)));
+        public float PassiveDeliveryPerMinute => PassiveDeliveryPerTick * (60f / IdleTickSeconds);
+        public float SecondsUntilPassiveTick => Mathf.Max(0f, IdleTickSeconds - idleTickAccumulator);
+        public int NextHireCost => 180 * (teamMembers + 1);
+        public int NextAutomationCost => 450 * (automationLevel + 1);
+        public bool CanHire => !IsLastRank && teamMembers < TeamCapacity && money >= NextHireCost;
+        public bool CanUpgradeAutomation => !IsLastRank && automationLevel < MaxAutomationLevel && money >= NextAutomationCost;
+        public bool SprintBonusClaimed => sprintBonusClaimed;
+        public bool HasPendingCareerDecision => pendingDecisionRank >= 0 && pendingDecisionRank < (int)CareerRank.Owner;
+        public CareerRank PendingDecisionRank => HasPendingCareerDecision ? (CareerRank)pendingDecisionRank : rank;
         public string DailyTaskTitle => CurrentDailyTask.Title;
         public string DailyTaskDescription => CurrentDailyTask.Description;
         public int DailyTaskProgress => dailyTaskProgress;
@@ -137,8 +166,10 @@ namespace ProjetoJogosDigitais.Gameplay
         public bool GoalReached => delivery >= DailyGoal;
         public bool IsLastRank => rank == CareerRank.Owner;
         public string LastFeedback => lastFeedback;
+        public static string DefaultSavePath => Path.Combine(Application.persistentDataPath, "dev-career-mvp.json");
+        public static bool DefaultSaveExists => File.Exists(DefaultSavePath);
         public string SavePath => string.IsNullOrEmpty(savePathOverride)
-            ? Path.Combine(Application.persistentDataPath, "dev-career-mvp.json")
+            ? DefaultSavePath
             : savePathOverride;
         public string DisplayTime
         {
@@ -184,6 +215,14 @@ namespace ProjetoJogosDigitais.Gameplay
             }
         }
 
+        private void Update()
+        {
+            if (Application.isPlaying && !IsLastRank)
+            {
+                AdvanceOpenTime(Time.unscaledDeltaTime);
+            }
+        }
+
         public static string NameFor(CareerRank value)
         {
             return RankNames[(int)value];
@@ -217,10 +256,9 @@ namespace ProjetoJogosDigitais.Gameplay
 
         public OfficeActionResult PerformAction(OfficeActionType type)
         {
-            int duration = ActionDuration(type);
-            if (minutesUsed + duration > WorkdayMinutes)
+            if (elapsedWorkSeconds >= WorkdayRealSeconds)
             {
-                lastFeedback = "O expediente terminou. Encerre o dia para continuar.";
+                lastFeedback = "O expediente terminou. Sua carreira de hoje foi concluída.";
                 Changed?.Invoke();
                 return new OfficeActionResult(false, lastFeedback, 0);
             }
@@ -258,7 +296,6 @@ namespace ProjetoJogosDigitais.Gameplay
                     break;
             }
 
-            minutesUsed += duration;
             energy = Mathf.Clamp(energy, 0, 100);
             stress = Mathf.Clamp(stress, 0, 100);
             knowledge = Mathf.Max(0, knowledge);
@@ -273,15 +310,157 @@ namespace ProjetoJogosDigitais.Gameplay
             TrackDailyTask(type);
             if (GoalReached)
             {
-                lastFeedback += "  Meta do dia concluída!";
+                lastFeedback += "  Meta da sprint disponível para resgate!";
             }
 
+            PromoteWhileEligible();
             Changed?.Invoke();
             return new OfficeActionResult(true, lastFeedback, gained);
         }
 
+        public void AdvanceOpenTime(float seconds)
+        {
+            if (seconds <= 0f || IsLastRank)
+            {
+                return;
+            }
+
+            float allowed = Mathf.Min(seconds, WorkdayRealSeconds - elapsedWorkSeconds);
+            if (allowed <= 0f)
+            {
+                return;
+            }
+
+            int minuteBefore = minutesUsed;
+            elapsedWorkSeconds += allowed;
+            minutesUsed = Mathf.Clamp(Mathf.FloorToInt(elapsedWorkSeconds / 60f), 0, WorkdayMinutes);
+            idleTickAccumulator += allowed;
+
+            bool produced = false;
+            while (idleTickAccumulator >= IdleTickSeconds && !IsLastRank)
+            {
+                idleTickAccumulator -= IdleTickSeconds;
+                ProducePassiveDelivery();
+                produced = true;
+            }
+
+            if (produced || minutesUsed != minuteBefore)
+            {
+                Changed?.Invoke();
+            }
+        }
+
+        public bool HireTeammate()
+        {
+            if (teamMembers >= TeamCapacity)
+            {
+                lastFeedback = "A equipe está completa para o seu cargo atual.";
+                Changed?.Invoke();
+                return false;
+            }
+
+            int cost = NextHireCost;
+            if (money < cost)
+            {
+                lastFeedback = $"Faltam R$ {cost - money} para contratar o próximo colega.";
+                Changed?.Invoke();
+                return false;
+            }
+
+            money -= cost;
+            teamMembers++;
+            reputation += 2;
+            lastFeedback = $"Novo colega contratado! A equipe agora gera {PassiveDeliveryPerTick} pontos a cada {IdleTickSeconds:0}s.";
+            Changed?.Invoke();
+            return true;
+        }
+
+        public bool UpgradeAutomation()
+        {
+            if (automationLevel >= MaxAutomationLevel)
+            {
+                lastFeedback = "A automação da ByteForge já está no nível máximo.";
+                Changed?.Invoke();
+                return false;
+            }
+
+            int cost = NextAutomationCost;
+            if (money < cost)
+            {
+                lastFeedback = $"Faltam R$ {cost - money} para melhorar a automação.";
+                Changed?.Invoke();
+                return false;
+            }
+
+            money -= cost;
+            automationLevel++;
+            knowledge += 4;
+            lastFeedback = $"Pipeline automatizado no nível {automationLevel}! Produção passiva: {PassiveDeliveryPerTick} pontos por ciclo.";
+            Changed?.Invoke();
+            return true;
+        }
+
+        public bool ClaimSprintBonus()
+        {
+            if (!GoalReached)
+            {
+                lastFeedback = $"Ainda faltam {DailyGoal - delivery} pontos para resgatar a meta da sprint.";
+                Changed?.Invoke();
+                return false;
+            }
+
+            if (sprintBonusClaimed)
+            {
+                lastFeedback = "O bônus desta sprint já foi resgatado.";
+                Changed?.Invoke();
+                return false;
+            }
+
+            sprintBonusClaimed = true;
+            int bonus = Mathf.Max(25, Mathf.RoundToInt(DailyPay * 0.15f));
+            money += bonus;
+            careerXp += ProductiveDayXpBonus;
+            reputation += 3;
+            successfulDaysAtRank++;
+            totalSuccessfulDays++;
+            lastFeedback = $"Meta resgatada! +R$ {bonus} e +{ProductiveDayXpBonus} XP.";
+            PromoteWhileEligible();
+            Changed?.Invoke();
+            return true;
+        }
+
+        public void ResolveCareerDecision(
+            string summary,
+            int moneyDelta,
+            int knowledgeDelta,
+            int reputationDelta,
+            int stressDelta,
+            int xpDelta)
+        {
+            if (!HasPendingCareerDecision)
+            {
+                return;
+            }
+
+            money = Mathf.Max(0, money + moneyDelta);
+            knowledge = Mathf.Max(0, knowledge + knowledgeDelta);
+            reputation = Mathf.Max(0, reputation + reputationDelta);
+            stress = Mathf.Clamp(stress + stressDelta, 0, 100);
+            careerXp = Mathf.Max(0, careerXp + xpDelta);
+            pendingDecisionRank = -1;
+            lastCareerEvent = summary;
+            lastFeedback = summary;
+            PromoteWhileEligible();
+            Changed?.Invoke();
+        }
+
         public bool EndDay()
         {
+            if (day == 1 && !IsLastRank)
+            {
+                return ClaimSprintBonus();
+            }
+
             bool successful = GoalReached;
             int payment = DailyPay;
             money += payment;
@@ -339,7 +518,13 @@ namespace ProjetoJogosDigitais.Gameplay
                 lastCareerEvent = lastCareerEvent,
                 successfulDaysAtRank = successfulDaysAtRank,
                 totalSuccessfulDays = totalSuccessfulDays,
-                lastFeedback = lastFeedback
+                lastFeedback = lastFeedback,
+                elapsedWorkSeconds = elapsedWorkSeconds,
+                idleTickAccumulator = idleTickAccumulator,
+                teamMembers = teamMembers,
+                automationLevel = automationLevel,
+                sprintBonusClaimed = sprintBonusClaimed,
+                pendingDecisionRank = pendingDecisionRank
             };
             File.WriteAllText(SavePath, JsonUtility.ToJson(data, true));
             lastFeedback = "Carreira salva.";
@@ -357,7 +542,9 @@ namespace ProjetoJogosDigitais.Gameplay
 
             SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(SavePath));
             rank = data.rank;
-            day = Mathf.Max(1, data.day);
+            // A versão idle acontece em um único expediente. Saves antigos mantêm
+            // toda a progressão, mas são trazidos para o Dia 1 da nova jornada.
+            day = 1;
             minutesUsed = Mathf.Clamp(data.minutesUsed, 0, WorkdayMinutes);
             money = Mathf.Max(0, data.money);
             delivery = Mathf.Max(0, data.delivery);
@@ -368,16 +555,30 @@ namespace ProjetoJogosDigitais.Gameplay
             careerXp = data.saveVersion >= 2
                 ? Mathf.Max(0, data.careerXp)
                 : EstimateXpFromLegacySave(data.rank, data.successfulDaysAtRank, data.delivery);
-            dailyTaskProgress = data.saveVersion >= CurrentSaveVersion
+            dailyTaskProgress = data.saveVersion >= 3
                 ? Mathf.Clamp(data.dailyTaskProgress, 0, CurrentDailyTask.RequiredCount)
                 : 0;
-            dailyTaskCompleted = data.saveVersion >= CurrentSaveVersion && data.dailyTaskCompleted;
+            dailyTaskCompleted = data.saveVersion >= 3 && data.dailyTaskCompleted;
             lastCareerEvent = string.IsNullOrEmpty(data.lastCareerEvent)
                 ? "Nenhum evento de carreira hoje."
                 : data.lastCareerEvent;
             successfulDaysAtRank = Mathf.Max(0, data.successfulDaysAtRank);
             totalSuccessfulDays = Mathf.Max(0, data.totalSuccessfulDays);
             lastFeedback = string.IsNullOrEmpty(data.lastFeedback) ? "Carreira carregada." : data.lastFeedback;
+            elapsedWorkSeconds = data.saveVersion >= CurrentSaveVersion
+                ? Mathf.Clamp(data.elapsedWorkSeconds, 0f, WorkdayRealSeconds)
+                : minutesUsed * 60f;
+            idleTickAccumulator = data.saveVersion >= CurrentSaveVersion
+                ? Mathf.Clamp(data.idleTickAccumulator, 0f, IdleTickSeconds)
+                : 0f;
+            teamMembers = data.saveVersion >= CurrentSaveVersion ? Mathf.Clamp(data.teamMembers, 0, 6) : 0;
+            automationLevel = data.saveVersion >= CurrentSaveVersion
+                ? Mathf.Clamp(data.automationLevel, 0, MaxAutomationLevel)
+                : 0;
+            sprintBonusClaimed = data.saveVersion >= CurrentSaveVersion && data.sprintBonusClaimed;
+            pendingDecisionRank = data.saveVersion >= CurrentSaveVersion
+                ? Mathf.Clamp(data.pendingDecisionRank, -1, (int)CareerRank.Cto)
+                : -1;
             Changed?.Invoke();
             RequestSceneForCurrentRank();
             return true;
@@ -424,6 +625,37 @@ namespace ProjetoJogosDigitais.Gameplay
             lastFeedback += $"  TAREFA CONCLUÍDA: {task.Title}! +{task.RewardXp} XP.";
         }
 
+        private void ProducePassiveDelivery()
+        {
+            int output = PassiveDeliveryPerTick;
+            delivery += output;
+            careerXp += output;
+            money += Mathf.Max(1, output / 2);
+            energy = Mathf.Min(100, energy + 1);
+            stress = Mathf.Max(0, stress - 1);
+            lastFeedback = $"Equipe entregou +{output} automaticamente.";
+            if (GoalReached && !sprintBonusClaimed)
+            {
+                lastFeedback += "  Meta disponível para resgate!";
+            }
+
+            PromoteWhileEligible();
+        }
+
+        private void PromoteWhileEligible()
+        {
+            bool promoted = false;
+            while (!IsLastRank && careerXp >= XpRequiredForNextRank)
+            {
+                promoted |= TryPromote();
+            }
+
+            if (promoted)
+            {
+                RequestSceneForCurrentRank();
+            }
+        }
+
         private void ApplyCareerEvent()
         {
             lastCareerEvent = "Nenhum evento de carreira hoje.";
@@ -467,6 +699,12 @@ namespace ProjetoJogosDigitais.Gameplay
 
             rank++;
             successfulDaysAtRank = 0;
+            delivery = 0;
+            dailyTaskProgress = 0;
+            dailyTaskCompleted = false;
+            sprintBonusClaimed = false;
+            money += Mathf.Max(50, DailyPay / 2);
+            pendingDecisionRank = IsLastRank ? -1 : (int)rank;
             reputation += 10;
             knowledge += 8;
             lastFeedback += $"  PROMOÇÃO: agora você é {RankName}!";
