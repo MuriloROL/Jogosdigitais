@@ -83,4 +83,5 @@ O jogo utiliza **Level Music Loop — Tigrun**, de qubodup, sob CC0 1.0. Fonte,
 licença e hash estão em `Assets/Resources/Audio/CREDITS.md`. Os personagens usam
 Modern Interiors, de LimeZu, conforme a licença do pacote adquirido.
 
-O status técnico e o balanceamento estão em `Docs/MVP_STATUS.md`.
+O design completo está em `Docs/GDD.md`. O status técnico e o balanceamento
+estão em `Docs/MVP_STATUS.md`.
