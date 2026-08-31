@@ -23,19 +23,21 @@ de aproximadamente sete a oito horas reais, evolui até se tornar Dono.
 ## Requisitos
 
 - Unity `6000.3.22f1`.
-- Pacote de arte **Modern Interiors**, adquirido separadamente.
 
-O Modern Interiors não está incluído no repositório por ser conteúdo
-licenciado. Depois de obtê-lo, importe-o em:
+O pacote licenciado **Modern Interiors** está incluído neste repositório
+privado. Os assets importados ficam em:
 
 ```text
 Assets/Art/ModernInteriors16/
 ```
 
+A fonte completa adquirida também foi preservada em `moderninteriors-win/`.
+Mantenha o repositório privado para não redistribuir esse conteúdo.
+
 ## Como executar
 
 1. Abra a pasta do projeto no Unity `6000.3.22f1`.
-2. Importe o Modern Interiors no caminho indicado, caso ainda não esteja local.
+2. Aguarde o Unity reconstruir a pasta `Library/` na primeira abertura.
 3. Abra `Assets/Scenes/MainMenu.unity`.
 4. Pressione **Play**.
 
