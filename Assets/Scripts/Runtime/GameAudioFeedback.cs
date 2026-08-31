@@ -33,7 +33,7 @@ namespace ProjetoJogosDigitais.Presentation
         {
             if (Current == null)
             {
-                new GameObject("Efeitos sonoros • Dev Carrer").AddComponent<GameAudioFeedback>();
+                new GameObject("Efeitos sonoros • Dev Career").AddComponent<GameAudioFeedback>();
             }
         }
 

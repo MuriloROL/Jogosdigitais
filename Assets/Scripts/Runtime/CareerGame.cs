@@ -85,6 +85,8 @@ namespace ProjetoJogosDigitais.Gameplay
         private const int CurrentSaveVersion = 7;
         private const float IdleTickSeconds = 15f;
         private const int MaxAutomationLevel = 5;
+        private const string SaveFileName = "dev-career-mvp.json";
+        private const string LegacyProductName = "Dev Carrer Idle Game";
         public const int StartingMoney = 120;
         public const int WorkdayMinutes = 8 * 60;
         public const int StartHour = 9;
@@ -196,8 +198,9 @@ namespace ProjetoJogosDigitais.Gameplay
         public bool GoalReached => MissionReadyToClaim;
         public bool IsLastRank => rank == CareerRank.Owner;
         public string LastFeedback => lastFeedback;
-        public static string DefaultSavePath => Path.Combine(Application.persistentDataPath, "dev-career-mvp.json");
-        public static bool DefaultSaveExists => File.Exists(DefaultSavePath);
+        public static string DefaultSavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
+        public static bool DefaultSaveExists =>
+            File.Exists(DefaultSavePath) || File.Exists(LegacyDefaultSavePath);
         public string SavePath => string.IsNullOrEmpty(savePathOverride)
             ? DefaultSavePath
             : savePathOverride;
@@ -619,14 +622,15 @@ namespace ProjetoJogosDigitais.Gameplay
 
         public bool LoadGame()
         {
-            if (!File.Exists(SavePath))
+            string loadPath = ResolveLoadPath();
+            if (!File.Exists(loadPath))
             {
                 lastFeedback = "Ainda não existe uma carreira salva.";
                 Changed?.Invoke();
                 return false;
             }
 
-            SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(SavePath));
+            SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(loadPath));
             rank = data.rank;
             // A versão idle acontece em um único expediente. Saves antigos mantêm
             // toda a progressão, mas são trazidos para o Dia 1 da nova jornada.
@@ -676,6 +680,10 @@ namespace ProjetoJogosDigitais.Gameplay
                 : new int[3];
             missionBriefingPending = data.saveVersion >= 7 ? data.missionBriefingPending : true;
             EnsureMissionProgress();
+            if (string.IsNullOrEmpty(savePathOverride) && loadPath == LegacyDefaultSavePath)
+            {
+                WriteSave(false);
+            }
             Changed?.Invoke();
             RequestSceneForCurrentRank();
             return true;
@@ -795,6 +803,27 @@ namespace ProjetoJogosDigitais.Gameplay
             {
                 WriteSave(false);
             }
+        }
+
+        private static string LegacyDefaultSavePath
+        {
+            get
+            {
+                DirectoryInfo productDirectory = Directory.GetParent(Application.persistentDataPath);
+                return productDirectory == null
+                    ? string.Empty
+                    : Path.Combine(productDirectory.FullName, LegacyProductName, SaveFileName);
+            }
+        }
+
+        private string ResolveLoadPath()
+        {
+            if (File.Exists(SavePath) || !string.IsNullOrEmpty(savePathOverride))
+            {
+                return SavePath;
+            }
+
+            return File.Exists(LegacyDefaultSavePath) ? LegacyDefaultSavePath : SavePath;
         }
 
         private void WriteSave(bool showFeedback)

@@ -1,4 +1,4 @@
-# Dev Carrer Idle Game — status da versão 0.2.0
+# Dev Career Idle Game — status da versão 0.2.0
 
 ## Estado atual
 

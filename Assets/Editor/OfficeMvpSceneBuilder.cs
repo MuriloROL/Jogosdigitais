@@ -153,10 +153,10 @@ namespace ProjetoJogosDigitais.Editor
             mainView.transform.SetParent(canvasObject.transform, false);
             SetRect((RectTransform)mainView.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
 
-            Image brand = CreatePanel(mainView.transform, "Marca Dev Carrer", new Vector2(54f, 0f), new Vector2(520f, 590f), new Vector2(0f, 0.5f), Accent);
+            Image brand = CreatePanel(mainView.transform, "Marca Dev Career", new Vector2(54f, 0f), new Vector2(520f, 590f), new Vector2(0f, 0.5f), Accent);
             Text eyebrow = CreateText(brand.transform, "// BYTEFORGE IDLE SIMULATION", 13, TextAnchor.MiddleLeft, Accent, FontStyle.Bold);
             SetRect(eyebrow.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -48f, new Vector2(-64f, 24f));
-            Text title = CreateText(brand.transform, "DEV\nCARRER", 56, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
+            Text title = CreateText(brand.transform, "DEV\nCAREER", 56, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
             title.lineSpacing = 0.82f;
             SetRect(title.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.up * -124f, new Vector2(-64f, 116f));
             Text subtitle = CreateText(brand.transform, "DE ESTAGIÁRIO A DONO", 19, TextAnchor.MiddleLeft, Amber, FontStyle.Bold);
@@ -184,7 +184,7 @@ namespace ProjetoJogosDigitais.Editor
             Text artCaption = CreateText(mainView.transform, "18 MISSÕES  •  7 CARGOS  •  1 EMPRESA", 12, TextAnchor.MiddleCenter, new Color(Muted.r, Muted.g, Muted.b, 0.82f), FontStyle.Bold);
             SetRect(artCaption.rectTransform, new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-342f, 34f), new Vector2(560f, 26f));
 
-            Text footer = CreateText(mainView.transform, "DEV CARRER IDLE GAME  •  VERSÃO 0.4.0", 10, TextAnchor.MiddleLeft, new Color(Muted.r, Muted.g, Muted.b, 0.60f));
+            Text footer = CreateText(mainView.transform, "DEV CAREER IDLE GAME  •  VERSÃO 0.4.0", 10, TextAnchor.MiddleLeft, new Color(Muted.r, Muted.g, Muted.b, 0.60f));
             SetRect(footer.rectTransform, Vector2.zero, Vector2.zero, new Vector2(56f, 16f), new Vector2(500f, 22f));
             footer.rectTransform.pivot = Vector2.zero;
 
@@ -451,7 +451,7 @@ namespace ProjetoJogosDigitais.Editor
 
             Image careerPanel = CreatePanel(canvasObject.transform, "Carreira", new Vector2(18f, -16f), new Vector2(286f, 116f), new Vector2(0f, 1f), Accent);
             CreatePixelAtlasIcon(careerPanel.transform, "Ícone da carreira", 0, 1, new Vector2(14f, -12f), new Vector2(38f, 38f));
-            CreateSectionHeader(careerPanel.transform, "CARREIRA // DEV CARRER", Accent, false, 58f);
+            CreateSectionHeader(careerPanel.transform, "CARREIRA // DEV CAREER", Accent, false, 58f);
             Text rank = CreateText(careerPanel.transform, "ESTAGIÁRIO", 22, TextAnchor.MiddleLeft, Color.white, FontStyle.Bold);
             SetRect(rank.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(16f, -57f), new Vector2(-32f, 28f));
             Text promotion = CreateText(careerPanel.transform, "XP 0/250 PARA PROMOÇÃO", 11, TextAnchor.MiddleLeft, Muted);

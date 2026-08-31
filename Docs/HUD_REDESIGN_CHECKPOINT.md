@@ -4,7 +4,7 @@
 
 ## Objetivo aprovado
 
-Evoluir toda a interface do Dev Carrer Idle Game, substituindo a composição de
+Evoluir toda a interface do Dev Career Idle Game, substituindo a composição de
 retângulos simples por um sistema visual coeso, legível e com identidade própria.
 O escopo inclui tela inicial, créditos, HUD da carreira, gestão idle, tutorial,
 decisões, configurações e tela final. O jogo continua em português, para PC e

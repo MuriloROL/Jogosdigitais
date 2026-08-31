@@ -6628,7 +6628,7 @@ GameObject:
   - component: {fileID: 1913619990}
   - component: {fileID: 1913619989}
   m_Layer: 0
-  m_Name: CARREIRA // DEV CARRER
+  m_Name: CARREIRA // DEV CAREER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6701,7 +6701,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: CARREIRA // DEV CARRER
+  m_Text: CARREIRA // DEV CAREER
 --- !u!222 &1913619991
 CanvasRenderer:
   m_ObjectHideFlags: 0

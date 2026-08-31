@@ -1449,7 +1449,7 @@ MonoBehaviour:
     m_LineSpacing: 0.82
   m_Text: 'DEV
 
-    CARRER'
+    CAREER'
 --- !u!222 &600943020
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1689,7 +1689,7 @@ GameObject:
   - component: {fileID: 739713011}
   - component: {fileID: 739713010}
   m_Layer: 0
-  m_Name: Marca Dev Carrer
+  m_Name: Marca Dev Career
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2510,7 +2510,7 @@ GameObject:
   - component: {fileID: 967893406}
   - component: {fileID: 967893405}
   m_Layer: 0
-  m_Name: "Sombra \u2022 Marca Dev Carrer"
+  m_Name: "Sombra \u2022 Marca Dev Career"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4073,7 +4073,7 @@ GameObject:
   - component: {fileID: 2056716346}
   - component: {fileID: 2056716345}
   m_Layer: 0
-  m_Name: "DEV CARRER IDLE GAME  \u2022  VERS\xC3O 0.3.0"
+  m_Name: "DEV CAREER IDLE GAME  \u2022  VERS\xC3O 0.3.0"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4146,7 +4146,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "DEV CARRER IDLE GAME  \u2022  VERS\xC3O 0.3.0"
+  m_Text: "DEV CAREER IDLE GAME  \u2022  VERS\xC3O 0.3.0"
 --- !u!222 &2056716347
 CanvasRenderer:
   m_ObjectHideFlags: 0

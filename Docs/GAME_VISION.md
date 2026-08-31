@@ -1,4 +1,4 @@
-# Visão — Dev Carrer Idle Game
+# Visão — Dev Career Idle Game
 
 ## Fantasia central
 

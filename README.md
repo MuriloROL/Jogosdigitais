@@ -1,4 +1,4 @@
-# Dev Carrer Idle Game
+# Dev Career Idle Game
 
 Jogo 2D idle híbrido desenvolvido em Unity pelo estúdio **Dev Murilo Lima**.
 Alex começa a manhã como estagiário da ByteForge e, ao longo de um expediente
@@ -69,10 +69,10 @@ Projeto → Construir MVP carreira dev
 
 ## Identidade
 
-- Produto: **Dev Carrer Idle Game**
+- Produto: **Dev Career Idle Game**
 - Estúdio: **Dev Murilo Lima**
 - Versão: `0.2.0`
-- Identificador: `dev.murilolima.devcarrer`
+- Identificador: `dev.murilolima.devcareer`
 - Idioma inicial: português
 
 ## Música e arte

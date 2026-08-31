@@ -1,0 +1,30 @@
+[mcp_servers.unityMCP]
+command = "/home/murilo-lima/.local/bin/uvx"
+args = ["--from", "mcpforunityserver==10.0.0", "mcp-for-unity", "--transport", "stdio", "--project-scoped-tools"]
+enabled = true
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.unityMCP.env]
+UNITY_MCP_TELEMETRY_ENABLED = "false"
+
+[mcp_servers.unityMCP.tools.refresh_unity]
+approval_mode = "approve"
+
+[mcp_servers.unityMCP.tools.run_tests]
+approval_mode = "approve"
+
+[mcp_servers.unityMCP.tools.read_console]
+approval_mode = "approve"
+
+[mcp_servers.unityMCP.tools.manage_scene]
+approval_mode = "approve"
+
+[mcp_servers.unityMCP.tools.manage_editor]
+approval_mode = "approve"
+
+[mcp_servers.unityMCP.tools.execute_menu_item]
+approval_mode = "approve"
+
+[mcp_servers.unityMCP.tools.execute_code]
+approval_mode = "approve"

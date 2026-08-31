@@ -4,7 +4,6 @@
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
-/[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
 /.vs/
 /.idea/
@@ -22,13 +21,5 @@
 sysinfo.txt
 mono_crash.*.blob
 /.agents/
-/.codex/
-/Assets/Editor/UnityMcpAutoStart.cs
-/Assets/Editor/UnityMcpAutoStart.cs.meta
 
-# Licensed third-party source and imported art (do not redistribute).
-/moderninteriors-win/
-/Assets/Art/ModernInteriors16/
-
-# Local visual captures produced during Unity MCP validation.
-/Assets/Screenshots/
+# Licensed art and project-local tooling are tracked because this repository is private.
