@@ -33,6 +33,9 @@ Assets/Art/ELVCharacters/
 
 A fonte, a licença original e o mapeamento dos personagens estão em
 [Créditos dos personagens](Assets/Art/ELVCharacters/CREDITS.md).
+O inventário, as configurações de importação e a integração nas cenas estão em
+[Assets de personagens](Docs/ASSETS_PERSONAGENS.md). O pacote contém somente
+personagens; os fundos e a interface usam arte própria, separada.
 
 ## Como executar
 

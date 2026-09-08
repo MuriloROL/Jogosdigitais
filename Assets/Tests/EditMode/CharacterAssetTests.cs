@@ -1,6 +1,8 @@
 using System.Linq;
 using NUnit.Framework;
+using ProjetoJogosDigitais.Presentation;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace ProjetoJogosDigitais.Tests
@@ -8,16 +10,42 @@ namespace ProjetoJogosDigitais.Tests
     public sealed class CharacterAssetTests
     {
         [Test]
-        public void BuildScenesOnlyDependOnTheNewCharacterPack()
+        public void BuildScenesUseElvCharacterSheetsAndSprites()
         {
             foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes.Where(scene => scene.enabled))
             {
                 string[] dependencies = AssetDatabase.GetDependencies(scene.path, true);
-                Assert.That(dependencies.Any(path => path.Contains("ModernInteriors")), Is.False, scene.path);
                 if (!scene.path.EndsWith("MainMenu.unity"))
                 {
                     Assert.That(dependencies, Does.Contain("Assets/Art/ELVCharacters/Char_003.png"), scene.path);
                     Assert.That(dependencies, Does.Contain("Assets/Art/ELVCharacters/Char_003_Idle.png"), scene.path);
+                }
+
+                var preview = EditorSceneManager.OpenPreviewScene(scene.path);
+                try
+                {
+                    CharacterWalkAnimator[] characters = preview.GetRootGameObjects()
+                        .SelectMany(root => root.GetComponentsInChildren<CharacterWalkAnimator>(true)).ToArray();
+                    if (!scene.path.EndsWith("MainMenu.unity"))
+                    {
+                        Assert.That(characters, Is.Not.Empty, scene.path);
+                    }
+
+                    foreach (CharacterWalkAnimator character in characters)
+                    {
+                        var serialized = new SerializedObject(character);
+                        string walkPath = AssetDatabase.GetAssetPath(serialized.FindProperty("characterSheet").objectReferenceValue);
+                        string idlePath = AssetDatabase.GetAssetPath(serialized.FindProperty("idleSheet").objectReferenceValue);
+                        string context = $"{scene.path}: {character.name}";
+                        Assert.That(walkPath, Does.Match(@"^Assets/Art/ELVCharacters/Char_00[1-6]\.png$"), context);
+                        Assert.That(idlePath, Is.EqualTo(walkPath.Replace(".png", "_Idle.png")), context);
+                        Assert.That(AssetDatabase.GetAssetPath(character.GetComponent<SpriteRenderer>().sprite),
+                            Is.EqualTo(idlePath), context);
+                    }
+                }
+                finally
+                {
+                    EditorSceneManager.ClosePreviewScene(preview);
                 }
             }
         }

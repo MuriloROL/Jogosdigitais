@@ -64,21 +64,25 @@ e sem preservar contratações ilegais de Estagiário/Júnior.
 
 ## Testes automatizados
 
-- 17/17 Edit Mode: checklists, economia sem espera, Codex, multiagentes,
-  contratação, carreira completa, ausência de falha, save e migração.
-- 11/11 Play Mode: movimento, clique nas estações, HUD, menu, tutorial,
+- 19/19 Edit Mode, executados em 07/09/2026: checklists, economia sem espera,
+  Codex, multiagentes, contratação, carreira completa, ausência de falha, save,
+  migração e assets de personagens.
+- Registro da validação completa anterior: 11/11 Play Mode — movimento, clique nas estações, HUD, menu, tutorial,
   briefings/decisões, promoção, pausa com idle e sequência final.
 
-## Validação da substituição dos personagens
+## Assets e validação dos personagens — 07/09/2026
 
 - ELV Games / Fantasy Dreamland integrado nas seis cenas e no gerador de cenas.
-- 2/2 testes Edit Mode específicos: folhas completas e dependências das cenas
-  sem o pacote anterior.
+- Seis personagens e 12 folhas originais; importação Point, 12 pixels por unidade
+  e quadros de 24 × 24 pixels. Fundos e interface são independentes do pacote.
+- 2/2 testes Edit Mode específicos: folhas completas e verificação de sprites,
+  caminhada e animação parado da ELV em todos os personagens das cenas de build.
 - 5/5 testes Play Mode selecionados: direção horizontal, passos por distância,
   chegada e redirecionamento, atividade na mesa e sequência final.
 - Revisão visual do escritório inicial e console sem erros ou avisos.
 - Captura: `Assets/Screenshots/elv-characters.png`.
 - Créditos e licença: `Assets/Art/ELVCharacters/CREDITS.md`.
+- Inventário e manutenção: [Assets de personagens](ASSETS_PERSONAGENS.md).
 
 ## Antes do executável
 

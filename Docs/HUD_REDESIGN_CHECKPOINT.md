@@ -2,6 +2,12 @@
 
 Última atualização: 26/08/2026, após a primeira etapa do novo HUD.
 
+Nota de manutenção — 07/09/2026: este documento registra o trabalho histórico
+da interface. Para a arte de personagens atual, consulte
+[Assets de personagens](ASSETS_PERSONAGENS.md). As capturas de gameplay desse
+checkpoint foram retiradas do projeto; a referência visual atual é
+[`elv-characters.png`](../Assets/Screenshots/elv-characters.png).
+
 ## Objetivo aprovado
 
 Evoluir toda a interface do Dev Career Idle Game, substituindo a composição de
@@ -61,9 +67,7 @@ mouse, e nenhum executável deve ser gerado nesta etapa.
   - depois vêm testes inteligentes, pipeline orquestrado e plataforma autônoma.
 - Saves foram migrados para a versão 7. Estados antigos incompatíveis são
   limitados ao máximo do cargo, impedindo equipe no estágio e no nível Júnior.
-- Revisão visual registrada em:
-  - `Assets/Screenshots/hud-redesign-final.png`
-  - `Assets/Screenshots/hud-redesign-tutorial.png`
+- Revisão visual do HUD e do tutorial realizada em Play Mode na época deste checkpoint.
 - O objetivo paralelo de pontos foi substituído por 18 missões em checklist,
   com briefing, história e recompensa próprias.
 - Foram adicionados pausa, replay do tutorial, autosave, ambiência, sons por

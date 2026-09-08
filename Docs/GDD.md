@@ -525,8 +525,11 @@ GPT 6 Astra da OpenAI, estão em [Prompts dos cenários](PROMPTS_CENARIOS.md).
 
 Os sprites de personagens, a licença original e os créditos estão em
 [`Assets/Art/ELVCharacters/`](../Assets/Art/ELVCharacters/CREDITS.md).
-O histórico Git ainda contém o pacote anterior; a substituição dos arquivos
-atuais não remove os assets antigos dos commits já existentes.
+São seis personagens, cada um com folhas de caminhada e de animação parado:
+12 PNGs de 96 × 96 pixels, recortados em quadros de 24 × 24 pixels.
+O pacote fornece somente os personagens; fundos, móveis desenhados nos fundos
+e interface não pertencem à ELV Games. Consulte a integração e o inventário em
+[Assets de personagens](ASSETS_PERSONAGENS.md).
 
 ### 12.3 Animação
 
@@ -755,7 +758,7 @@ O MVP pode ser considerado pronto para entrega quando:
 | Salário | Valor é exibido, mas não existe pagamento periódico | Assumir como indicador ou implementar pagamento |
 | Plataforma | PC está definido, mas o sistema operacional de lançamento não | Escolher Windows, Linux ou ambos |
 | Distribuição | Ainda não existe executável final nem ícone configurado | Preparar e validar o pacote de release |
-| Licenciamento | Personagens atuais usam ELV Games; o histórico Git contém assets do pacote anterior | Manter créditos e licença; revisar o histórico antes de publicar o repositório |
+| Licenciamento | Personagens usam ELV Games / Fantasy Dreamland, com licença original incluída | Preservar autoria e licença; revisar os arquivos e o histórico antes de distribuir o projeto |
 | Ritmo | Economia foi validada por testes, não por uma sessão humana completa | Realizar playtest de ponta a ponta |
 
 ---

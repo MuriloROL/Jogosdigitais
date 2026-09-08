@@ -35,3 +35,6 @@ os PNGs originais.
 
 Os créditos também aparecem no menu principal do jogo. Os fundos do escritório
 e a arte da interface são assets separados deste pacote.
+
+O inventário e as orientações de manutenção estão em
+[Assets de personagens](../../../Docs/ASSETS_PERSONAGENS.md).
