@@ -905,6 +905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 207663581}
   - component: {fileID: 207663580}
+  - component: {fileID: 207663582}
   m_Layer: 0
   m_Name: "Theo \u2022 Tech Lead"
   m_TagString: Untagged
@@ -961,7 +962,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9151590019783532664, guid: 6ce6fb5f619f45bf68feb2143bc54570, type: 3}
+  m_Sprite: {fileID: 1862431112, guid: 9062e610e5b412e4abba307da431ff6b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -987,6 +988,21 @@ Transform:
   - {fileID: 226367823}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &207663582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207663579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 611d466005f9dde2db59411ffab8edd0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ProjetoJogosDigitais.Runtime::ProjetoJogosDigitais.Presentation.CharacterWalkAnimator
+  characterSheet: {fileID: 2800000, guid: 3e9e5ddf715d8a902b2caafcf6746a35, type: 3}
+  idleSheet: {fileID: 2800000, guid: 9062e610e5b412e4abba307da431ff6b, type: 3}
+  strideLength: 1.5
 --- !u!1 &226367822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,6 +1206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 300425457}
   - component: {fileID: 300425456}
+  - component: {fileID: 300425458}
   m_Layer: 0
   m_Name: "Maya \u2022 Product Manager"
   m_TagString: Untagged
@@ -1246,7 +1263,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9181327588396053882, guid: 844f25971ba2134bb8f9e5b149713c2b, type: 3}
+  m_Sprite: {fileID: 864094910, guid: 926856169af3a355087408a7bd88667b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1272,6 +1289,21 @@ Transform:
   - {fileID: 2141072960}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &300425458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300425455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 611d466005f9dde2db59411ffab8edd0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ProjetoJogosDigitais.Runtime::ProjetoJogosDigitais.Presentation.CharacterWalkAnimator
+  characterSheet: {fileID: 2800000, guid: da20d13f27e4816f9afacea40abe67a7, type: 3}
+  idleSheet: {fileID: 2800000, guid: 926856169af3a355087408a7bd88667b, type: 3}
+  strideLength: 1.5
 --- !u!1 &330554701
 GameObject:
   m_ObjectHideFlags: 0
@@ -1306,7 +1338,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ProjetoJogosDigitais.Runtime::ProjetoJogosDigitais.Gameplay.OfficePlayerController
   worldCamera: {fileID: 1046154334}
-  movementSpeed: 4.2
+  movementSpeed: 3.2
+  acceleration: 22
+  braking: 28
   worldMin: {x: -10.6, y: -6.3}
   worldMax: {x: 10.6, y: 6.3}
 --- !u!114 &330554703
@@ -1371,8 +1405,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611d466005f9dde2db59411ffab8edd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ProjetoJogosDigitais.Runtime::ProjetoJogosDigitais.Presentation.CharacterWalkAnimator
-  characterSheet: {fileID: 2800000, guid: 791a6f6a97c8f9cf0b524cfa5cd60543, type: 3}
-  framesPerSecond: 8
+  characterSheet: {fileID: 2800000, guid: a7c7a986b337c0e19ac5dbabad674f6c, type: 3}
+  idleSheet: {fileID: 2800000, guid: 2dbb63d74ea8ed00282c2d054ac25f53, type: 3}
+  strideLength: 1.5
 --- !u!212 &330554706
 SpriteRenderer:
   serializedVersion: 2
@@ -1422,7 +1457,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 25
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 6318501004013459983, guid: 791a6f6a97c8f9cf0b524cfa5cd60543, type: 3}
+  m_Sprite: {fileID: -1959226845, guid: 2dbb63d74ea8ed00282c2d054ac25f53, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5563,6 +5598,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1572974424}
   - component: {fileID: 1572974423}
+  - component: {fileID: 1572974425}
   m_Layer: 0
   m_Name: "Nina \u2022 Dev S\xEAnior"
   m_TagString: Untagged
@@ -5619,7 +5655,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9194006331877852107, guid: 1cbc3990caf13555f9b9c1b4b87e80ee, type: 3}
+  m_Sprite: {fileID: 633341264, guid: a8e22694ee2271cbfafc132333f735ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5645,6 +5681,21 @@ Transform:
   - {fileID: 1394646280}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1572974425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572974422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 611d466005f9dde2db59411ffab8edd0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ProjetoJogosDigitais.Runtime::ProjetoJogosDigitais.Presentation.CharacterWalkAnimator
+  characterSheet: {fileID: 2800000, guid: 2f531d6cdcdeee2819ad8784715f3560, type: 3}
+  idleSheet: {fileID: 2800000, guid: a8e22694ee2271cbfafc132333f735ba, type: 3}
+  strideLength: 1.5
 --- !u!1 &1617209718
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,6 +33,8 @@ upgrade, contratação ou missão depende de esperar dinheiro passivo.
 
 ## Interface, áudio e acessibilidade
 
+- Personagens da ELV Games (Fantasy Dreamland), com caminhada em quatro direções,
+  animação parado e sombra de contato. Passos acompanham a distância percorrida.
 - Menu principal assimétrico e HUD reconstruído para 1280 × 720.
 - Pause em `Esc`, com produção idle mantida durante a pausa.
 - Salvar, voltar ao menu e rever tutorial pelo menu de pausa.
@@ -66,6 +68,17 @@ e sem preservar contratações ilegais de Estagiário/Júnior.
   contratação, carreira completa, ausência de falha, save e migração.
 - 11/11 Play Mode: movimento, clique nas estações, HUD, menu, tutorial,
   briefings/decisões, promoção, pausa com idle e sequência final.
+
+## Validação da substituição dos personagens
+
+- ELV Games / Fantasy Dreamland integrado nas seis cenas e no gerador de cenas.
+- 2/2 testes Edit Mode específicos: folhas completas e dependências das cenas
+  sem o pacote anterior.
+- 5/5 testes Play Mode selecionados: direção horizontal, passos por distância,
+  chegada e redirecionamento, atividade na mesa e sequência final.
+- Revisão visual do escritório inicial e console sem erros ou avisos.
+- Captura: `Assets/Screenshots/elv-characters.png`.
+- Créditos e licença: `Assets/Art/ELVCharacters/CREDITS.md`.
 
 ## Antes do executável
 

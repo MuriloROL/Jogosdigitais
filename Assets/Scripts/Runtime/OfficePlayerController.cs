@@ -10,7 +10,9 @@ namespace ProjetoJogosDigitais.Gameplay
     public sealed class OfficePlayerController : MonoBehaviour
     {
         [SerializeField] private Camera worldCamera;
-        [SerializeField, Min(0.1f)] private float movementSpeed = 4.2f;
+        [SerializeField, Min(0.1f)] private float movementSpeed = 3.2f;
+        [SerializeField, Min(0.1f)] private float acceleration = 22f;
+        [SerializeField, Min(0.1f)] private float braking = 28f;
         [SerializeField] private Vector2 worldMin = new(-10f, -5.5f);
         [SerializeField] private Vector2 worldMax = new(10f, 5.5f);
 
@@ -19,6 +21,7 @@ namespace ProjetoJogosDigitais.Gameplay
         private Vector3 destination;
         private bool hasDestination;
         private bool interacting;
+        private float currentSpeed;
         private string status = "Passe o mouse e clique em um botão de atividade.";
         private GameObject destinationMarker;
         private OfficeStation hoveredStation;
@@ -185,21 +188,32 @@ namespace ProjetoJogosDigitais.Gameplay
         {
             if (!hasDestination)
             {
+                currentSpeed = 0f;
                 walkAnimator?.SetMotion(Vector2.zero);
                 return;
             }
 
             Vector2 before = transform.position;
             Vector2 remaining = (Vector2)destination - before;
-            if (remaining.magnitude > 0.06f)
+            float distance = remaining.magnitude;
+            if (distance > 0f)
             {
-                Vector2 movement = Vector2.ClampMagnitude(remaining, movementSpeed * Time.deltaTime);
+                // Brake over the stopping distance; a short ramp keeps clicks responsive.
+                float desiredSpeed = Mathf.Min(movementSpeed, Mathf.Sqrt(2f * braking * distance));
+                float rate = desiredSpeed < currentSpeed ? braking : acceleration;
+                currentSpeed = Mathf.MoveTowards(currentSpeed, desiredSpeed, rate * Time.deltaTime);
+                float travel = Mathf.Min(distance, currentSpeed * Time.deltaTime);
+                Vector2 movement = remaining / distance * travel;
                 transform.position += (Vector3)movement;
                 walkAnimator?.SetMotion(movement);
-                return;
+                if (travel < distance)
+                {
+                    return;
+                }
             }
 
             transform.position = destination;
+            currentSpeed = 0f;
             walkAnimator?.SetMotion(Vector2.zero);
             hasDestination = false;
             destinationMarker.SetActive(false);

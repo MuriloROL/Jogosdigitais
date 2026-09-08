@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using MCPForUnity.Editor.Services;
 using UnityEditor;
 using UnityEngine;
@@ -22,8 +23,17 @@ namespace ProjetoJogosDigitais.Editor
             EditorPrefs.SetBool(UseHttpTransportKey, false);
             EditorPrefs.SetBool(SetupCompletedKey, true);
             EditorPrefs.SetBool(SetupDismissedKey, true);
-            EditorPrefs.SetString(UvxPathKey, "/home/murilo-lima/.local/bin/uvx");
             EditorPrefs.SetBool(TelemetryDisabledKey, true);
+
+            // Keep valid user overrides; otherwise let the plugin discover uvx locally.
+            string uvxPath = EditorPrefs.GetString(UvxPathKey, string.Empty);
+            if (!string.IsNullOrEmpty(uvxPath) && !File.Exists(uvxPath))
+            {
+                EditorPrefs.DeleteKey(UvxPathKey);
+            }
+
+            // The plugin may have cached HTTP before this initializer was called.
+            EditorConfigurationCache.Instance.Refresh();
 
             EditorApplication.delayCall += StartBridge;
         }
@@ -35,7 +45,14 @@ namespace ProjetoJogosDigitais.Editor
                 "1",
                 StringComparison.Ordinal);
 
-            if ((Application.isBatchMode && !allowHeadlessBridge) || MCPServiceLocator.Bridge.IsRunning)
+            if (Application.isBatchMode && !allowHeadlessBridge)
+            {
+                return;
+            }
+
+            // Other plugin initializers can change transport during domain reload.
+            EditorConfigurationCache.Instance.SetUseHttpTransport(false);
+            if (MCPServiceLocator.Bridge.IsRunning)
             {
                 return;
             }

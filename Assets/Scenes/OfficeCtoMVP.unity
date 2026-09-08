@@ -5534,7 +5534,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ProjetoJogosDigitais.Runtime::ProjetoJogosDigitais.Gameplay.OfficePlayerController
   worldCamera: {fileID: 1795113141}
-  movementSpeed: 4.2
+  movementSpeed: 3.2
+  acceleration: 22
+  braking: 28
   worldMin: {x: -9, y: -5.4}
   worldMax: {x: 9, y: 5.4}
 --- !u!114 &1716249353
@@ -5599,8 +5601,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611d466005f9dde2db59411ffab8edd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ProjetoJogosDigitais.Runtime::ProjetoJogosDigitais.Presentation.CharacterWalkAnimator
-  characterSheet: {fileID: 2800000, guid: 791a6f6a97c8f9cf0b524cfa5cd60543, type: 3}
-  framesPerSecond: 8
+  characterSheet: {fileID: 2800000, guid: a7c7a986b337c0e19ac5dbabad674f6c, type: 3}
+  idleSheet: {fileID: 2800000, guid: 2dbb63d74ea8ed00282c2d054ac25f53, type: 3}
+  strideLength: 1.5
 --- !u!212 &1716249356
 SpriteRenderer:
   serializedVersion: 2
@@ -5650,7 +5653,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 25
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 6318501004013459983, guid: 791a6f6a97c8f9cf0b524cfa5cd60543, type: 3}
+  m_Sprite: {fileID: -1959226845, guid: 2dbb63d74ea8ed00282c2d054ac25f53, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6682,6 +6685,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2037132545}
   - component: {fileID: 2037132544}
+  - component: {fileID: 2037132546}
   m_Layer: 0
   m_Name: "Clara \u2022 Chief of Staff"
   m_TagString: Untagged
@@ -6738,7 +6742,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9181327588396053882, guid: 844f25971ba2134bb8f9e5b149713c2b, type: 3}
+  m_Sprite: {fileID: 1888429554, guid: 7b3ba399afdea1da58aedcd900c236a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6764,6 +6768,21 @@ Transform:
   - {fileID: 2117387885}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2037132546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037132543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 611d466005f9dde2db59411ffab8edd0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ProjetoJogosDigitais.Runtime::ProjetoJogosDigitais.Presentation.CharacterWalkAnimator
+  characterSheet: {fileID: 2800000, guid: 37141a27331cd1ad9adb805702cd8e1e, type: 3}
+  idleSheet: {fileID: 2800000, guid: 7b3ba399afdea1da58aedcd900c236a3, type: 3}
+  strideLength: 1.5
 --- !u!1 &2051749084
 GameObject:
   m_ObjectHideFlags: 0

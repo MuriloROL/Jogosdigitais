@@ -1440,7 +1440,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 56
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -3301,7 +3301,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.18
   m_Text: "EST\xDADIO\nDev Murilo Lima\n\nCONCEP\xC7\xC3O E DESENVOLVIMENTO\nMurilo
-    Lima\n\nARTE PIXEL\nModern Interiors \u2022 LimeZu\nlimezu.itch.io"
+    Lima\n\nPERSONAGENS\nFantasy Dreamland \u2022 ELV Games\nelvgames.itch.io"
 --- !u!222 &1265270294
 CanvasRenderer:
   m_ObjectHideFlags: 0

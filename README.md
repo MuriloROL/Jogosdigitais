@@ -24,15 +24,15 @@ de aproximadamente sete a oito horas reais, evolui até se tornar Dono.
 
 - Unity `6000.3.22f1`.
 
-O pacote licenciado **Modern Interiors** está incluído neste repositório
-privado. Os assets importados ficam em:
+Os personagens usam o pacote gratuito **Free TopDown RPG Retro Sprites!**, da
+**ELV Games**, incluído no projeto. Os assets importados ficam em:
 
 ```text
-Assets/Art/ModernInteriors16/
+Assets/Art/ELVCharacters/
 ```
 
-A fonte completa adquirida também foi preservada em `moderninteriors-win/`.
-Mantenha o repositório privado para não redistribuir esse conteúdo.
+A fonte, a licença original e o mapeamento dos personagens estão em
+[Créditos dos personagens](Assets/Art/ELVCharacters/CREDITS.md).
 
 ## Como executar
 
@@ -81,7 +81,10 @@ Projeto → Construir MVP carreira dev
 
 O jogo utiliza **Level Music Loop — Tigrun**, de qubodup, sob CC0 1.0. Fonte,
 licença e hash estão em `Assets/Resources/Audio/CREDITS.md`. Os personagens usam
-Modern Interiors, de LimeZu, conforme a licença do pacote adquirido.
+Fantasy Dreamland, da ELV Games, conforme a licença incluída no pacote gratuito.
 
 O design completo está em `Docs/GDD.md`. O status técnico e o balanceamento
 estão em `Docs/MVP_STATUS.md`.
+
+A documentação dos fundos, com prompts de referência e o modelo informado,
+está em [Prompts dos cenários](Docs/PROMPTS_CENARIOS.md).

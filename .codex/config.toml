@@ -1,5 +1,5 @@
 [mcp_servers.unityMCP]
-command = "/home/murilo-lima/.local/bin/uvx"
+command = "uvx"
 args = ["--from", "mcpforunityserver==10.0.0", "mcp-for-unity", "--transport", "stdio", "--project-scoped-tools"]
 enabled = true
 startup_timeout_sec = 30

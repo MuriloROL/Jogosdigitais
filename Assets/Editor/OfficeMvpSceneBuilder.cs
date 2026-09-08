@@ -20,7 +20,8 @@ namespace ProjetoJogosDigitais.Editor
         private const string LeadershipScenePath = "Assets/Scenes/OfficeLeadershipMVP.unity";
         private const string ExecutiveScenePath = "Assets/Scenes/OfficeCtoMVP.unity";
         private const string FinaleScenePath = "Assets/Scenes/OwnerFinale.unity";
-        private const string CharacterPath = "Assets/Art/ModernInteriors16/Characters/Premade/Premade_Character_01.png";
+        private const string CharacterRoot = "Assets/Art/ELVCharacters/";
+        private const string AlexCharacter = "Char_003";
         private const string OfficeArtRoot = "Assets/Art/GeneratedOffices/";
         private const string CareerIconAtlasPath = "Assets/Art/UI/Pixel/career-icon-atlas.png";
         private const string MenuIllustrationPath = "Assets/Art/UI/Pixel/menu-developer-workstation.png";
@@ -200,7 +201,7 @@ namespace ProjetoJogosDigitais.Editor
             SetRect(creditsTitle.rectTransform, new Vector2(0f, 1f), Vector2.one, Vector2.up * -84f, new Vector2(-80f, 48f));
             Text creditsLeft = CreateText(
                 creditsView.transform,
-                "ESTÚDIO\nDev Murilo Lima\n\nCONCEPÇÃO E DESENVOLVIMENTO\nMurilo Lima\n\nARTE PIXEL\nModern Interiors • LimeZu\nlimezu.itch.io",
+                "ESTÚDIO\nDev Murilo Lima\n\nCONCEPÇÃO E DESENVOLVIMENTO\nMurilo Lima\n\nPERSONAGENS\nFantasy Dreamland • ELV Games\nelvgames.itch.io",
                 15,
                 TextAnchor.UpperLeft,
                 Color.white);
@@ -276,7 +277,7 @@ namespace ProjetoJogosDigitais.Editor
                     CreateStation("Manuais antigos", OfficeActionType.Study, new Vector2(-4.65f, -2.7f), new Vector2(3.3f, 2.4f), new Vector2(0f, 1.35f));
                     CreateStation("Cafeteira da copa", OfficeActionType.Coffee, new Vector2(0f, -3.25f), new Vector2(3.2f, 2.1f), new Vector2(0f, 1.35f));
                     CreateStation("Sofá do corredor", OfficeActionType.Break, new Vector2(4.55f, -2.85f), new Vector2(4.1f, 2.6f), new Vector2(0f, 1.45f));
-                    CreateCoworker("Marta • Supervisora", "Premade_Character_05.png", new Vector2(4.7f, 0.15f));
+                    CreateCoworker("Marta • Supervisora", "Char_001", new Vector2(4.7f, 0.15f));
                     break;
                 case OfficeTier.Developer:
                     CreateStation("Estação de desenvolvimento", OfficeActionType.Code, new Vector2(-6.3f, 3.55f), new Vector2(6.6f, 3.2f), new Vector2(0f, -1.9f));
@@ -284,9 +285,9 @@ namespace ProjetoJogosDigitais.Editor
                     CreateStation("Biblioteca técnica", OfficeActionType.Study, new Vector2(-7.1f, -4.2f), new Vector2(4.3f, 3.1f), new Vector2(0f, 1.55f));
                     CreateStation("Copa e café", OfficeActionType.Coffee, new Vector2(0f, -4.45f), new Vector2(4f, 2.7f), new Vector2(0f, 1.55f));
                     CreateStation("Lounge da equipe", OfficeActionType.Break, new Vector2(6.2f, -4.05f), new Vector2(5.5f, 3.5f), new Vector2(0f, 1.75f));
-                    CreateCoworker("Lia • Dev Pleno", "Premade_Character_04.png", new Vector2(-8.2f, 0.1f));
-                    CreateCoworker("Caio • Dev Júnior", "Premade_Character_02.png", new Vector2(-2.2f, 2.1f));
-                    CreateCoworker("Ravi • Tech Lead", "Premade_Character_03.png", new Vector2(8.4f, 0.1f));
+                    CreateCoworker("Lia • Dev Pleno", "Char_005", new Vector2(-8.2f, 0.1f));
+                    CreateCoworker("Caio • Dev Júnior", "Char_002", new Vector2(-2.2f, 2.1f));
+                    CreateCoworker("Ravi • Tech Lead", "Char_004", new Vector2(8.4f, 0.1f));
                     break;
                 case OfficeTier.Leadership:
                     CreateStation("Mesa de arquitetura", OfficeActionType.Code, new Vector2(-6.7f, 4.7f), new Vector2(6.4f, 3.2f), new Vector2(0f, -2f));
@@ -294,9 +295,9 @@ namespace ProjetoJogosDigitais.Editor
                     CreateStation("Centro de conhecimento", OfficeActionType.Study, new Vector2(-7.75f, -4.75f), new Vector2(4.8f, 3.3f), new Vector2(0f, 1.65f));
                     CreateStation("Café da liderança", OfficeActionType.Coffee, new Vector2(0f, -4.95f), new Vector2(4.3f, 3f), new Vector2(0f, 1.65f));
                     CreateStation("Lounge dos líderes", OfficeActionType.Break, new Vector2(6.65f, -4.7f), new Vector2(5.8f, 3.5f), new Vector2(0f, 1.8f));
-                    CreateCoworker("Nina • Dev Sênior", "Premade_Character_04.png", new Vector2(-9.4f, 0.4f));
-                    CreateCoworker("Theo • Tech Lead", "Premade_Character_03.png", new Vector2(8.8f, 0.3f));
-                    CreateCoworker("Maya • Product Manager", "Premade_Character_05.png", new Vector2(0.5f, 2.4f));
+                    CreateCoworker("Nina • Dev Sênior", "Char_005", new Vector2(-9.4f, 0.4f));
+                    CreateCoworker("Theo • Tech Lead", "Char_004", new Vector2(8.8f, 0.3f));
+                    CreateCoworker("Maya • Product Manager", "Char_006", new Vector2(0.5f, 2.4f));
                     break;
                 case OfficeTier.Executive:
                     CreateStation("Mesa executiva", OfficeActionType.Code, new Vector2(-4.85f, 3.75f), new Vector2(5.8f, 3.1f), new Vector2(0f, -1.95f));
@@ -304,7 +305,7 @@ namespace ProjetoJogosDigitais.Editor
                     CreateStation("Biblioteca do CTO", OfficeActionType.Study, new Vector2(-6.05f, -4.15f), new Vector2(4.5f, 3.2f), new Vector2(0f, 1.55f));
                     CreateStation("Café privativo", OfficeActionType.Coffee, new Vector2(0f, -4.15f), new Vector2(4f, 2.8f), new Vector2(0f, 1.55f));
                     CreateStation("Lounge executivo", OfficeActionType.Break, new Vector2(5.45f, -4.05f), new Vector2(5.3f, 3.4f), new Vector2(0f, 1.7f));
-                    CreateCoworker("Clara • Chief of Staff", "Premade_Character_05.png", new Vector2(7.6f, 0.25f));
+                    CreateCoworker("Clara • Chief of Staff", "Char_001", new Vector2(7.6f, 0.25f));
                     break;
             }
         }
@@ -336,15 +337,11 @@ namespace ProjetoJogosDigitais.Editor
             CreateCamera(7.1f);
             new GameObject("Carreira concluída").AddComponent<CareerGame>();
 
-            Texture2D sheet = AssetDatabase.LoadAssetAtPath<Texture2D>(CharacterPath);
-            Sprite sprite = AssetDatabase.LoadAllAssetsAtPath(CharacterPath).OfType<Sprite>().FirstOrDefault(item => item.name == "Premade_Character_01_0");
             var hero = new GameObject("Alex - Dono da ByteForge");
             hero.transform.position = new Vector3(-9f, -0.65f, 0f);
             SpriteRenderer renderer = hero.AddComponent<SpriteRenderer>();
-            renderer.sprite = sprite;
             renderer.sortingOrder = 30;
-            CharacterWalkAnimator animator = hero.AddComponent<CharacterWalkAnimator>();
-            animator.Configure(sheet);
+            CharacterWalkAnimator animator = ConfigureCharacter(hero, AlexCharacter);
 
             var canvasObject = new GameObject("Interface do final");
             Canvas canvas = canvasObject.AddComponent<Canvas>();
@@ -384,22 +381,11 @@ namespace ProjetoJogosDigitais.Editor
 
         private static OfficePlayerController CreatePlayer(Camera camera, Vector2 spawn, Vector2 minimum, Vector2 maximum)
         {
-            Texture2D sheet = AssetDatabase.LoadAssetAtPath<Texture2D>(CharacterPath);
-            Sprite sprite = AssetDatabase.LoadAllAssetsAtPath(CharacterPath)
-                .OfType<Sprite>()
-                .FirstOrDefault(item => item.name == "Premade_Character_01_0");
-            if (sheet == null || sprite == null)
-            {
-                throw new InvalidOperationException($"Personagem não encontrado em {CharacterPath}");
-            }
-
             var playerObject = new GameObject("Desenvolvedor - Alex");
             playerObject.transform.position = spawn;
             SpriteRenderer renderer = playerObject.AddComponent<SpriteRenderer>();
-            renderer.sprite = sprite;
             renderer.sortingOrder = 25;
-            CharacterWalkAnimator animator = playerObject.AddComponent<CharacterWalkAnimator>();
-            animator.Configure(sheet);
+            ConfigureCharacter(playerObject, AlexCharacter);
             CapsuleCollider2D collider = playerObject.AddComponent<CapsuleCollider2D>();
             collider.size = new Vector2(0.6f, 0.72f);
             collider.offset = new Vector2(0.5f, 0.36f);
@@ -410,21 +396,37 @@ namespace ProjetoJogosDigitais.Editor
             return player;
         }
 
-        private static void CreateCoworker(string label, string spriteFile, Vector2 position)
+        private static void CreateCoworker(string label, string character, Vector2 position)
         {
-            string path = CharacterPath.Replace("Premade_Character_01.png", spriteFile);
-            Sprite sprite = AssetDatabase.LoadAllAssetsAtPath(path).OfType<Sprite>().FirstOrDefault();
-            if (sprite == null)
-            {
-                return;
-            }
-
             var coworker = new GameObject(label);
             coworker.transform.position = position;
             SpriteRenderer renderer = coworker.AddComponent<SpriteRenderer>();
-            renderer.sprite = sprite;
             renderer.sortingOrder = 20;
+            ConfigureCharacter(coworker, character);
             CreateWorldLabel(coworker.transform, label, new Vector3(0.5f, 1.9f), new Color(0.82f, 0.86f, 0.94f), 38, 0.078f);
+        }
+
+        public static CharacterWalkAnimator ConfigureCharacter(GameObject characterObject, string character)
+        {
+            string walkPath = CharacterRoot + character + ".png";
+            string idlePath = CharacterRoot + character + "_Idle.png";
+            Texture2D walk = AssetDatabase.LoadAssetAtPath<Texture2D>(walkPath);
+            Texture2D idle = AssetDatabase.LoadAssetAtPath<Texture2D>(idlePath);
+            Sprite pose = AssetDatabase.LoadAllAssetsAtPath(idlePath).OfType<Sprite>()
+                .FirstOrDefault(sprite => sprite.name == character + "_Idle_0_0");
+            if (walk == null || idle == null || pose == null)
+            {
+                throw new InvalidOperationException($"Personagem ELV não importado corretamente: {character}");
+            }
+
+            characterObject.GetComponent<SpriteRenderer>().sprite = pose;
+            CharacterWalkAnimator animator = characterObject.GetComponent<CharacterWalkAnimator>();
+            if (animator == null)
+            {
+                animator = characterObject.AddComponent<CharacterWalkAnimator>();
+            }
+            animator.Configure(walk, idle);
+            return animator;
         }
 
         private static void CreateStation(string name, OfficeActionType type, Vector2 position, Vector2 colliderSize, Vector2 interactionOffset)

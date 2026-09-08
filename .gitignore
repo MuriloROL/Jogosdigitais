@@ -22,4 +22,4 @@ sysinfo.txt
 mono_crash.*.blob
 /.agents/
 
-# Licensed art and project-local tooling are tracked because this repository is private.
+# Imported art is tracked with its license; project-local tooling is tracked too.

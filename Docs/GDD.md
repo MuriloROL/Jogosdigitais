@@ -513,19 +513,25 @@ cores de textos e contornos.
 
 ### 12.2 Assets
 
-- Personagens e parte dos ambientes: **Modern Interiors**, de LimeZu.
+- Personagens: **Free TopDown RPG Retro Sprites! / Fantasy Dreamland**, da ELV Games.
 - Escritórios autorais gerados para os quatro níveis visuais.
 - Kit visual próprio:
   - `menu-developer-workstation.png`;
   - `tech-ornaments-sheet.png`;
   - `career-icon-atlas.png`.
 
-O Modern Interiors é licenciado e está versionado somente porque o repositório
-é privado. O repositório não deve ser tornado público com esse conteúdo.
+Os prompts de referência para os fundos e o modelo informado pelo responsável,
+GPT 6 Astra da OpenAI, estão em [Prompts dos cenários](PROMPTS_CENARIOS.md).
+
+Os sprites de personagens, a licença original e os créditos estão em
+[`Assets/Art/ELVCharacters/`](../Assets/Art/ELVCharacters/CREDITS.md).
+O histórico Git ainda contém o pacote anterior; a substituição dos arquivos
+atuais não remove os assets antigos dos commits já existentes.
 
 ### 12.3 Animação
 
-- Alex usa animação direcional de caminhada.
+- Alex usa caminhada em quatro direções, com passos sincronizados à distância.
+- Alex e os colegas usam animação parado; movimento reduzido mantém a pose estática.
 - Estações pulsam durante interação.
 - Marcadores reagem ao hover e ao objetivo da missão.
 - Botões possuem feedback de hover e clique.
@@ -749,7 +755,7 @@ O MVP pode ser considerado pronto para entrega quando:
 | Salário | Valor é exibido, mas não existe pagamento periódico | Assumir como indicador ou implementar pagamento |
 | Plataforma | PC está definido, mas o sistema operacional de lançamento não | Escolher Windows, Linux ou ambos |
 | Distribuição | Ainda não existe executável final nem ícone configurado | Preparar e validar o pacote de release |
-| Licenciamento | Modern Interiors está no GitHub privado | Nunca tornar o repositório público com os assets |
+| Licenciamento | Personagens atuais usam ELV Games; o histórico Git contém assets do pacote anterior | Manter créditos e licença; revisar o histórico antes de publicar o repositório |
 | Ritmo | Economia foi validada por testes, não por uma sessão humana completa | Realizar playtest de ponta a ponta |
 
 ---
@@ -779,4 +785,3 @@ O MVP pode ser considerado pronto para entrega quando:
 - `Assets/Scripts/Runtime/CareerGame.cs` — regras e economia implementadas.
 - `Assets/Scripts/Runtime/CareerMissionCatalog.cs` — catálogo completo de missões.
 - `Assets/Tests/` — critérios automatizados de comportamento.
-
