@@ -23,3 +23,8 @@ mono_crash.*.blob
 /.agents/
 
 # Imported art is tracked with its license; project-local tooling is tracked too.
+
+# Nested Unity projects generate their own caches.
+/QuizProjects/*/[Ll]ibrary/
+/QuizProjects/*/[Tt]emp/
+/QuizProjects/*/[Ll]ogs/
